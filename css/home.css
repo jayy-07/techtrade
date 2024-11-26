@@ -1,0 +1,374 @@
+#alert {
+  margin-top: 10px;
+}
+
+#logo-text {
+  font-family: "Gluck";
+  font-size: 27px;
+}
+
+a[href="register.php"],
+a[href="login.php"] {
+  color: #ae1758; /* Change the color to your desired color */
+}
+
+.carousel {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+#navbar-right {
+  justify-content: flex-end;
+  margin-left: 30rem;
+}
+
+#dropdown-menu {
+  margin-right: 15px;
+}
+
+#search-btn {
+  background-color: #ae1758;
+  color: #ffffff;
+  border-radius: 5px;
+}
+
+#signin-btn {
+  background-color: #ae1758;
+  color: #ffffff;
+  border-radius: 5px;
+  width: 100%;
+}
+
+/* Custom styles for narrower login form */
+.login-card {
+  max-width: 400px;
+  /* Set a max width for the form */
+  margin: 0 auto;
+  /* Center it horizontally */
+}
+
+#error-message,
+#password-error-message,
+#password-error-message,
+#username-error-message,
+#email-error-messag,
+#bio-error-message {
+  color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
+#password-success-message,
+#email-success-message,
+#username-success-message,
+#bio-success-message {
+  color: green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#avatar,
+.avatar-option:hover {
+  cursor: pointer;
+}
+
+.avatar-option {
+  width: 70px;
+  height: 70px;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+
+body {
+  font-family: "Parkinsans";
+}
+
+#card-image {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: cover !important;
+}
+
+/* CSS for scroll bar */
+.scrollable-product-list {
+  position: relative;
+  margin-bottom: 50px;
+}
+
+.product-row {
+  /* Hide scrollbars by default */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  overflow-y: hidden;
+  overflow-x: auto;
+  transition: scrollbar-color 0.3s ease; /* Transition for scrollbar color */
+}
+
+.product-row::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  height: 0; /* Remove scrollbar space */
+}
+
+/* Hover effect for product-row container */
+.product-row:hover {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #999 #f1f1f1; /* Color for Firefox */
+}
+
+/* Style WebKit scrollbars (Chrome, Safari) */
+.product-row:hover::-webkit-scrollbar {
+  width: 8px; /* Show scrollbar width */
+  height: 8px;
+}
+
+.product-row:hover::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Lighter track color */
+}
+
+.product-row:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* Darker thumb color on hover */
+  border-radius: 4px;
+  transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+.product-row:hover::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Handle color on hover */
+}
+
+.product-row {
+  display: flex;
+  flex-wrap: nowrap; /* Prevent cards from wrapping to the next line */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  padding: 1rem 0;
+  scroll-behavior: smooth;
+}
+
+.product-card {
+  flex: 0 0 auto; /* Prevent cards from shrinking */
+  width: 200px; /* Fixed width for uniformity */
+  text-decoration: none; /* Remove underline for links */
+  color: inherit; /* Inherit text color */
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+  display: none; /* Initially hidden, shown conditionally */
+}
+
+.prev-btn {
+  left: -10px;
+}
+
+.next-btn {
+  right: -10px;
+}
+
+.product-card img {
+  aspect-ratio: 2 / 1; /* Maintain a square aspect ratio */
+  object-fit: cover; /* Ensure the image covers the entire area */
+  height: 150px;
+}
+
+#addToCartButton {
+  margin: 0 auto;
+  display: block;
+  width: 300px;
+}
+
+/* Other sellers */
+/* Additional styles for other sellers row */
+.other-sellers-container {
+  position: relative;
+  margin-top: 30px;
+  padding: 10px 0;
+}
+
+.other-sellers-row {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px;
+  scroll-behavior: smooth;
+}
+
+#addToCartButton-seller {
+  margin: 0 auto;
+  display: block;
+}
+
+.seller-card {
+  min-width: 250px;
+  flex: 0 0 auto;
+  margin: 0 10px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+.prev-btn {
+  left: -20px;
+}
+
+.next-btn {
+  right: -20px;
+}
+
+#full-stars-example {
+  /* make hover effect work properly in IE */
+  .rating__icon {
+    pointer-events: none;
+  }
+
+  .rating-group {
+    display: inline-flex;
+  }
+
+  /* hide radio inputs */
+  .rating__input {
+    position: absolute !important;
+    left: -9999px !important;
+  }
+
+  /* set icon padding and size */
+  .rating__label {
+    cursor: pointer;
+    padding: 0 0.1em;
+    font-size: 2rem;
+  }
+
+  .rating__label_review {
+    cursor: pointer;
+    padding: 0 0.1em;
+    font-size: 1.5rem;
+  }
+
+  /* set default star color */
+  .rating__icon--star {
+    color: orange;
+  }
+
+  /* set color of none icon when unchecked */
+  .rating__icon--none {
+    color: #eee;
+  }
+
+  /* if none icon is checked, make it red */
+  .rating__input--none:checked + .rating__label .rating__icon--none {
+    color: red;
+  }
+
+  .rating__input--none:checked + .rating__label_review .rating__icon--none {
+    color: red;
+  }
+
+  /* if any input is checked, make its following siblings grey */
+  .rating__input:checked ~ .rating__label .rating__icon--star {
+    color: #ddd;
+  }
+
+  .rating__input:checked ~ .rating__label_review .rating__icon--star {
+    color: #ddd;
+  }
+
+  /* make all stars orange on rating group hover */
+  .rating-group:hover .rating__label .rating__icon--star {
+    color: orange;
+  }
+
+  .rating-group:hover .rating__label_review .rating__icon--star {
+    color: orange;
+  }
+
+  /* make hovered input's following siblings grey on hover */
+  .rating__input:hover ~ .rating__label .rating__icon--star {
+    color: #ddd;
+  }
+
+  .rating__input:hover ~ .rating__label_review .rating__icon--star {
+    color: #ddd;
+  }
+
+  /* make none icon grey on rating group hover */
+  .rating-group:hover
+    .rating__input--none:not(:hover)
+    + .rating__label
+    .rating__icon--none {
+    color: #eee;
+  }
+
+  /* make none icon red on hover */
+  .rating__input--none:hover + .rating__label .rating__icon--none {
+    color: red;
+  }
+
+  .rating__input--none:hover + .rating__label_review .rating__icon--none {
+    color: red;
+  }
+}
+
+#full-stars-example-two {
+  /* use display:inline-flex to prevent whitespace issues. alternatively, you can put all the children of .rating-group on a single line */
+  .rating-group {
+    display: inline-flex;
+  }
+
+  /* make hover effect work properly in IE */
+  .rating__icon {
+    pointer-events: none;
+  }
+
+  /* hide radio inputs */
+  .rating__input {
+    position: absolute !important;
+    left: -9999px !important;
+  }
+
+  /* hide 'none' input from screenreaders */
+  .rating__input--none {
+    display: none;
+  }
+
+  /* set icon padding and size */
+  .rating__label {
+    cursor: pointer;
+    padding: 0 0.1em;
+    font-size: 2rem;
+  }
+
+  /* set default star color */
+  .rating__icon--star {
+    color: orange;
+  }
+
+  /* if any input is checked, make its following siblings grey */
+  .rating__input:checked ~ .rating__label .rating__icon--star {
+    color: #ddd;
+  }
+
+  /* make all stars orange on rating group hover */
+  .rating-group:hover .rating__label .rating__icon--star {
+    color: orange;
+  }
+
+  /* make hovered input's following siblings grey on hover */
+  .rating__input:hover ~ .rating__label .rating__icon--star {
+    color: #ddd;
+  }
+}
+
+.checked {
+  color: orange;
+}
