@@ -1,14 +1,17 @@
 <?php
 require_once '../settings/core.php';
-require_once '../controllers/ProductController.php';
+require_once '../controllers/productController.php';
+require_once '../controllers/brandController.php';
+require_once '../controllers/categoryController.php';
 
-// Check if user is logged in and is an administrator
-/* if (!is_logged_in() || !check_user_role('Administrator')) {
-    redirect('../login.php');
-} */
+$productController = new ProductController();
+$products = $productController->getAllProducts();
 
-$controller = new ProductController();
-$products = $controller->getAllProducts();
+$brandController = new BrandController();
+$brands = $brandController->getAllBrands();
+
+$categoryController = new CategoryController();
+$categories = $categoryController->getAllCategories();
 ?>
 
 <!DOCTYPE html>
@@ -70,28 +73,28 @@ $products = $controller->getAllProducts();
                     </thead>
                     <tbody>
                         <?php foreach ($products as $product): ?>
-                            <tr data-product-id="<?= $product['product_id'] ?>">
-                                <td><?= htmlspecialchars($product['name']) ?></td>
-                                <td><?= htmlspecialchars($product['brand_id']) ?></td>
-                                <td><?= htmlspecialchars($product['category_id']) ?></td>
-                                <td><?= htmlspecialchars($product['status']) ?></td>
+                            <tr>
+                                <td><?php echo $product['name']; ?></td>
+                                <td><?php echo $product['brand_name']; ?></td>
+                                <td><?php echo $product['category_name']; ?></td>
+                                <td><?php echo $product['status']; ?></td>
                                 <td>
                                     <button class="btn btn-primary btn-sm edit-product"
                                         data-bs-toggle="modal"
                                         data-bs-target="#editProductModal"
-                                        data-product-id="<?= $product['product_id'] ?>"
-                                        data-product-name="<?= htmlspecialchars($product['name']) ?>"
-                                        data-product-description="<?= htmlspecialchars($product['description']) ?>"
-                                        data-product-brand="<?= htmlspecialchars($product['brand_id']) ?>"
-                                        data-product-category="<?= htmlspecialchars($product['category_id']) ?>"
-                                        data-product-status="<?= htmlspecialchars($product['status']) ?>">
+                                        data-product-id="<?php echo $product['product_id']; ?>"
+                                        data-product-name="<?php echo $product['name']; ?>"
+                                        data-product-description="<?php echo $product['description']; ?>"
+                                        data-product-brand="<?php echo $product['brand_name']; ?>"
+                                        data-product-category="<?php echo $product['category_name']; ?>"
+                                        data-product-status="<?php echo $product['status']; ?>">
                                         Edit
                                     </button>
                                     <button class="btn btn-danger btn-sm delete-product"
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteProductModal"
-                                        data-product-id="<?= $product['product_id'] ?>"
-                                        data-product-name="<?= htmlspecialchars($product['name']) ?>">
+                                        data-product-id="<?php echo $product['product_id']; ?>"
+                                        data-product-name="<?php echo $product['name']; ?>">
                                         Delete
                                     </button>
                                 </td>

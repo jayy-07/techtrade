@@ -3,21 +3,21 @@ require_once '../settings/core.php';
 require_once '../classes/User.php';
 
 class UserController {
-    private $userModel;
+    private $User;
 
     public function __construct() {
-        $this->userModel = new User();
+        $this->User = new User();
     }
 
     public function updateUserRole($userId, $role) {
-        return $this->userModel->update_user_role($userId, $role);
+        return $this->User->update_user_role($userId, $role);
     }
 
     public function deleteUser($userId) {
-        return $this->userModel->delete_user($userId);
+        return $this->User->delete_user($userId);
     }
 
     public function getAllUsers() {
-        return $this->userModel->get_all_users();
+        return $this->User->get_all_users();
     }
 }
