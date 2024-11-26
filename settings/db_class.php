@@ -145,4 +145,12 @@ class db_connection
 		//return a record
 		return mysqli_num_rows($this->results);
 	}
+
+	function get_insert_id()
+	{
+		if ($this->db !== null) {
+			return mysqli_insert_id($this->db);
+		}
+		return false;
+	}
 }

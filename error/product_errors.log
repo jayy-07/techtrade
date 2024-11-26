@@ -1,0 +1,2 @@
+2024-11-26 17:58:50 - Error deleting product: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`product_images`, CONSTRAINT `product_images_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`))
+2024-11-26 18:10:18 - Error adding product: Cannot add or update a child row: a foreign key constraint fails (`techtrade`.`products`, CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`))

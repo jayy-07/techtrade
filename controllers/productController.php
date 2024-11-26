@@ -1,41 +1,98 @@
 <?php
-require_once '../settings/core.php';
+
 require_once '../classes/Product.php';
 
-class ProductController {
-    private $productModel;
+class ProductController
+{
+    private $product;
 
-    public function __construct() {
-        $this->productModel = new Product();
+    public function __construct()
+    {
+        $this->product = new Product();
     }
 
-    public function addProduct($data) { 
-        // Assuming 'status' is included in $data for seller requests
-        if ($this->productModel->add_product($data)) {
-            $product_id = $this->productModel->db->insert_id; 
-            
-            // Add product images (similar to previous example)
-            // ... 
-            return true;
+    public function getProduct() {
+        return $this->product;
+    }
+
+    public function index()
+    {
+        $products = $this->product->get_all_products();
+        return $products;
+    }
+
+    public function create()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'category_id' => $_POST['category_id'],
+                'brand_id' => $_POST['brand_id'],
+                'product_name' => $_POST['product_name'],
+                'description' => $_POST['description']
+            ];
+
+            $image_urls = $this->handle_image_urls();
+
+            if ($this->product->add_product($data)) {
+                $product_id = $this->product->get_insert_id();
+                $this->save_product_images($product_id, $image_urls);
+                return "Product added successfully!";
+            } else {
+                return "Failed to add product.";
+            }
         }
-        return false;
     }
 
-    public function getAllProducts() {
-        return $this->productModel->get_all_products();
+    public function edit($product_id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'product_id' => $product_id,
+                'category_id' => $_POST['category_id'],
+                'brand_id' => $_POST['brand_id'],
+                'product_name' => $_POST['product_name'],
+                'description' => $_POST['description']
+            ];
+
+            $image_urls = $this->handle_image_urls();
+
+            if ($this->product->update_product($data)) {
+                // Delete existing images and add new ones
+                $this->product->delete_product_images($product_id);
+                $this->save_product_images($product_id, $image_urls);
+
+                return "Product updated successfully!";
+            } else {
+                return "Failed to update product.";
+            }
+        }
     }
 
-    public function getProductById($product_id) {
-        return $this->productModel->get_product_by_id($product_id);
+    public function delete($product_id)
+    {
+        if ($this->product->delete_product($product_id)) {
+            return "Product deleted successfully!";
+        } else {
+            return "Failed to delete product.";
+        }
     }
 
-    public function updateProduct($data) {
-        // Assuming 'status' is included in $data for admin updates
-        return $this->productModel->update_product($data); 
+    private function handle_image_urls()
+    {
+        $image_urls = [];
+        if (isset($_POST['images']) && !empty($_POST['images'])) {
+            foreach ($_POST['images'] as $image_url) {
+                $image_urls[] = $image_url;
+            }
+        }
+        return $image_urls;
     }
 
-    public function deleteProduct($product_id) {
-        return $this->productModel->delete_product($product_id);
+    private function save_product_images($product_id, $image_urls)
+    {
+        foreach ($image_urls as $index => $url) {
+            $is_primary = ($index == 0) ? 1 : 0;
+            $this->product->add_product_image($product_id, $url, $is_primary);
+        }
     }
-
 }

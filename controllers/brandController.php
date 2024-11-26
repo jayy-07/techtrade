@@ -1,17 +1,38 @@
 <?php
-require_once '../settings/core.php';
+
 require_once '../classes/Brand.php';
 
-class BrandController {
-    private $brandModel;
+class BrandController
+{
+    private $brand;
 
-    public function __construct() {
-        $this->brandModel = new Brand();
+    public function __construct()
+    {
+        $this->brand = new Brand();
     }
 
-    public function getAllBrands() {
-        return $this->brandModel->get_all_brands();
+    public function create()
+    {
+        // Handle brand creation form submission
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Process and sanitize form data
+            $brand_name = $_POST['brand_name'];
+
+            // Add brand to the database
+            if ($this->brand->add_brand($brand_name)) {
+                // Redirect to success page or return success message
+                return "Brand added successfully!";
+            } else {
+                // Return error message
+                return "Failed to add brand.";
+            }
+        }
     }
 
-    // Add other controller methods as needed
+    public function index()
+    {
+        // Handle fetching and displaying all brands
+        $brands = $this->brand->get_all_brands();
+        return $brands;
+    }
 }
