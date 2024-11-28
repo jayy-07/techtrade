@@ -2,7 +2,8 @@
 require_once '../controllers/SellerProductController.php';
 require_once '../settings/core.php';
 
-function log_error($error_message) {
+function log_error($error_message)
+{
     $error_log_file = '../error/php-error.log';
     $log_message = date('Y-m-d H:i:s') . ' - ' . $error_message . PHP_EOL;
     error_log($log_message, 3, $error_log_file);
@@ -27,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'brand_name' => $product['brand_name'],
                 'price' => $product['price'],
                 'stock_quantity' => $product['stock_quantity'],
+                'discount' => $product['discount'], // Include discount in response
                 'action' => 'edit'
             ];
 
@@ -39,4 +41,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => false, 'message' => 'An error occurred.']);
     }
 }
-?>

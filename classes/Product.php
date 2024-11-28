@@ -63,10 +63,10 @@ class Product extends db_connection
 
     public function get_seller_products($seller_id)
     {
-        $sql = "SELECT p.product_id, p.name AS product_name, c.name AS category_name, b.name AS brand_name, sp.price, sp.stock_quantity, p.description
+        $sql = "SELECT p.product_id, p.name AS product_name, c.name AS category_name, b.name AS brand_name, sp.price, sp.stock_quantity, p.description, sp.discount 
             FROM products p
             JOIN sellers_products sp ON p.product_id = sp.product_id
-            JOIN categories c ON p.category_id = c.category_id  -- Changed c.id to c.category_id
+            JOIN categories c ON p.category_id = c.category_id 
             JOIN brands b ON p.brand_id = b.brand_id
             WHERE sp.seller_id = '$seller_id'";
 

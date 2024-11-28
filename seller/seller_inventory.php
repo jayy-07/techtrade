@@ -25,6 +25,7 @@ $categories = $categoryController->index();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,6 +34,7 @@ $categories = $categoryController->index();
     <link rel="stylesheet" href="../css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="../css/home.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-4">
         <h1 class='text-center mb-3'>
@@ -59,52 +61,50 @@ $categories = $categoryController->index();
         </div>
 
         <div id="main-content">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Brand</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                        // Fetch the seller's products from the database
-                        $sellerId = $_SESSION['user_id'];
-                        $sellerProducts = $productController->getProduct()->get_seller_products($sellerId);
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Price</th>
+                        <th>Discount (%)</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $sellerId = $_SESSION['user_id'];
+                    $sellerProducts = $productController->getProduct()->get_seller_products($sellerId);
 
-                        foreach ($sellerProducts as $product) : 
-                        ?>
-                            <tr data-product-id="<?= $product['product_id'] ?>">
-                                <td><?= htmlspecialchars($product['product_name']) ?></td>
-                                <td><?= htmlspecialchars($product['category_name']) ?></td>
-                                <td><?= htmlspecialchars($product['brand_name']) ?></td>
-                                <td><?= htmlspecialchars($product['price']) ?></td>
-                                <td><?= htmlspecialchars($product['stock_quantity']) ?></td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm edit-product" data-bs-toggle="modal" data-bs-target="#editProductModal" 
-                                            data-product-id="<?= $product['product_id'] ?>" 
-                                            data-product-name="<?= htmlspecialchars($product['product_name']) ?>" 
-                                            data-product-category-name="<?= htmlspecialchars($product['category_name']) ?>" 
-                                            data-product-brand-name="<?= htmlspecialchars($product['brand_name']) ?>" 
-                                            data-product-price="<?= htmlspecialchars($product['price']) ?>" 
-                                            data-product-stock="<?= htmlspecialchars($product['stock_quantity']) ?>" 
-                                            data-product-description="<?= htmlspecialchars($product['description']) ?>">
-                                        Edit
-                                    </button>
-                                    <button class="btn btn-danger btn-sm delete-product" data-bs-toggle="modal" data-bs-target="#deleteProductModal" data-product-id="<?= $product['product_id'] ?>" data-product-name="<?= htmlspecialchars($product['product_name']) ?>">
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+                    foreach ($sellerProducts as $product) :
+                    ?>
+                        <tr data-product-id="<?= $product['product_id'] ?>">
+                            <td><?= htmlspecialchars($product['product_name']) ?></td>
+                            <td><?= htmlspecialchars($product['category_name']) ?></td>
+                            <td><?= htmlspecialchars($product['brand_name']) ?></td>
+                            <td><?= htmlspecialchars($product['price']) ?></td>
+                            <td><?= htmlspecialchars($product['discount']) ?></td>
+                            <td><?= htmlspecialchars($product['stock_quantity']) ?></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm edit-product" data-bs-toggle="modal" data-bs-target="#editProductModal"
+                                    data-product-id="<?= $product['product_id'] ?>"
+                                    data-product-name="<?= htmlspecialchars($product['product_name']) ?>"
+                                    data-product-price="<?= htmlspecialchars($product['price']) ?>"
+                                    data-product-stock="<?= htmlspecialchars($product['stock_quantity']) ?>"
+                                    data-product-discount="<?= htmlspecialchars($product['discount']) ?>"
+                                    data-product-description="<?= htmlspecialchars($product['description']) ?>">
+                                    Edit
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-product" data-bs-toggle="modal" data-bs-target="#deleteProductModal" data-product-id="<?= $product['product_id'] ?>" data-product-name="<?= htmlspecialchars($product['product_name']) ?>">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -134,6 +134,10 @@ $categories = $categoryController->index();
                             <label for="stock_quantity" class="form-label">Stock Quantity</label>
                             <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="discount" class="form-label">Discount (%)</label>
+                            <input type="number" class="form-control" id="discount" name="discount" step="0.01" min="0" max="100" value="0">
+                        </div>
                         <p class="text-danger" id="error-message"></p>
                         <button type="submit" class="btn btn-primary" id="saveProduct">Add Product</button>
                     </form>
@@ -159,6 +163,10 @@ $categories = $categoryController->index();
                         <div class="mb-3">
                             <label for="edit_stock_quantity" class="form-label">Stock Quantity</label>
                             <input type="number" class="form-control" id="edit_stock_quantity" name="stock_quantity" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_discount" class="form-label">Discount (%)</label>
+                            <input type="number" class="form-control" id="edit_discount" name="discount" step="0.01" min="0" max="100">
                         </div>
                         <p class="text-danger" id="error-message"></p>
                         <button type="submit" class="btn btn-primary" id="updateProduct">Update Product</button>
@@ -198,7 +206,7 @@ $categories = $categoryController->index();
 
     <script src="../js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="../js/jquery.min.js"></script>
-    <script src="../js/seller_inventory.js"></script> 
+    <script src="../js/seller_inventory.js"></script>
     <script>
         $(document).ready(function() {
             // Open Edit Modal
@@ -225,4 +233,5 @@ $categories = $categoryController->index();
         });
     </script>
 </body>
+
 </html>

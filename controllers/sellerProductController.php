@@ -17,6 +17,7 @@ class SellerProductController
         $product_id = $data['product_id'];
         $price = $data['price'];
         $stock_quantity = $data['stock_quantity'];
+        $discount = isset($data['discount']) ? $data['discount'] : 0.00;
 
         // Validate price and stock quantity
         if (!is_numeric($price) || $price <= 0) {
@@ -26,7 +27,7 @@ class SellerProductController
             return "Stock quantity must be a positive integer.";
         }
 
-        if ($this->sellerProduct->add_product($seller_id, $product_id, $price, $stock_quantity)) {
+        if ($this->sellerProduct->add_product($seller_id, $product_id, $price, $stock_quantity, $discount)) {
             return "Product added to inventory successfully!";
         } else {
             return "Failed to add product to inventory.";
@@ -39,6 +40,7 @@ class SellerProductController
         $product_id = $data['product_id'];
         $price = $data['price'];
         $stock_quantity = $data['stock_quantity'];
+        $discount = isset($data['discount']) ? $data['discount'] : 0.00;
 
         // Validate price and stock quantity
         if (!is_numeric($price) || $price <= 0) {
@@ -48,7 +50,7 @@ class SellerProductController
             return "Stock quantity must be a positive integer.";
         }
 
-        if ($this->sellerProduct->update_product($seller_id, $product_id, $price, $stock_quantity)) {
+        if ($this->sellerProduct->update_product($seller_id, $product_id, $price, $stock_quantity, $discount)) {
             return "Product updated successfully!";
         } else {
             return "Failed to update product.";
