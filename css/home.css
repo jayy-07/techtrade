@@ -60,7 +60,6 @@ a[href="login.php"] {
   text-align: center;
 }
 
-
 #password-success-message,
 #email-success-message,
 #username-success-message,
@@ -147,13 +146,6 @@ body {
   scroll-behavior: smooth;
 }
 
-.product-card {
-  flex: 0 0 auto; /* Prevent cards from shrinking */
-  width: 200px; /* Fixed width for uniformity */
-  text-decoration: none; /* Remove underline for links */
-  color: inherit; /* Inherit text color */
-}
-
 .scroll-btn {
   position: absolute;
   top: 50%;
@@ -173,12 +165,6 @@ body {
 
 .next-btn {
   right: -10px;
-}
-
-.product-card img {
-  aspect-ratio: 2 / 1; /* Maintain a square aspect ratio */
-  object-fit: cover; /* Ensure the image covers the entire area */
-  height: 150px;
 }
 
 #addToCartButton {
@@ -216,6 +202,27 @@ body {
   border-radius: 8px;
   background-color: #f8f9fa;
   text-align: center;
+}
+
+.product-card {
+  flex: 0 0 auto;
+  width: 200px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card-img-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  aspect-ratio: 1 / 1; /* Force a square aspect ratio */
+}
+
+.product-card img {
+  object-fit: contain; /* Ensure the entire image is visible */
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .prev-btn {

@@ -58,4 +58,71 @@ class Product extends db_connection
         $sql = "DELETE FROM product_images WHERE `product_id` = '$product_id'";
         return $this->db_query($sql);
     }
+
+    // In Product.php
+
+    public function get_seller_products($seller_id)
+    {
+        $sql = "SELECT p.product_id, p.name AS product_name, c.name AS category_name, b.name AS brand_name, sp.price, sp.stock_quantity, p.description
+            FROM products p
+            JOIN sellers_products sp ON p.product_id = sp.product_id
+            JOIN categories c ON p.category_id = c.category_id  -- Changed c.id to c.category_id
+            JOIN brands b ON p.brand_id = b.brand_id
+            WHERE sp.seller_id = '$seller_id'";
+
+        return $this->db_fetch_all($sql);
+    }
+
+    // ... (other methods)
+
+    public function add_seller_product($data)
+    {
+        // Add product to the sellers_products table
+        $seller_id = $_SESSION['user']['user_id'];
+        $product_id = $data['product_id'];
+        $price = $data['price'];
+        $stock_quantity = $data['stock_quantity'];
+
+        $sql = "INSERT INTO sellers_products (`seller_id`, `product_id`, `price`, `stock_quantity`) 
+            VALUES ('$seller_id', '$product_id', '$price', '$stock_quantity')";
+
+        return $this->db_query($sql) ? "Product added to inventory successfully!" : "Failed to add product to inventory.";
+    }
+
+    public function update_seller_product($data)
+    {
+        // Update product in the sellers_products table
+        $seller_id = $_SESSION['user']['user_id'];
+        $product_id = $data['product_id'];
+        $price = $data['price'];
+        $stock_quantity = $data['stock_quantity'];
+
+        $sql = "UPDATE sellers_products 
+            SET `price` = '$price', `stock_quantity` = '$stock_quantity'
+            WHERE `seller_id` = '$seller_id' AND `product_id` = '$product_id'";
+
+        return $this->db_query($sql) ? "Product updated successfully!" : "Failed to update product.";
+    }
+
+    public function delete_seller_product($seller_id, $product_id)
+    {
+        // Delete product from the sellers_products table
+        $sql = "DELETE FROM sellers_products 
+            WHERE `seller_id` = '$seller_id' AND `product_id` = '$product_id'";
+
+        return $this->db_query($sql) ? "Product deleted from inventory successfully!" : "Failed to delete product from inventory.";
+    }
+
+    public function get_seller_product_by_id($seller_id, $product_id)
+    {
+        // Get a specific product from the seller's inventory
+        $sql = "SELECT p.name AS product_name, c.name AS category_name, b.name AS brand_name, sp.price, sp.stock_quantity
+            FROM sellers_products sp
+            JOIN products p ON sp.product_id = p.product_id
+            JOIN categories c ON p.category_id = c.id
+            JOIN brands b ON p.brand_id = b.id
+            WHERE sp.seller_id = '$seller_id' AND sp.product_id = '$product_id'";
+
+        return $this->db_fetch_one($sql);
+    }
 }
