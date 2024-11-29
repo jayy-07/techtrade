@@ -17,6 +17,12 @@ a[href="login.php"] {
   padding-right: 0px !important;
 }
 
+.carousel-item img {
+  width: 100%; /* Ensure image takes full width of the carousel */
+  height: 300px; /* Set a fixed height for the carousel */
+  object-fit: contain; /* Maintain aspect ratio and fit within the container */
+}
+
 #navbar-right {
   justify-content: flex-end;
   margin-left: 30rem;

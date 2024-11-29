@@ -186,7 +186,19 @@
                     <div class="card-body">
                         <h6 class="card-title">Apple iPhone 15 128GB (Unlocked)</h6>
                         <p class="card-text text-success">$559.99</p>
-                        <p class="card-text text-muted"><del>$799.99</del> | 30% OFF</p>
+                        <p class="card-text text-muted"><del>$799.99</del></p>
+                        <p class="card-text"><span class="badge bg-success">10% Off</span></p>
+                    </div>
+                </a>
+                <a href="/product-page-1" class="card product-card text-center shadow-sm mx-2" style="width: 270px;">
+                    <div class="product-card-img-wrapper">
+                        <img src="https://m.media-amazon.com/images/I/61-oTP1X4rL._AC_SL1500_.jpg" class="card-img-top" alt="Product Image">
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title">Apple iPhone 15 128GB (Unlocked)</h6>
+                        <p class="card-text text-success">$559.99</p>
+                        <p class="card-text text-muted"><del>$799.99</del></p>
+                        <p class="card-text"><span class="badge bg-success">10% Off</span></p>
                     </div>
                 </a>
             </div>

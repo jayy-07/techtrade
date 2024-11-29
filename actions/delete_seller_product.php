@@ -2,7 +2,17 @@
 require_once '../controllers/SellerProductController.php';
 require_once '../settings/core.php';
 
-// ... (log_error function)
+/* if (!is_logged_in() || !check_user_role('seller')) {
+    redirect('../login/login.php');
+} */
+
+function log_error($error_message)
+{
+    $error_log_file = '../error/product_errors.log';
+    $log_message = date('Y-m-d H:i:s') . ' - ' . $error_message . PHP_EOL;
+    error_log($log_message, 3, $error_log_file);
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['product_id'])) {
     $sellerProductController = new SellerProductController();
@@ -28,4 +38,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['product_id'])) {
         echo json_encode(['success' => false, 'message' => 'An error occurred.']);
     }
 }
-?>

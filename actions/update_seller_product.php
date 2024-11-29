@@ -9,6 +9,10 @@ function log_error($error_message)
     error_log($log_message, 3, $error_log_file);
 }
 
+/* if (!is_logged_in() || !check_user_role('seller')) {
+    redirect('../login/login.php');
+}
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sellerProductController = new SellerProductController();
 

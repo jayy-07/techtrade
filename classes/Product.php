@@ -19,8 +19,13 @@ class Product extends db_connection
 
     public function get_product_by_id($product_id)
     {
-        $sql = "SELECT * FROM products WHERE `product_id` = '$product_id'";
-        return $this->db_fetch_one($sql);
+        $sql = "SELECT p.product_id, p.name, p.description, c.name AS category_name, b.name AS brand_name, c.category_id AS category_id, b.brand_id AS brand_id
+                FROM products p
+                JOIN categories c ON p.category_id = c.category_id
+                JOIN brands b ON p.brand_id = b.brand_id 
+                WHERE p.product_id = '$product_id'";
+        return
+            $this->db_fetch_one($sql);
     }
 
     public function update_product($data)
@@ -59,7 +64,6 @@ class Product extends db_connection
         return $this->db_query($sql);
     }
 
-    // In Product.php
 
     public function get_seller_products($seller_id)
     {
@@ -72,8 +76,6 @@ class Product extends db_connection
 
         return $this->db_fetch_all($sql);
     }
-
-    // ... (other methods)
 
     public function add_seller_product($data)
     {
@@ -123,6 +125,28 @@ class Product extends db_connection
             JOIN brands b ON p.brand_id = b.id
             WHERE sp.seller_id = '$seller_id' AND sp.product_id = '$product_id'";
 
+        return $this->db_fetch_one($sql);
+    }
+
+    public function get_other_sellers($product_id, $cheapest_seller_id)
+    {
+        $sql = "SELECT sp.seller_id, sp.price, sp.discount, sp.product_id, 
+                    CONCAT(u.first_name, ' ', u.last_name) AS seller_name 
+                FROM sellers_products sp
+                JOIN users u ON sp.seller_id = u.user_id
+                WHERE sp.product_id = '$product_id' 
+                    AND sp.seller_id != '$cheapest_seller_id'";
+        return $this->db_fetch_all($sql);
+    }
+
+    public function get_cheapest_offer($product_id)
+    {
+        $sql = "SELECT sp.seller_id, sp.price, sp.discount, CONCAT(u.first_name, ' ', u.last_name) AS seller_name 
+                FROM sellers_products sp
+                JOIN users u ON sp.seller_id = u.user_id
+                WHERE sp.product_id = '$product_id'
+                ORDER BY sp.price ASC
+                LIMIT 1";
         return $this->db_fetch_one($sql);
     }
 }

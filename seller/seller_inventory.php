@@ -4,11 +4,11 @@ require_once '../controllers/ProductController.php';
 require_once '../controllers/BrandController.php';
 require_once '../controllers/CategoryController.php';
 
-// Check if the user is logged in and has the seller role
-/* if (!is_logged_in() || !check_user_role('seller')) {
-    redirect('../login.php');
-} */
-
+/* // Check if the user is logged in and has the seller role
+if (!is_logged_in() || !check_user_role('Seller')) {
+    redirect('../login/login.php');
+}
+ */
 // Get all products
 $productController = new ProductController();
 $products = $productController->index();
