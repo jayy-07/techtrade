@@ -4,7 +4,7 @@ require_once '../controllers/ProductController.php';
 
 // Check if the product_id is provided in the URL
 
-$product_id = 58;
+$product_id = $_GET['product_id'];
 
 // Fetch product details using the ProductController
 $productController = new ProductController();
@@ -78,8 +78,16 @@ if (!$product) {
             <div class="col-md-5">
                 <nav aria-label="breadcrumb" class="mb-3">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#"><?= $product['category_name'] ?></a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><?= $product['brand_name'] ?></li>
+                        <li class="breadcrumb-item">
+                            <a href="listing.php?category=<?= $product['category_id'] ?>">
+                                <?= $product['category_name'] ?>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="listing.php?brand=<?= $product['brand_id'] ?>">
+                                <?= $product['brand_name'] ?>
+                            </a>
+                        </li>
                     </ol>
                 </nav>
                 <h2 class="product-title"><?= $product['name'] ?></h2>

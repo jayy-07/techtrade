@@ -211,32 +211,96 @@ body {
 }
 
 .product-card {
-  flex: 0 0 auto;
-  width: 200px;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px; /* Ensures minimum height */
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
   text-decoration: none;
   color: inherit;
 }
 
 .product-card-img-wrapper {
+  height: 200px;
+  overflow: hidden;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #f8f9fa;
+}
+
+.product-card-img-wrapper img {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+.product-card .card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem;
+}
+
+.product-card .card-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 2.5rem;
+  line-height: 1.25;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.product-card .text-muted.small {
+  margin-bottom: 0.5rem;
+  min-height: 1.25rem; /* Space for brand name */
+}
+
+.product-card .card-text {
+  margin-bottom: 0.5rem;
+}
+
+.product-card .text-success {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-top: auto; /* Pushes price to bottom */
+}
+
+.product-card .text-muted del {
+  font-size: 0.875rem;
+}
+
+.product-card .badge {
+  font-size: 0.875rem;
+  padding: 0.4em 0.6em;
+}
+
+/* Ensure consistent grid spacing */
+.col-lg-4.col-md-6.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+/* Loading and empty states */
+.empty-state {
+  padding: 3rem 1rem;
+}
+
+#loadingState {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px;
-  aspect-ratio: 1 / 1; /* Force a square aspect ratio */
-}
-
-.product-card img {
-  object-fit: contain; /* Ensure the entire image is visible */
-  max-width: 100%;
-  max-height: 100%;
-}
-
-.prev-btn {
-  left: -20px;
-}
-
-.next-btn {
-  right: -20px;
 }
 
 #full-stars-example {

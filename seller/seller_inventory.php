@@ -136,7 +136,7 @@ $categories = $categoryController->index();
                         </div>
                         <div class="mb-3">
                             <label for="discount" class="form-label">Discount (%)</label>
-                            <input type="number" class="form-control" id="discount" name="discount" step="0.01" min="0" max="100" value="0">
+                            <input type="number" class="form-control" id="discount" name="discount" step="0.01" min="0" max="99.99" value="0">
                         </div>
                         <p class="text-danger" id="error-message"></p>
                         <button type="submit" class="btn btn-primary" id="saveProduct">Add Product</button>
@@ -166,7 +166,7 @@ $categories = $categoryController->index();
                         </div>
                         <div class="mb-3">
                             <label for="edit_discount" class="form-label">Discount (%)</label>
-                            <input type="number" class="form-control" id="edit_discount" name="discount" step="0.01" min="0" max="100">
+                            <input type="number" class="form-control" id="edit_discount" name="discount" step="0.01" min="0" max="99.99">
                         </div>
                         <p class="text-danger" id="error-message"></p>
                         <button type="submit" class="btn btn-primary" id="updateProduct">Update Product</button>

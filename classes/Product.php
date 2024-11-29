@@ -149,4 +149,72 @@ class Product extends db_connection
                 LIMIT 1";
         return $this->db_fetch_one($sql);
     }
+
+    public function searchProducts($query, $categoryId = null, $brandId = null, $priceRange = null, $sortBy = null) {
+        $query = trim($query);
+        
+        $sql = "SELECT 
+                p.product_id,
+                p.name,
+                MIN(sp.price) as min_price,
+                MAX(sp.discount) as max_discount,
+                pi.image_path,
+                b.name as brand_name
+            FROM products p
+            JOIN sellers_products sp ON p.product_id = sp.product_id
+            LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.is_primary = 1
+            LEFT JOIN brands b ON p.brand_id = b.brand_id
+            WHERE (
+                p.name LIKE '%$query%' 
+                OR p.description LIKE '%$query%'
+                OR b.name LIKE '%$query%'
+            )";
+
+        // Add category filter if specified
+        if ($categoryId) {
+            $sql .= " AND p.category_id = '$categoryId'";
+        }
+
+        // Add brand filter if specified
+        if ($brandId) {
+            $sql .= " AND p.brand_id = '$brandId'";
+        }
+
+        // Group products before applying price filter
+        $sql .= " GROUP BY p.product_id, p.name, pi.image_path, b.name";
+
+        // Add price range filter if specified
+        if ($priceRange) {
+            list($min, $max) = explode('-', $priceRange);
+            if ($max === '+') {
+                $sql .= " HAVING min_price >= $min";
+            } else {
+                $sql .= " HAVING min_price BETWEEN $min AND $max";
+            }
+        }
+
+        // Add sorting
+        switch ($sortBy) {
+            case 'price-asc':
+                $sql .= " ORDER BY min_price ASC";
+                break;
+            case 'price-desc':
+                $sql .= " ORDER BY min_price DESC";
+                break;
+            case 'discount':
+                $sql .= " ORDER BY max_discount DESC";
+                break;
+            default:
+                // Default sorting by relevance (name matching) and then price
+                $sql .= " ORDER BY 
+                        CASE 
+                            WHEN p.name LIKE '$query%' THEN 1
+                            WHEN p.name LIKE '%$query%' THEN 2
+                            ELSE 3 
+                        END,
+                        min_price ASC";
+        }
+
+        return $this->db_fetch_all($sql);
+    }
 }

@@ -49,6 +49,9 @@ class SellerProductController
         if (!is_numeric($stock_quantity) || $stock_quantity <= 0) {
             return "Stock quantity must be a positive integer.";
         }
+        if (!is_numeric($discount) || $discount < 0 || $discount >= 100) {
+            return "Discount must be between 0 and 99.99%.";
+        }
 
         if ($this->sellerProduct->update_product($seller_id, $product_id, $price, $stock_quantity, $discount)) {
             return "Product updated successfully!";

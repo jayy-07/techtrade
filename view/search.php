@@ -5,20 +5,16 @@ require_once '../controllers/BrandController.php';
 
 $categoryController = new CategoryController();
 $brandController = new BrandController();
+$productController = new ProductController();
 
 $categories = $categoryController->getCategory()->getAllCategories();
 $brands = $brandController->getBrand()->getAllBrands();
 
-// Get initial filters from URL
-$currentCategoryId = isset($_GET['category']) ? $_GET['category'] : null;
-$currentBrandId = isset($_GET['brand']) ? $_GET['brand'] : null;
-
-// Get initial products based on filters
+// Get search query and initial products
+$searchQuery = isset($_GET['q']) ? trim($_GET['q']) : '';
 $products = [];
-if ($currentCategoryId) {
-    $products = $categoryController->getCategory()->getProductsByCategory($currentCategoryId);
-} elseif ($currentBrandId) {
-    $products = $brandController->getBrand()->getProductsByBrand($currentBrandId);
+if ($searchQuery) {
+    $products = $productController->getProduct()->searchProducts($searchQuery);
 }
 ?>
 
@@ -28,7 +24,7 @@ if ($currentCategoryId) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechTrade - Product Listing</title>
+    <title>Search Results - TechTrade</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
     <link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -38,6 +34,19 @@ if ($currentCategoryId) {
 <body>
     <?php include 'header.php'; ?>
     <div class="container my-4">
+        <!-- Search Header -->
+        <div class="row mb-4">
+            <div class="col">
+                <h4>
+                    <?php if ($searchQuery): ?>
+                        Search Results for "<?= htmlspecialchars($searchQuery) ?>"
+                    <?php else: ?>
+                        Search Products
+                    <?php endif; ?>
+                </h4>
+            </div>
+        </div>
+
         <div class="row mb-4">
             <!-- Filters Column -->
             <div class="col-lg-3 col-md-4">
@@ -48,8 +57,7 @@ if ($currentCategoryId) {
                 <select class="form-select mb-3" id="categoryFilter">
                     <option value="">All Categories</option>
                     <?php foreach ($categories as $category): ?>
-                        <option value="<?= $category['category_id'] ?>" 
-                                <?= $currentCategoryId == $category['category_id'] ? 'selected' : '' ?>>
+                        <option value="<?= $category['category_id'] ?>">
                             <?= htmlspecialchars($category['name']) ?>
                         </option>
                     <?php endforeach; ?>
@@ -60,8 +68,7 @@ if ($currentCategoryId) {
                 <select class="form-select mb-3" id="brandFilter">
                     <option value="">All Brands</option>
                     <?php foreach ($brands as $brand): ?>
-                        <option value="<?= $brand['brand_id'] ?>"
-                                <?= $currentBrandId == $brand['brand_id'] ? 'selected' : '' ?>>
+                        <option value="<?= $brand['brand_id'] ?>">
                             <?= htmlspecialchars($brand['name']) ?>
                         </option>
                     <?php endforeach; ?>
@@ -102,6 +109,7 @@ if ($currentCategoryId) {
                                     </div>
                                     <div class="card-body">
                                         <h6 class="card-title"><?= htmlspecialchars($product['name']) ?></h6>
+                                        <p class="text-muted small"><?= htmlspecialchars($product['brand_name']) ?></p>
                                         <p class="card-text text-success">$<?= number_format($product['min_price'], 2) ?></p>
                                         <?php if ($product['max_discount'] > 0): ?>
                                             <p class="card-text text-muted">
@@ -116,22 +124,23 @@ if ($currentCategoryId) {
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
+                        <!-- Empty State -->
                         <div class="col-12 text-center py-5">
                             <div class="empty-state">
                                 <i class="bi bi-search display-1 text-muted mb-3"></i>
                                 <h3>No Products Found</h3>
                                 <p class="text-muted">
-                                    <?php if ($currentCategoryId || $currentBrandId): ?>
-                                        We couldn't find any products matching your current filters.
-                                        Try adjusting your filters or browsing all categories.
+                                    <?php if ($searchQuery): ?>
+                                        We couldn't find any products matching "<?= htmlspecialchars($searchQuery) ?>".
+                                        Try different keywords or browse our categories.
                                     <?php else: ?>
-                                        Please select a category or brand to start browsing products.
+                                        Enter a search term to find products.
                                     <?php endif; ?>
                                 </p>
-                                <?php if ($currentCategoryId || $currentBrandId): ?>
-                                    <button class="btn btn-outline-primary" onclick="resetFilters()">
-                                        <i class="bi bi-arrow-counterclockwise"></i> Reset Filters
-                                    </button>
+                                <?php if ($searchQuery): ?>
+                                    <a href="home.php" class="btn btn-outline-primary">
+                                        <i class="bi bi-house"></i> Back to Home
+                                    </a>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -150,7 +159,7 @@ if ($currentCategoryId) {
 
     <script src="../js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="../js/jquery.min.js"></script>
-    <script src="../js/listing.js"></script>
+    <script src="../js/search.js"></script>
 </body>
 
-</html>
+</html> 

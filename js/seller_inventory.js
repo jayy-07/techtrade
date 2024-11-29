@@ -27,10 +27,10 @@ $(document).ready(function() {
                       <td>${res.category_name}</td>
                       <td>${res.brand_name}</td>
                       <td>${res.price}</td>
-                      <td>${res.stock_quantity}</td>
                       <td>${res.discount}</td>
+                      <td>${res.stock_quantity}</td>
                       <td>
-                          <button class="btn btn-primary btn-sm edit-product" data-bs-toggle="modal" data-bs-target="#editProductModal" data-product-id="${res.product_id}" data-product-name="${res.product_name}" data-product-category-id="${res.category_id}" data-product-brand-id="${res.brand_id}" data-product-price="${res.price}" data-product-stock="${res.stock_quantity}" data-product-discount="${res.discount}" data-product-description="${res.description}">Edit</button>
+                          <button class="btn btn-primary btn-sm edit-product" data-bs-toggle="modal" data-bs-target="#editProductModal" data-product-id="${res.product_id}" data-product-name="${res.product_name}" data-product-price="${res.price}" data-product-stock="${res.stock_quantity}" data-product-discount="${res.discount}">Edit</button>
                           <button class="btn btn-danger btn-sm delete-product" data-bs-toggle="modal" data-bs-target="#deleteProductModal" data-product-id="${res.product_id}" data-product-name="${res.product_name}">Delete</button>
                       </td>
                   `;
@@ -56,6 +56,7 @@ $(document).ready(function() {
       let isValid = true;
       const price = parseFloat($("#price").val());
       const stock = parseInt($("#stock_quantity").val());
+      const discount = parseFloat($("#discount").val());
       const errorMessage = $("#error-message");
 
       if (isNaN(price) || price <= 0) {
@@ -63,6 +64,9 @@ $(document).ready(function() {
           isValid = false;
       } else if (isNaN(stock) || stock <= 0) {
           errorMessage.text("Stock quantity must be a positive integer.");
+          isValid = false;
+      } else if (isNaN(discount) || discount < 0 || discount >= 100) {
+          errorMessage.text("Discount must be between 0 and 99.99%.");
           isValid = false;
       } else {
           errorMessage.text("");
@@ -95,6 +99,7 @@ $(document).ready(function() {
       let isValid = true;
       const price = parseFloat($("#edit_price").val());
       const stock = parseInt($("#edit_stock_quantity").val());
+      const discount = parseFloat($("#edit_discount").val());
       const errorMessage = $("#editProductModal #error-message");
 
       if (isNaN(price) || price <= 0) {
@@ -102,6 +107,9 @@ $(document).ready(function() {
           isValid = false;
       } else if (isNaN(stock) || stock <= 0) {
           errorMessage.text("Stock quantity must be a positive integer.");
+          isValid = false;
+      } else if (isNaN(discount) || discount < 0 || discount >= 100) {
+          errorMessage.text("Discount must be between 0 and 99.99%.");
           isValid = false;
       } else {
           errorMessage.text("");

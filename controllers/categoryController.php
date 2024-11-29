@@ -35,4 +35,8 @@ class CategoryController
         $categories = $this->category->get_all_categories();
         return $categories;
     }
+
+    public function getCategory() {
+        return $this->category;
+    }
 }

@@ -29,6 +29,11 @@ class BrandController
         }
     }
 
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
     public function index()
     {
         // Handle fetching and displaying all brands

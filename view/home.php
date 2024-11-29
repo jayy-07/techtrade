@@ -1,3 +1,10 @@
+<?php
+require_once '../controllers/SectionController.php';
+
+$sectionController = new SectionController();
+$sectionsWithProducts = $sectionController->getAllSectionsWithProducts();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,123 +19,7 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <button
-                    class="btn me-3"
-                    type="button"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasMenu"
-                    aria-controls="offcanvasMenu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand font-weight-bold d-flex align-items-center" id="logo-text" href="home.php">
-                    <img src="../images/header_logo.png" alt="Logo" style="width: 25px; height: 25px; margin-right: 10px;" />
-                    TechTrade
-                </a>
-
-                <ul class="navbar-nav w-100 d-flex align-items-center" id="navbar-right">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item dropdown" id="dropdown-menu">
-                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="#" class="mr-3 rounded-circle d-block" alt="Profile Photo" style="width: 30px; height: 30px; margin-right: 15px;" />
-                                <?= "my_name" ?>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="bi bi-person-circle me-2"></i> My account
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">
-                                    <i class="bi bi-box me-2"></i> Your orders
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="bi bi-star me-2"></i> Reviews
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="bi bi-heart me-2"></i> Wishlist
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="../login/logout.php">
-                                    <i class="bi bi-box-arrow-right me-2"></i> Log Out
-                                </a>
-                            </div>
-
-                        </li>
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0 d-flex" method="get" action="#">
-                        <input id="search-input" class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search" />
-                        <button id="search-btn" class="btn" type="submit">Search</button>
-                    </form>
-                </ul>
-            </div>
-        </nav>
-
-        <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menu</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-
-            <div class="offcanvas-body">
-                <!-- Categories Section -->
-                <h6 class="text-uppercase mb-3">Categories</h6>
-                <ul class="nav flex-column">
-                    <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="https://via.placeholder.com/30" alt="Laptops Icon" class="me-2">
-                        <a class="nav-link text-white" href="#">Laptops</a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="https://via.placeholder.com/30" alt="Smartphones Icon" class="me-2">
-                        <a class="nav-link text-white" href="#">Smartphones</a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="https://via.placeholder.com/30" alt="Accessories Icon" class="me-2">
-                        <a class="nav-link text-white" href="#">Accessories</a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="https://via.placeholder.com/30" alt="TVs & Monitors Icon" class="me-2">
-                        <a class="nav-link text-white" href="#">TVs & Monitors</a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="https://via.placeholder.com/30" alt="Cameras Icon" class="me-2">
-                        <a class="nav-link text-white" href="#">Cameras</a>
-                    </li>
-                </ul>
-
-                <!-- Shop by Brand Section -->
-                <h6 class="text-uppercase mt-4 mb-3">Shop by Brand</h6>
-                <ul class="nav flex-column">
-                    <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="https://via.placeholder.com/30" alt="Laptops Icon" class="me-2">
-                        <a class="nav-link text-white" href="#">Apple</a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="https://via.placeholder.com/30" alt="Laptops Icon" class="me-2">
-                        <a class="nav-link text-white" href="#">Samsung</a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="https://via.placeholder.com/30" alt="Laptops Icon" class="me-2">
-                        <a class="nav-link text-white" href="#">Sony</a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="https://via.placeholder.com/30" alt="Laptops Icon" class="me-2">
-                        <a class="nav-link text-white" href="#">Dell</a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="https://via.placeholder.com/30" alt="Laptops Icon" class="me-2">
-                        <a class="nav-link text-white" href="#">Microsoft</a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="https://via.placeholder.com/30" alt="Laptops Icon" class="me-2">
-                        <a class="nav-link text-white" href="#">HP</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-    </header>
+    <?php include 'header.php'; ?>
     <div id="homeCarousel" class="carousel slide container-xxl" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -167,48 +58,48 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-    <div class="container mt-4">
-        <div class="scrollable-product-list position-relative">
-            <h4>Limited Time Deals</h4>
-            <!-- Left Scroll Button -->
-            <button class="scroll-btn prev-btn" style="display: none;" onclick="scrollRowLeft()">
-                <span>&#10094;</span>
-            </button>
 
-            <!-- Scrollable Row of Cards -->
-            <div class="product-row d-flex overflow-auto" onscroll="updateScrollButtons()">
+    <?php foreach ($sectionsWithProducts as $section): ?>
+        <div class="container mt-4">
+            <div class="scrollable-product-list position-relative">
+                <h4><?= htmlspecialchars($section['section']['name']) ?></h4>
 
-                <!-- Add more product cards here as needed -->
-                <a href="/product-page-1" class="card product-card text-center shadow-sm mx-2" style="width: 270px;">
-                    <div class="product-card-img-wrapper">
-                        <img src="https://m.media-amazon.com/images/I/61-oTP1X4rL._AC_SL1500_.jpg" class="card-img-top" alt="Product Image">
-                    </div>
-                    <div class="card-body">
-                        <h6 class="card-title">Apple iPhone 15 128GB (Unlocked)</h6>
-                        <p class="card-text text-success">$559.99</p>
-                        <p class="card-text text-muted"><del>$799.99</del></p>
-                        <p class="card-text"><span class="badge bg-success">10% Off</span></p>
-                    </div>
-                </a>
-                <a href="/product-page-1" class="card product-card text-center shadow-sm mx-2" style="width: 270px;">
-                    <div class="product-card-img-wrapper">
-                        <img src="https://m.media-amazon.com/images/I/61-oTP1X4rL._AC_SL1500_.jpg" class="card-img-top" alt="Product Image">
-                    </div>
-                    <div class="card-body">
-                        <h6 class="card-title">Apple iPhone 15 128GB (Unlocked)</h6>
-                        <p class="card-text text-success">$559.99</p>
-                        <p class="card-text text-muted"><del>$799.99</del></p>
-                        <p class="card-text"><span class="badge bg-success">10% Off</span></p>
-                    </div>
-                </a>
+                <button class="scroll-btn prev-btn" style="display: none;" onclick="scrollRowLeft(this.nextElementSibling)">
+                    <span>&#10094;</span>
+                </button>
+
+                <div class="product-row d-flex overflow-auto" onscroll="updateScrollButtons(this)">
+                    <?php foreach ($section['products'] as $product): ?>
+                        <a href="product.php?product_id=<?= $product['product_id'] ?>"
+                            class="card product-card text-center shadow-sm mx-2"
+                            style="width: 250px;">
+                            <div class="product-card-img-wrapper">
+                                <img src="<?= htmlspecialchars($product['image_path']) ?>"
+                                    class="card-img-top"
+                                    alt="<?= htmlspecialchars($product['name']) ?>">
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title"><?= htmlspecialchars($product['name']) ?></h6>
+                                <p class="card-text text-success">$<?= number_format($product['min_price'], 2) ?></p>
+                                <?php if ($product['max_discount'] > 0): ?>
+                                    <p class="card-text text-muted">
+                                        <del>$<?= number_format($product['min_price'] / (1 - ($product['max_discount'] / 100)), 2) ?></del>
+                                    </p>
+                                    <p class="card-text">
+                                        <span class="badge bg-success"><?= round($product['max_discount']) ?>% Off</span>
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+
+                <button class="scroll-btn next-btn" onclick="scrollRowRight(this.previousElementSibling)">
+                    <span>&#10095;</span>
+                </button>
             </div>
-
-            <!-- Right Scroll Button -->
-            <button class="scroll-btn next-btn" onclick="scrollRowRight()">
-                <span>&#10095;</span> <!-- Right arrow symbol -->
-            </button>
         </div>
-    </div>
+    <?php endforeach; ?>
 
 </body>
 
@@ -216,24 +107,23 @@
 <script src="../js/jquery.min.js"></script>
 <script>
     // Scroll the product row to the right
-    function scrollRowRight() {
-        const container = document.querySelector(".product-row");
+    function scrollRowRight(prevBtn) {
+        const container = prevBtn.parentElement.querySelector(".product-row");
         container.scrollLeft += 300; // Adjust scroll distance as needed
     }
 
 
     // Scroll the product row to the left
-    function scrollRowLeft() {
+    function scrollRowLeft(nextBtn) {
         // Changed to use scrollLeft property directly
-        const container = document.querySelector(".product-row");
+        const container = nextBtn.parentElement.querySelector(".product-row");
         container.scrollLeft -= 300; // Adjust scroll distance as needed
     }
 
     // Show or hide scroll buttons based on scroll position
-    function updateScrollButtons() {
-        const container = document.querySelector(".product-row");
-        const prevBtn = document.querySelector(".prev-btn");
-        const nextBtn = document.querySelector(".next-btn");
+    function updateScrollButtons(container) {
+        const prevBtn = container.parentElement.querySelector(".prev-btn");
+        const nextBtn = container.parentElement.querySelector(".next-btn");
 
         // Show 'prev' button if content has scrolled right
         prevBtn.style.display = container.scrollLeft > 0 ? "block" : "none";
@@ -244,11 +134,19 @@
     }
 
     // Call updateScrollButtons immediately after DOM is ready
-    document.addEventListener("DOMContentLoaded", updateScrollButtons);
+    document.addEventListener("DOMContentLoaded", function() {
+        const containers = document.querySelectorAll(".product-row");
+        containers.forEach(container => updateScrollButtons(container));
+    });
 
     // Add scroll event listener to update button visibility on manual scroll
-    document.querySelector(".product-row").addEventListener("scroll", updateScrollButtons);
+    document.querySelectorAll(".product-row").forEach(container => container.addEventListener("scroll", function() {
+        updateScrollButtons(container);
+    }));
 
     // Update on window resize
-    window.addEventListener("resize", updateScrollButtons);
+    window.addEventListener("resize", function() {
+        const containers = document.querySelectorAll(".product-row");
+        containers.forEach(container => updateScrollButtons(container));
+    });
 </script>
