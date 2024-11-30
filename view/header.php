@@ -28,7 +28,7 @@
                                 <i class="bi bi-cart me-2"></i> Cart
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="orders.php">
                                 <i class="bi bi-box me-2"></i> Your orders
                             </a>
                             <a class="dropdown-item" href="#">

@@ -27,112 +27,72 @@ $orders = $orderController->getUserOrders($_SESSION['user_id']);
             transition: transform 0.2s;
         }
         .order-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
         }
-        .order-items {
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        .order-item-image {
-            width: 40px;
-            height: 40px;
+        .product-image {
+            width: 60px;
+            height: 60px;
             object-fit: contain;
-        }
-        .status-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-        .order-date {
-            font-size: 0.9rem;
-            color: #6c757d;
         }
     </style>
 </head>
 <body>
-    <?php include 'header.php'; ?>
+    <?php include_once 'header.php'; ?>
 
     <div class="container my-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>My Orders</h2>
-            <a href="home.php" class="btn btn-outline-primary">
-                <i class="bi bi-cart-plus"></i> Continue Shopping
+        <h2 class="mb-4">My Orders</h2>
+        
+        <?php if (empty($orders)): ?>
+        <div class="text-center py-5">
+            <i class="bi bi-bag-x" style="font-size: 3rem;"></i>
+            <h4 class="mt-3">No Orders Yet</h4>
+            <p class="text-muted">Start shopping to see your orders here!</p>
+            <a href="index.php" class="btn btn-primary mt-3">
+                <i class="bi bi-shop me-2"></i>Browse Products
             </a>
         </div>
-
-        <?php if (empty($orders)): ?>
-            <div class="text-center py-5">
-                <i class="bi bi-box-seam display-1 text-muted"></i>
-                <h3 class="mt-3">No Orders Yet</h3>
-                <p class="text-muted">You haven't placed any orders yet.</p>
-                <a href="home.php" class="btn btn-primary mt-3">Start Shopping</a>
-            </div>
         <?php else: ?>
-            <div class="row">
-                <?php foreach ($orders as $order): ?>
-                    <div class="col-12 mb-4">
-                        <div class="card order-card">
-                            <div class="card-body">
-                                <div class="status-badge">
-                                    <?php
-                                    $statusClass = match($order['status']) {
-                                        'Paid' => 'success',
-                                        'Pending' => 'warning',
-                                        'Cancelled' => 'danger',
-                                        default => 'secondary'
-                                    };
-                                    ?>
-                                    <span class="badge text-bg-<?= $statusClass ?>">
-                                        <?= htmlspecialchars($order['status']) ?>
-                                    </span>
-                                </div>
+        <div class="row">
+            <?php foreach ($orders as $order): ?>
+            <div class="col-md-6 mb-4">
+                <div class="card order-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">Order #<?= htmlspecialchars($order['order_id']) ?></h5>
+                            <span class="badge bg-<?= $order['payment_status'] === 'Completed' ? 'success' : 'warning' ?>">
+                                <?= htmlspecialchars($order['payment_status'] ?: 'Pending') ?>
+                            </span>
+                        </div>
+                        
+                        <p class="text-muted mb-3">
+                            <i class="bi bi-calendar3 me-2"></i>
+                            <?= date('F j, Y', strtotime($order['created_at'])) ?>
+                        </p>
 
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <h5 class="mb-1">Order #<?= str_pad($order['order_id'], 8, '0', STR_PAD_LEFT) ?></h5>
-                                        <p class="order-date mb-2">
-                                            <i class="bi bi-calendar3"></i>
-                                            <?= date('F j, Y', strtotime($order['order_date'])) ?>
-                                        </p>
-                                        <h6 class="mb-0">Total: $<?= number_format($order['total_amount'], 2) ?></h6>
-                                    </div>
-
-                                    <div class="col-md-7">
-                                        <h6 class="mb-2">Order Items (<?= count($order['items']) ?>)</h6>
-                                        <div class="order-items">
-                                            <?php foreach ($order['items'] as $item): ?>
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <img src="<?= htmlspecialchars($item['image_path'] ?? '../images/placeholder.png') ?>"
-                                                         alt="<?= htmlspecialchars($item['product_name']) ?>"
-                                                         class="order-item-image me-2">
-                                                    <div>
-                                                        <div class="fw-semibold"><?= htmlspecialchars($item['product_name']) ?></div>
-                                                        <small class="text-muted">
-                                                            Qty: <?= $item['quantity'] ?> × $<?= number_format($item['price'], 2) ?>
-                                                        </small>
-                                                    </div>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2 text-md-end">
-                                        <a href="order_details.php?order_id=<?= $order['order_id'] ?>" 
-                                           class="btn btn-outline-primary btn-sm">
-                                            <i class="bi bi-eye"></i> View Details
-                                        </a>
-                                    </div>
-                                </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <?php if (!empty($order['first_item_image'])): ?>
+                            <img src="<?= htmlspecialchars($order['first_item_image']) ?>" 
+                                 alt="Order item" 
+                                 class="product-image me-3">
+                            <?php endif; ?>
+                            <div>
+                                <p class="mb-1"><?= $order['total_items'] ?> item(s)</p>
+                                <h6 class="mb-0">$<?= number_format($order['total_amount'], 2) ?></h6>
                             </div>
                         </div>
+
+                        <a href="order_success.php?order_id=<?= $order['order_id'] ?>" 
+                           class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-2"></i>View Details
+                        </a>
                     </div>
-                <?php endforeach; ?>
+                </div>
             </div>
+            <?php endforeach; ?>
+        </div>
         <?php endif; ?>
     </div>
 
-    <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 </html> 
