@@ -3,10 +3,7 @@ require_once '../settings/core.php';
 require_once '../controllers/WishlistController.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
+check_login();
 
 $wishlistController = new WishlistController();
 $items = $wishlistController->getWishlistItems($_SESSION['user_id']);

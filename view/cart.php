@@ -2,6 +2,8 @@
 require_once '../controllers/CartController.php';
 require_once '../settings/core.php';
 
+check_login();
+
 // Initialize cart controller
 $cartController = new CartController();
 $cartItems = $cartController->getCartItems($_SESSION['user_id']);

@@ -594,3 +594,123 @@ body {
     background-color: #f8f9fa;
     border-radius: 8px 8px 0 0;
 }
+
+/* Breadcrumb styles */
+.breadcrumb-item a {
+    color: #ae1758 !important;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: #8f1349 !important;
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: #6c757d;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #6c757d;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+/* Product page specific carousel styles */
+#productCarousel .carousel-indicators {
+  position: static;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+#productCarousel .carousel-indicators [data-bs-target] {
+  width: 60px;
+  height: 60px;
+  background-color: transparent;
+  border: 2px solid #dee2e6;
+  opacity: 0.7;
+  margin: 0 4px;
+  padding: 0;
+  overflow: hidden;
+}
+
+#productCarousel .carousel-indicators .active {
+  opacity: 1;
+  border-color: #ae1758;
+}
+
+#productCarousel .carousel-indicators button img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+#productCarousel .carousel-item img {
+  height: 400px;
+  object-fit: contain;
+  background-color: #f8f9fa;
+}
+
+#productCarousel .carousel-control-prev-icon,
+#productCarousel .carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Override Bootstrap's default focus and active states */
+.list-group-item.active,
+.list-group-item:active,
+.list-group-item.show {
+    background-color: #ae1758 !important;
+    border-color: #ae1758 !important;
+    color: white !important;
+}
+
+.list-group-item:focus {
+    color: #ae1758;
+    background-color: #f8f9fa;
+}
+
+/* Override dropdown active/focus states */
+.dropdown-item:active,
+.dropdown-item.active {
+    background-color: #ae1758 !important;
+    color: white !important;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    background-color: rgba(174, 23, 88, 0.1);
+    color: #ae1758;
+}
+
+/* Override button focus states */
+.btn:focus,
+.btn.focus {
+    box-shadow: 0 0 0 0.25rem rgba(174, 23, 88, 0.25) !important;
+}
+
+/* Ensure text is white when button is active */
+.btn:active,
+.btn.active {
+    background-color: #ae1758 !important;
+    border-color: #ae1758 !important;
+    color: white !important;
+}
+
+/* Override form control focus */
+.form-control:focus,
+.form-select:focus {
+    border-color: #ae1758 !important;
+    box-shadow: 0 0 0 0.25rem rgba(174, 23, 88, 0.25) !important;
+}
+
+/* Ensure dropdown text is white when selected */
+.form-select option:checked,
+.form-select option:active {
+    background-color: #ae1758 !important;
+    color: white !important;
+}

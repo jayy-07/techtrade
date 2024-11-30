@@ -50,25 +50,22 @@ $isInWishlist = isset($_SESSION['user_id']) ?
 
     <div class="container my-5">
         <div class="row">
-            <div class="col-md-6 mb-2">
-                <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <?php
-                        // Dynamically generate carousel indicators based on the number of images
-                        for ($i = 0; $i < count($productImages); $i++) :
-                        ?>
-                            <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="<?= $i ?>" class="<?= $i == 0 ? 'active' : '' ?>" aria-current="true" aria-label="Slide <?= $i + 1 ?>"></button>
-                        <?php endfor; ?>
-                    </div>
+            <div class="col-md-6">
+                <div id="productCarousel" class="carousel slide mb-3">
                     <div class="carousel-inner">
-                        <?php
-                        // Dynamically generate carousel items with product images
-                        foreach ($productImages as $index => $image) :
-                        ?>
-                            <div class="carousel-item <?= $index == 0 ? 'active' : '' ?>">
-                                <img src="<?= $image['image_path'] ?>" class="d-block w-100" alt="Product Image <?= $index + 1 ?>">
+                        <?php if (!empty($productImages)): ?>
+                            <?php foreach ($productImages as $index => $image): ?>
+                                <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                                    <img src="<?= htmlspecialchars($image['image_path']) ?>" 
+                                         class="d-block w-100" 
+                                         alt="Product Image <?= $index + 1 ?>">
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="carousel-item active">
+                                <img src="../images/placeholder.png" class="d-block w-100" alt="No Image Available">
                             </div>
-                        <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -78,6 +75,30 @@ $isInWishlist = isset($_SESSION['user_id']) ?
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
+                    <div class="carousel-indicators">
+                        <?php if (!empty($productImages)): ?>
+                            <?php foreach ($productImages as $index => $image): ?>
+                                <button type="button" 
+                                        data-bs-target="#productCarousel" 
+                                        data-bs-slide-to="<?= $index ?>" 
+                                        class="<?= $index === 0 ? 'active' : '' ?>"
+                                        aria-current="<?= $index === 0 ? 'true' : 'false' ?>" 
+                                        aria-label="Slide <?= $index + 1 ?>">
+                                    <img src="<?= htmlspecialchars($image['image_path']) ?>" 
+                                         alt="Thumbnail <?= $index + 1 ?>">
+                                </button>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <button type="button" 
+                                    data-bs-target="#productCarousel" 
+                                    data-bs-slide-to="0" 
+                                    class="active"
+                                    aria-current="true" 
+                                    aria-label="Slide 1">
+                                <img src="../images/placeholder.png" alt="No Image Available">
+                            </button>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
 

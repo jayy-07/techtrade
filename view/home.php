@@ -1,5 +1,7 @@
 <?php
 require_once '../controllers/SectionController.php';
+require_once '../settings/core.php';
+check_login();
 
 $sectionController = new SectionController();
 $sectionsWithProducts = $sectionController->getAllSectionsWithProducts();
@@ -93,7 +95,6 @@ $sectionsWithProducts = $sectionController->getAllSectionsWithProducts();
                         </a>
                     <?php endforeach; ?>
                 </div>
-
                 <button class="scroll-btn next-btn" onclick="scrollRowRight(this.previousElementSibling)">
                     <span>&#10095;</span>
                 </button>

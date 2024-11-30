@@ -9,7 +9,7 @@
                 aria-controls="offcanvasMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand font-weight-bold d-flex align-items-center" id="logo-text" href="home.php">
+            <a class="navbar-brand font-weight-bold d-flex align-items-center" id="logo-text" href="<?= $_SESSION['role'] === 'administrator' ? '../admin/users.php' : ($_SESSION['role'] === 'seller' ? '../seller/seller_inventory.php' : '../view/home.php') ?>">
                 <img src="../images/header_logo.png" alt="Logo" style="width: 25px; height: 25px; margin-right: 10px;" />
                 TechTrade
             </a>
@@ -18,28 +18,34 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown" id="dropdown-menu">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <?= isset($_SESSION['full_name']) ? htmlspecialchars($_SESSION['full_name']) : "Guest" ?>
+                            <?= htmlspecialchars($_SESSION['first_name'] . ' ' . $_SESSION['last_name']) ?>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="bi bi-person-circle me-2"></i> My account
+                            <?php if ($_SESSION['role'] === 'administrator'): ?>
+                                <a class="dropdown-item" href="../admin/users.php">
+                                    <i class="bi bi-speedometer2 me-2"></i> Admin Dashboard
+                                </a>
+                            <?php elseif ($_SESSION['role'] === 'seller'): ?>
+                                <a class="dropdown-item" href="../seller/seller_inventory.php">
+                                    <i class="bi bi-shop me-2"></i> Seller Dashboard
+                                </a>
+                            <?php endif; ?>
+                            <a class="dropdown-item" href="../view/account.php">
+                                <i class="bi bi-person-circle me-2"></i> My Account
                             </a>
-                            <a class="dropdown-item" href="cart.php">
+                            <a class="dropdown-item" href="../view/cart.php">
                                 <i class="bi bi-cart me-2"></i> Cart
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="orders.php">
-                                <i class="bi bi-box me-2"></i> Your orders
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="bi bi-star me-2"></i> Reviews
+                            <a class="dropdown-item" href="../view/orders.php">
+                                <i class="bi bi-box me-2"></i> Your Orders
                             </a>
                             <a class="dropdown-item" href="../view/wishlist.php">
                                 <i class="bi bi-heart me-2"></i> Wishlist
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="../login/logout.php">
-                                <i class="bi bi-box-arrow-right me-2"></i> Log Out
+                            <a class="dropdown-item" href="../actions/logout.php">
+                                <i class="bi bi-box-arrow-right me-2"></i> Logout
                             </a>
                         </div>
                     </li>

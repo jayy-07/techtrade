@@ -3,10 +3,7 @@ require_once '../settings/core.php';
 require_once '../controllers/OrderController.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
+check_login();
 
 $orderController = new OrderController();
 $orders = $orderController->getUserOrders($_SESSION['user_id']);

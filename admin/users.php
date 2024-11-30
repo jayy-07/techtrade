@@ -1,11 +1,7 @@
 <?php
 require_once '../settings/core.php';
 require_once '../controllers/UserController.php';
-
-// Check if user is logged in and is an administrator
-/* if (!is_logged_in() || !check_user_role('Administrator')) {
-    redirect('../login.php');
-} */
+check_admin();
 
 $controller = new UserController();
 $users = $controller->getAllUsers();

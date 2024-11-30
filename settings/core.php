@@ -23,4 +23,39 @@ function redirect($url) {
     header("Location: $url");
     exit;
 }
+
+function check_login() {
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: ../login/login.php");
+        exit;
+    }
+}
+
+function check_admin() {
+    check_login();
+    if ($_SESSION['role'] !== 'administrator') {
+        header("Location: ../view/home.php");
+        exit;
+    }
+}
+
+function check_seller() {
+    check_login();
+    if ($_SESSION['role'] !== 'seller') {
+        header("Location: ../view/home.php");
+        exit;
+    }
+}
+
+function check_customer() {
+    check_login();
+    if ($_SESSION['role'] !== 'customer') {
+        if ($_SESSION['role'] === 'administrator') {
+            header("Location: ../admin/users.php");
+        } else {
+            header("Location: ../seller/seller_inventory.php");
+        }
+        exit;
+    }
+}
 ?>

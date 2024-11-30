@@ -3,11 +3,7 @@ require_once '../settings/core.php';
 require_once '../controllers/ProductController.php';
 require_once '../controllers/BrandController.php';
 require_once '../controllers/CategoryController.php';
-
-// Check if user is logged in and is an administrator
-/* if (!is_logged_in() || !check_user_role('administrator')) {
-    redirect('../login.php');
-} */
+check_admin();
 
 $productController = new ProductController();
 $products = $productController->index();

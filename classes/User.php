@@ -70,4 +70,57 @@ class User extends db_connection
             WHERE user_id = '$user_id'";
         return $this->db_query($sql);
     }
+
+    public function select_one_user($userId)
+    {
+        $sql = "SELECT users.*, regions.name as region_name 
+                FROM users 
+                LEFT JOIN regions ON users.region_id = regions.id 
+                WHERE users.user_id = '$userId'";
+        return $this->db_fetch_one($sql);
+    }
+
+    public function check_email_exists($email, $excludeUserId = null)
+    {
+        $sql = "SELECT user_id FROM users WHERE email = '$email'";
+        if ($excludeUserId) {
+            $sql .= " AND user_id != '$excludeUserId'";
+        }
+        return $this->db_fetch_one($sql);
+    }
+
+    public function update_user_profile($data)
+    {
+        $sql = "UPDATE users 
+                SET first_name = '{$data['first_name']}', 
+                    last_name = '{$data['last_name']}', 
+                    email = '{$data['email']}', 
+                    phone = '{$data['phone']}' 
+                WHERE user_id = '{$data['user_id']}'";
+        return $this->db_query($sql);
+    }
+
+    public function get_user_password($userId)
+    {
+        $sql = "SELECT password FROM users WHERE user_id = '$userId'";
+        return $this->db_fetch_one($sql);
+    }
+
+    public function update_user_password($userId, $hashedPassword)
+    {
+        $sql = "UPDATE users 
+                SET password = '$hashedPassword' 
+                WHERE user_id = '$userId'";
+        return $this->db_query($sql);
+    }
+
+    public function update_user_address($data)
+    {
+        $sql = "UPDATE users 
+                SET address = '{$data['address']}', 
+                    city = '{$data['city']}', 
+                    region_id = '{$data['region_id']}' 
+                WHERE user_id = '{$data['user_id']}'";
+        return $this->db_query($sql);
+    }
 }
