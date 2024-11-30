@@ -191,4 +191,33 @@ $(document).ready(function () {
 
     // Initial check for scroll buttons
     updateSellersScrollButtons();
+
+    // Add this to your existing product_page.js
+    $(".wishlist-btn").on("click", function(e) {
+        e.preventDefault();
+        const button = $(this);
+        const productId = button.data("product-id");
+        const icon = button.find("i");
+        const action = icon.hasClass("bi-heart-fill") ? "remove" : "add";
+
+        $.ajax({
+            url: "../actions/update_wishlist.php",
+            method: "POST",
+            data: {
+                product_id: productId,
+                action: action
+            },
+            success: function(response) {
+                if (response.success) {
+                    icon.toggleClass("bi-heart bi-heart-fill text-danger");
+                    showToast(action === "add" ? "Added to wishlist!" : "Removed from wishlist", "success");
+                } else {
+                    showToast(response.error || "Failed to update wishlist", "danger");
+                }
+            },
+            error: function() {
+                showToast("An error occurred", "danger");
+            }
+        });
+    });
 });

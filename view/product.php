@@ -1,6 +1,7 @@
 <?php
 require_once '../settings/core.php';
 require_once '../controllers/ProductController.php';
+require_once '../controllers/WishlistController.php';
 
 // Check if the product_id is provided in the URL
 
@@ -22,6 +23,11 @@ if (!$product) {
     echo "Product not found.";
     exit;
 }
+
+$wishlistController = new WishlistController();
+$isInWishlist = isset($_SESSION['user_id']) ? 
+    $wishlistController->isInWishlist($_SESSION['user_id'], $product['product_id']) : 
+    false;
 
 ?>
 
@@ -101,10 +107,10 @@ if (!$product) {
                     <?php endif; ?>
                 </div>
 
-                <div class="d-grid gap-2">
+                <div class="d-flex gap-2 mt-3">
                     <button
                         type="button"
-                        class="btn btn-primary add-to-cart-btn"
+                        class="btn add-to-cart-btn btn-techtrade-primary flex-grow-1"
                         data-bs-toggle="modal"
                         data-bs-target="#tradeInModal"
                         data-product-id="<?= $product['product_id'] ?>"
@@ -114,6 +120,15 @@ if (!$product) {
                         data-price="<?= $cheapestSeller['price'] ?? '' ?>">
                         <i class="bi bi-cart-plus"></i> Add to Cart
                     </button>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <button 
+                            class="btn btn-link wishlist-btn p-0"
+                            style="margin-left: 1rem;"
+                            data-product-id="<?= $product['product_id'] ?>"
+                            title="<?= $isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist' ?>">
+                            <i class="bi bi-heart<?= $isInWishlist ? '-fill text-danger' : '' ?> fs-4"></i>
+                        </button>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -142,7 +157,7 @@ if (!$product) {
                         <p><strong>Seller:</strong> <?= $seller['seller_name'] ?></p>
                         <button
                             type="button"
-                            class="btn btn-primary add-to-cart-btn"
+                            class="btn add-to-cart-btn btn-techtrade-primary flex-grow-1"
                             data-bs-toggle="modal"
                             data-bs-target="#tradeInModal"
                             data-product-id="<?= $seller['product_id'] ?>"

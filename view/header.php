@@ -34,7 +34,7 @@
                             <a class="dropdown-item" href="#">
                                 <i class="bi bi-star me-2"></i> Reviews
                             </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="../view/wishlist.php">
                                 <i class="bi bi-heart me-2"></i> Wishlist
                             </a>
                             <div class="dropdown-divider"></div>

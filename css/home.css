@@ -295,6 +295,34 @@ body {
   padding: 3rem 1rem;
 }
 
+.order-summary {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.price-breakdown {
+  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  padding: 15px 0;
+  margin: 15px 0;
+}
+
+.checkout-item {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+
+.checkout-item:last-child {
+  border-bottom: none;
+}
+
+.product-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
 #loadingState {
   min-height: 400px;
   display: flex;
@@ -448,4 +476,121 @@ body {
 
 .checked {
   color: orange;
+}
+
+/* Primary Action Buttons */
+.btn-techtrade-primary {
+    background-color: #ae1758 !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    transition: all 0.2s ease !important;
+    font-weight: 500 !important;
+}
+
+.btn-techtrade-primary:hover {
+    background-color: #8f1349 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(174, 23, 88, 0.2);
+}
+
+.btn-techtrade-primary:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Wishlist button specific styles */
+.wishlist-btn {
+    background-color: white !important;
+    border: 2px solid #dee2e6 !important;
+    padding: 12px !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.wishlist-btn:hover {
+    border-color: #ae1758 !important;
+    background-color: rgba(174, 23, 88, 0.05) !important;
+}
+
+.wishlist-btn .bi-heart {
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+    color: #6c757d;
+}
+
+.wishlist-btn:hover .bi-heart:not(.text-danger) {
+    color: #ae1758;
+}
+
+.wishlist-btn .bi-heart-fill {
+    color: #ae1758;
+    font-size: 1.2rem;
+}
+
+/* Button group layout */
+.d-flex.gap-2 {
+    margin-top: 1.5rem;
+}
+
+.d-flex.gap-2 .btn {
+    border-radius: 8px;
+}
+
+/* Wishlist specific styles */
+.wishlist-remove-btn {
+    position: absolute !important;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 50% !important;
+    width: 32px;
+    height: 32px;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease !important;
+}
+
+.wishlist-remove-btn:hover {
+    background-color: #ae1758 !important;
+}
+
+.wishlist-remove-btn:hover i {
+    color: white;
+}
+
+.wishlist-remove-btn i {
+    font-size: 16px;
+    color: #ae1758;
+    transition: color 0.2s ease;
+}
+
+.product-card {
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card .product-image {
+    height: 200px;
+    object-fit: contain;
+    padding: 1rem;
+    background-color: #f8f9fa;
+}
+
+.product-card .product-price {
+    color: #ae1758;
+    font-weight: 600;
+}
+
+.product-card-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    border-radius: 8px 8px 0 0;
 }
