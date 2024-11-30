@@ -133,8 +133,7 @@ class Cart extends db_connection {
                     t.trade_in_value,
                     (ci.price * ci.quantity) as total_discounted_price,
                     ROUND(ci.price / (1 - COALESCE(sp.discount, 0) / 100), 2) as original_unit_price,
-                    ROUND((ci.price / (1 - COALESCE(sp.discount, 0) / 100)) * ci.quantity, 2) as total_original_price,
-                    CASE WHEN t.trade_in_id IS NOT NULL THEN 1 ELSE 0 END as trade_in
+                    ROUND((ci.price / (1 - COALESCE(sp.discount, 0) / 100)) * ci.quantity, 2) as total_original_price
                     FROM carts c
                     JOIN cart_items ci ON c.cart_id = ci.cart_id
                     JOIN products p ON ci.product_id = p.product_id
@@ -149,16 +148,7 @@ class Cart extends db_connection {
             $stmt->execute();
             $result = $stmt->get_result();
             
-            $items = $result->fetch_all(MYSQLI_ASSOC);
-            
-            // Ensure trade_in is set for all items
-            foreach ($items as &$item) {
-                if (!isset($item['trade_in'])) {
-                    $item['trade_in'] = 0;
-                }
-            }
-            
-            return $items;
+            return $result->fetch_all(MYSQLI_ASSOC);
         } catch (Exception $e) {
             error_log("Error in getCartItems: " . $e->getMessage());
             return [];
@@ -235,42 +225,51 @@ class Cart extends db_connection {
 
     public function clearCart($userId) {
         try {
+            // Establish database connection first
             $this->db_connect();
             
             // Get the cart ID first
-            $sql = "SELECT cart_id FROM carts WHERE user_id = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $cart = $result->fetch_assoc();
+            $cartSql = "SELECT cart_id FROM carts WHERE user_id = ?";
+            $cartStmt = $this->db->prepare($cartSql);
+            $cartStmt->bind_param("i", $userId);
+            $cartStmt->execute();
+            $result = $cartStmt->get_result();
             
-            if ($cart) {
+            if ($cart = $result->fetch_assoc()) {
                 // Start transaction
                 $this->db->begin_transaction();
+
+                // Delete all cart items first
+                $itemsSql = "DELETE FROM cart_items WHERE cart_id = ?";
+                $itemsStmt = $this->db->prepare($itemsSql);
+                $itemsStmt->bind_param("i", $cart['cart_id']);
                 
-                // Delete cart items first (due to foreign key constraint)
-                $sql = "DELETE FROM cart_items WHERE cart_id = ?";
-                $stmt = $this->db->prepare($sql);
-                $stmt->bind_param("i", $cart['cart_id']);
-                $stmt->execute();
+                if (!$itemsStmt->execute()) {
+                    throw new Exception("Failed to clear cart items");
+                }
+
+                // Delete the cart itself
+                $cartDeleteSql = "DELETE FROM carts WHERE cart_id = ?";
+                $cartDeleteStmt = $this->db->prepare($cartDeleteSql);
+                $cartDeleteStmt->bind_param("i", $cart['cart_id']);
                 
-                // Then delete the cart itself
-                $sql = "DELETE FROM carts WHERE cart_id = ?";
-                $stmt = $this->db->prepare($sql);
-                $stmt->bind_param("i", $cart['cart_id']);
-                $stmt->execute();
-                
+                if (!$cartDeleteStmt->execute()) {
+                    throw new Exception("Failed to delete cart");
+                }
+
+                // Commit transaction
                 $this->db->commit();
                 return true;
             }
             
-            return false;
+            return true; // Return true if no cart exists
+
         } catch (Exception $e) {
+            // Rollback on error
             if ($this->db->inTransaction()) {
                 $this->db->rollback();
             }
-            error_log("Error in clearCart: " . $e->getMessage());
+            error_log("Clear cart error: " . $e->getMessage());
             return false;
         }
     }
