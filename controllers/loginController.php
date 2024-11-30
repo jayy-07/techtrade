@@ -24,6 +24,12 @@ class LoginController
             // Store user info in session
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['role'] = $user['role'];
+            $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_address'] = $user['address'];
+            $_SESSION['user_phone'] = $user['phone'];
+            $_SESSION['user_region'] = $user['region_id'];
+            $_SESSION['user_city'] = $user['city'];
+
 
             // Define redirection URL based on user role
             if ($user['role'] == 'Administrator') {

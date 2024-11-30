@@ -1,4 +1,3 @@
-
 <?php
 require_once '../settings/db_class.php';
 
@@ -33,7 +32,17 @@ class User extends db_connection
         $result = $this->db_fetch_one($sql);
 
         if ($result && password_verify($password, $result['password'])) {
-            return ['user_id' => $result['user_id'], 'role' => $result['role']];
+            // Return all necessary user data except password
+            return [
+                'user_id' => $result['user_id'],
+                'first_name' => $result['first_name'],
+                'email' => $result['email'],
+                'phone' => $result['phone'],
+                'address' => $result['address'],
+                'region_id' => $result['region_id'],
+                'city' => $result['city'],
+                'role' => $result['role']
+            ];
         }
 
         return false; // Authentication failed

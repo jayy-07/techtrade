@@ -24,7 +24,7 @@
                             <a class="dropdown-item" href="#">
                                 <i class="bi bi-person-circle me-2"></i> My account
                             </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="cart.php">
                                 <i class="bi bi-cart me-2"></i> Cart
                             </a>
                             <div class="dropdown-divider"></div>
@@ -80,10 +80,6 @@
                 foreach ($categories as $category): 
                 ?>
                     <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="<?= $category['icon_path'] ?? 'https://via.placeholder.com/30' ?>" 
-                             alt="<?= htmlspecialchars($category['name']) ?> Icon" 
-                             class="me-2" 
-                             style="width: 30px; height: 30px;">
                         <a class="nav-link text-white" href="listing.php?category=<?= $category['category_id'] ?>">
                             <?= htmlspecialchars($category['name']) ?>
                         </a>
@@ -102,10 +98,6 @@
                 foreach ($brands as $brand): 
                 ?>
                     <li class="nav-item d-flex align-items-center mb-2">
-                        <img src="<?= $brand['logo_path'] ?? 'https://via.placeholder.com/30' ?>" 
-                             alt="<?= htmlspecialchars($brand['name']) ?> Logo" 
-                             class="me-2" 
-                             style="width: 30px; height: 30px;">
                         <a class="nav-link text-white" href="listing.php?brand=<?= $brand['brand_id'] ?>">
                             <?= htmlspecialchars($brand['name']) ?>
                         </a>
