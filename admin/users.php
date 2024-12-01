@@ -33,7 +33,7 @@ $users = $controller->getAllUsers();
                 <a class="nav-link" href="products.php">Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="orders.php">Orders</a>
+                <a class="nav-link" href="admin_orders.php">Orders</a>
             </li>
         </ul>
         <div class="d-flex justify-content-between mb-3">

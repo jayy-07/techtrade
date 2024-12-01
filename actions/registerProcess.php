@@ -1,6 +1,6 @@
 <?php
 
-include '../controllers/registerController.php';
+include '../controllers/RegisterController.php';
 
 // Handle the request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

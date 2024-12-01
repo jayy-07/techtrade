@@ -70,4 +70,14 @@ class OrderController {
         error_log("OrderController - All validations passed");
         return true;
     }
+
+    public function getAllOrders() {
+        try {
+            error_log("OrderController - Getting all orders");
+            return $this->order->getAllOrders();
+        } catch (Exception $e) {
+            error_log("OrderController - Error getting all orders: " . $e->getMessage());
+            return [];
+        }
+    }
 } 

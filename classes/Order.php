@@ -125,24 +125,26 @@ class Order extends db_connection {
 
     public function getOrder($order_id) {
         try {
-            // Establish database connection
             $this->db_connect();
             
-            error_log("Order Class - Getting order details for ID: " . $order_id);
-            
-            $sql = "SELECT o.*, 
+            // Get main order information
+            $sql = "SELECT o.order_id,
+                    o.user_id,
+                    o.total_amount,
+                    o.trade_in_credit,
+                    o.shipping_address,
+                    o.phone_number,
+                    o.payment_status,
+                    o.created_at,
                     u.first_name, 
                     u.last_name, 
-                    u.email 
+                    u.email,
+                    (o.total_amount + COALESCE(o.trade_in_credit, 0)) as subtotal  -- Add trade-in back to get original subtotal
                     FROM orders o
                     JOIN users u ON o.user_id = u.user_id
                     WHERE o.order_id = ?";
             
             $stmt = $this->db->prepare($sql);
-            if (!$stmt) {
-                throw new Exception("Failed to prepare statement: " . $this->db->error);
-            }
-            
             $stmt->bind_param("i", $order_id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -151,10 +153,28 @@ class Order extends db_connection {
             
             if ($order) {
                 // Get order items
-                $order['items'] = $this->getOrderItems($order_id);
+                $itemsSql = "SELECT oi.*,
+                            p.name as product_name,
+                            pi.image_path,
+                            CONCAT(u.first_name, ' ', u.last_name) as seller_name,
+                            JSON_UNQUOTE(JSON_EXTRACT(oi.trade_in_details, '$.trade_in_value')) as trade_in_value,
+                            JSON_UNQUOTE(JSON_EXTRACT(oi.trade_in_details, '$.device_type')) as device_type,
+                            JSON_UNQUOTE(JSON_EXTRACT(oi.trade_in_details, '$.device_condition')) as device_condition
+                            FROM order_items oi
+                            JOIN products p ON oi.product_id = p.product_id
+                            LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.is_primary = 1
+                            LEFT JOIN users u ON oi.seller_id = u.user_id
+                            WHERE oi.order_id = ?";
+                
+                $itemsStmt = $this->db->prepare($itemsSql);
+                $itemsStmt->bind_param("i", $order_id);
+                $itemsStmt->execute();
+                $order['items'] = $itemsStmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+                // Calculate final total
+                $order['final_total'] = $order['total_amount'];
             }
             
-            error_log("Order Class - Order details retrieved successfully");
             return $order;
             
         } catch (Exception $e) {
@@ -296,57 +316,54 @@ class Order extends db_connection {
         try {
             $this->db_connect();
             
-            $query = "SELECT o.*, 
-                            u.first_name, 
-                            u.last_name,
-                            u.email,
-                            COUNT(oi.order_item_id) as total_items,
-                            CONCAT(u.first_name, ' ', u.last_name) as customer_name,
-                            p.payment_status
+            $sql = "SELECT o.*,
+                           CONCAT(u.first_name, ' ', u.last_name) as customer_name,
+                           u.email,
+                           (SELECT COUNT(*) FROM order_items WHERE order_id = o.order_id) as total_items,
+                           COALESCE(
+                               (SELECT payment_status 
+                                FROM payments 
+                                WHERE order_id = o.order_id 
+                                ORDER BY created_at DESC 
+                                LIMIT 1),
+                               o.payment_status
+                           ) as payment_status
                     FROM orders o
                     JOIN users u ON o.user_id = u.user_id
-                    LEFT JOIN order_items oi ON o.order_id = oi.order_id
-                    LEFT JOIN (
-                        SELECT order_id, payment_status,
-                               ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY created_at DESC) as rn
-                        FROM payments
-                    ) p ON o.order_id = p.order_id AND p.rn = 1
-                    GROUP BY o.order_id
                     ORDER BY o.created_at DESC";
-                    
-            $stmt = $this->db->prepare($query);
-            $stmt->execute();
-            $result = $stmt->get_result();
+            
+            $result = $this->db->query($sql);
+            
+            if (!$result) {
+                throw new Exception("Failed to fetch orders: " . $this->db->error);
+            }
+            
             return $result->fetch_all(MYSQLI_ASSOC);
+            
         } catch (Exception $e) {
-            error_log("Order::getAllOrders - Error: " . $e->getMessage());
+            error_log("Order Class - Error in getAllOrders: " . $e->getMessage());
             return [];
         }
     }
 
     public function getOrderDetails($orderId) {
         try {
+            // Establish database connection
             $this->db_connect();
-            
-            // Get order information with user details and latest payment status
-            $query = "SELECT o.*, 
-                            u.first_name, 
-                            u.last_name,
-                            u.email,
-                            u.phone,
-                            CONCAT(u.first_name, ' ', u.last_name) as customer_name,
-                            p.payment_status,
-                            p.created_at as payment_date
+            error_log("Order Class - Database connected for getOrderDetails");
+
+            // Get order information
+            $sql = "SELECT o.*, 
+                           u.first_name, 
+                           u.last_name,
+                           u.email,
+                           u.phone,
+                           CONCAT(u.first_name, ' ', u.last_name) as customer_name
                     FROM orders o
                     JOIN users u ON o.user_id = u.user_id
-                    LEFT JOIN (
-                        SELECT order_id, payment_status, created_at,
-                               ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY created_at DESC) as rn
-                        FROM payments
-                    ) p ON o.order_id = p.order_id AND p.rn = 1
                     WHERE o.order_id = ?";
                     
-            $stmt = $this->db->prepare($query);
+            $stmt = $this->db->prepare($sql);
             $stmt->bind_param("i", $orderId);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -357,14 +374,14 @@ class Order extends db_connection {
             }
 
             // Get order items
-            $query = "SELECT oi.*, 
-                            p.name as product_name,
-                            p.image_path
+            $sql = "SELECT oi.*, 
+                           p.name as product_name,
+                           p.image_path
                     FROM order_items oi
                     JOIN products p ON oi.product_id = p.product_id
                     WHERE oi.order_id = ?";
                     
-            $stmt = $this->db->prepare($query);
+            $stmt = $this->db->prepare($sql);
             $stmt->bind_param("i", $orderId);
             $stmt->execute();
             $result = $stmt->get_result();

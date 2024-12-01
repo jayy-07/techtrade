@@ -1,6 +1,6 @@
 <?php
 require_once '../settings/core.php';
-require_once '../controllers/OrderController.php';
+require_once '../controllers/orderController.php';
 check_admin();
 
 $orderController = new OrderController();
@@ -32,7 +32,7 @@ $orders = $orderController->getAllOrders(); // We'll need to create this method
                 <a class="nav-link" href="products.php">Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="orders.php">Orders</a>
+                <a class="nav-link active" href="admin_orders.php">Orders</a>
             </li>
         </ul>
 

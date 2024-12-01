@@ -40,7 +40,7 @@ $categories = $categoryController->index();
                 <a class="nav-link active" href="products.php">Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="orders.php">Orders</a>
+                <a class="nav-link" href="admin_orders.php">Orders</a>
             </li>
         </ul>
 
