@@ -11,6 +11,7 @@ $items = $wishlistController->getWishlistItems($_SESSION['user_id']);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,13 +27,15 @@ $items = $wishlistController->getWishlistItems($_SESSION['user_id']);
 
     <div class="container my-5">
         <h2 class="mb-4">My Wishlist</h2>
-        
+
         <?php if (empty($items)): ?>
             <div class="text-center py-5">
                 <i class="bi bi-heart text-muted" style="font-size: 3rem;"></i>
                 <h4 class="mt-3">Your wishlist is empty</h4>
                 <p class="text-muted">Browse our products and add items you like to your wishlist!</p>
-                <a href="home.php" class="btn btn-techtrade-primary mt-3">Browse Products</a>
+                <a href="home.php" class="btn btn-techtrade-primary mt-3">
+                    <i class="bi bi-shop me-2"></i>Browse Products
+                </a>
             </div>
         <?php else: ?>
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -41,11 +44,11 @@ $items = $wishlistController->getWishlistItems($_SESSION['user_id']);
                         <div class="card h-100 product-card shadow-sm">
                             <div class="position-relative product-card-img-wrapper">
                                 <a href="product.php?product_id=<?= $item['product_id'] ?>">
-                                    <img src="<?= htmlspecialchars($item['image_path'] ?? '../images/placeholder.png') ?>" 
-                                         class="card-img-top product-image" 
-                                         alt="<?= htmlspecialchars($item['product_name']) ?>">
+                                    <img src="<?= htmlspecialchars($item['image_path'] ?? '../images/placeholder.png') ?>"
+                                        class="card-img-top product-image"
+                                        alt="<?= htmlspecialchars($item['product_name']) ?>">
                                 </a>
-                                <button 
+                                <button
                                     class="btn wishlist-remove-btn position-absolute"
                                     data-product-id="<?= $item['product_id'] ?>"
                                     title="Remove from Wishlist">
@@ -54,9 +57,9 @@ $items = $wishlistController->getWishlistItems($_SESSION['user_id']);
                             </div>
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title text-truncate mb-2">
-                                    <a href="product.php?product_id=<?= $item['product_id'] ?>" 
-                                       class="text-decoration-none text-dark"
-                                       title="<?= htmlspecialchars($item['product_name']) ?>">
+                                    <a href="product.php?product_id=<?= $item['product_id'] ?>"
+                                        class="text-decoration-none text-dark"
+                                        title="<?= htmlspecialchars($item['product_name']) ?>">
                                         <?= htmlspecialchars($item['product_name']) ?>
                                     </a>
                                 </h5>
@@ -71,8 +74,8 @@ $items = $wishlistController->getWishlistItems($_SESSION['user_id']);
                                             <?php endif; ?>
                                         </div>
                                     </div>
-                                    <a href="product.php?product_id=<?= $item['product_id'] ?>" 
-                                       class="btn btn-techtrade-primary w-100">
+                                    <a href="product.php?product_id=<?= $item['product_id'] ?>"
+                                        class="btn btn-techtrade-primary w-100">
                                         View Product
                                     </a>
                                 </div>
@@ -98,4 +101,5 @@ $items = $wishlistController->getWishlistItems($_SESSION['user_id']);
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/wishlist.js"></script>
 </body>
+
 </html>

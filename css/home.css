@@ -221,7 +221,6 @@ body {
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
   text-decoration: none;
   color: inherit;
 }

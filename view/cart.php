@@ -31,16 +31,12 @@ $cartTotal = $cartController->getCartTotal($_SESSION['user_id']);
 
         <?php if (empty($cartItems)): ?>
             <div class="text-center py-5">
-                <div class="empty-state">
-                    <i class="bi bi-cart-x display-1 text-muted mb-3"></i>
-                    <h3>Your cart is empty</h3>
-                    <p class="text-muted">
-                        Start shopping to add items to your cart.
-                    </p>
-                    <a href="home.php" class="btn btn-primary">
-                        <i class="bi bi-shop"></i> Continue Shopping
-                    </a>
-                </div>
+                <i class="bi bi-cart-x" style="font-size: 3rem;"></i>
+                <h4 class="mt-3">Your cart is empty</h4>
+                <p class="text-muted">Start shopping to add items to your cart!</p>
+                <a href="home.php" class="btn btn-techtrade-primary mt-3">
+                    <i class="bi bi-shop me-2"></i>Browse Products
+                </a>
             </div>
         <?php else: ?>
             <div class="row">

@@ -131,7 +131,7 @@ if ($currentCategoryId) {
                                     <?php endif; ?>
                                 </p>
                                 <?php if ($currentCategoryId || $currentBrandId): ?>
-                                    <button class="btn btn-outline-primary" onclick="resetFilters()">
+                                    <button class="btn btn-techtrade-outline" onclick="resetFilters()">
                                         <i class="bi bi-arrow-counterclockwise"></i> Reset Filters
                                     </button>
                                 <?php endif; ?>

@@ -42,7 +42,7 @@ $orders = $orderController->getUserOrders($_SESSION['user_id']);
             <i class="bi bi-bag-x" style="font-size: 3rem;"></i>
             <h4 class="mt-3">No Orders Yet</h4>
             <p class="text-muted">Start shopping to see your orders here!</p>
-            <a href="index.php" class="btn btn-primary mt-3">
+            <a href="home.php" class="btn btn-techtrade-primary mt-3">
                 <i class="bi bi-shop me-2"></i>Browse Products
             </a>
         </div>

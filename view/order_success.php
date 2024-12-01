@@ -15,11 +15,21 @@ if (!$order_id) {
 $order = new Order();
 $orderDetails = $order->getOrder($order_id);
 
-// Verify order belongs to current user
+// Verify order exists and belongs to current user
 if (!$orderDetails || $orderDetails['user_id'] != $_SESSION['user_id']) {
     header("Location: orders.php");
     exit;
 }
+
+error_log("=== Starting order_success.php ===");
+error_log("SESSION data: " . print_r($_SESSION, true));
+error_log("GET data: " . print_r($_GET, true));
+
+error_log("Attempting to get order details for order_id: " . $order_id);
+
+error_log("Order details returned: " . print_r($orderDetails, true));
+
+error_log("Order verification passed - proceeding to display order");
 ?>
 
 <!DOCTYPE html>
@@ -91,7 +101,7 @@ if (!$orderDetails || $orderDetails['user_id'] != $_SESSION['user_id']) {
                         <div class="order-item">
                             <div class="row align-items-center">
                                 <div class="col-2">
-                                    <img src="<?= htmlspecialchars($item['image_path']) ?>" 
+                                    <img src="<?= htmlspecialchars($item['image_path'] ?? '../images/placeholder.png') ?>" 
                                          alt="<?= htmlspecialchars($item['product_name']) ?>" 
                                          class="product-image">
                                 </div>
@@ -99,9 +109,21 @@ if (!$orderDetails || $orderDetails['user_id'] != $_SESSION['user_id']) {
                                     <h6 class="mb-1"><?= htmlspecialchars($item['product_name']) ?></h6>
                                     <p class="text-muted mb-0">Sold by: <?= htmlspecialchars($item['seller_name']) ?></p>
                                     <p class="text-muted mb-0">Quantity: <?= htmlspecialchars($item['quantity']) ?></p>
+                                    <?php if (!empty($item['trade_in_value'])): ?>
+                                        <small class="text-info">
+                                            <i class="bi bi-arrow-left-right"></i>
+                                            Trade-in Applied: $<?= number_format($item['trade_in_value'], 2) ?>
+                                        </small>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="col-4 text-end">
                                     <p class="mb-0">$<?= number_format($item['price'], 2) ?></p>
+                                    <?php if (!empty($item['discount'])): ?>
+                                        <small class="text-muted">
+                                            <del>$<?= number_format($item['price'] / (1 - $item['discount']/100), 2) ?></del>
+                                            (<?= number_format($item['discount'], 0) ?>% off)
+                                        </small>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -111,17 +133,23 @@ if (!$orderDetails || $orderDetails['user_id'] != $_SESSION['user_id']) {
                     <div class="price-summary mt-4">
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal</span>
-                            <span>$<?= number_format($orderDetails['total_amount'], 2) ?></span>
+                            <span>$<?= number_format($orderDetails['subtotal'], 2) ?></span>
                         </div>
-                        <?php if ($orderDetails['trade_in_credit'] > 0): ?>
+                        <?php if (!empty($orderDetails['total_discount'])): ?>
                         <div class="d-flex justify-content-between mb-2 text-success">
+                            <span>Discount</span>
+                            <span>-$<?= number_format($orderDetails['total_discount'], 2) ?></span>
+                        </div>
+                        <?php endif; ?>
+                        <?php if ($orderDetails['trade_in_credit'] != 0): ?>
+                        <div class="d-flex justify-content-between mb-2 text-info">
                             <span>Trade-in Credit</span>
                             <span>-$<?= number_format($orderDetails['trade_in_credit'], 2) ?></span>
                         </div>
                         <?php endif; ?>
                         <div class="d-flex justify-content-between mt-2 pt-2 border-top">
                             <strong>Total</strong>
-                            <strong>$<?= number_format($orderDetails['total_amount'] - $orderDetails['trade_in_credit'], 2) ?></strong>
+                            <strong>$<?= number_format($orderDetails['final_total'], 2) ?></strong>
                         </div>
                     </div>
                 </div>
