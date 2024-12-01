@@ -23,19 +23,15 @@ $categories = $categoryController->index();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Products</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="../css/home.css" rel="stylesheet">
 </head>
 
+<?php include 'header.php'; ?>
+
 <body>
     <div class="container mt-4">
-        <h1 class='text-center mb-3'>
-            <a class="navbar-brand font-weight-bold d-flex align-items-center justify-content-center" id="logo-text" href="home.php">
-                <img src="../images/header_logo.png" alt="Logo" style="width: 25px; height: 25px; margin-right: 10px;" />
-                TechTrade
-            </a>
-        </h1>
-
         <ul class="nav nav-pills mt-4 mb-4 justify-content-center">
             <li class="nav-item">
                 <a class="nav-link" href="users.php">Users</a>
@@ -44,10 +40,7 @@ $categories = $categoryController->index();
                 <a class="nav-link active" href="products.php">Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Orders</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Reports</a>
+                <a class="nav-link" href="orders.php">Orders</a>
             </li>
         </ul>
 
@@ -60,19 +53,23 @@ $categories = $categoryController->index();
 
         <div id="main-content">
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped admin-table">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Brand</th>
-                            <th>Actions</th>
+                            <th style="width: 35%">Name</th>
+                            <th style="width: 20%">Category</th>
+                            <th style="width: 20%">Brand</th>
+                            <th style="width: 25%">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($products as $product) : ?>
                             <tr data-product-id="<?= $product['product_id'] ?>">
-                                <td><?= htmlspecialchars($product['name']) ?></td>
+                                <td class="product-name-cell">
+                                    <span title="<?= htmlspecialchars($product['name']) ?>">
+                                        <?= htmlspecialchars($product['name']) ?>
+                                    </span>
+                                </td>
                                 <td>
                                     <?php
                                     // Find the category name
@@ -137,7 +134,7 @@ $categories = $categoryController->index();
                                 <?php foreach ($categories as $category) : ?>
                                     <option value="<?= htmlspecialchars($category['category_id']) ?>"><?= htmlspecialchars($category['name']) ?></option>
                                 <?php endforeach; ?>
-                            </select> 
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Brand</label>
@@ -150,7 +147,7 @@ $categories = $categoryController->index();
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" id="description" name="description"></textarea>
+                            <textarea class="form-control" id="description" name="description" rows="5"></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Images</label>
@@ -202,7 +199,7 @@ $categories = $categoryController->index();
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" id="edit_description" name="description"></textarea>
+                            <textarea class="form-control" id="edit_description" name="description" rows="5"></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Images</label>

@@ -480,144 +480,142 @@ body {
 
 /* Primary Action Buttons */
 .btn-techtrade-primary {
-    background-color: #ae1758 !important;
-    color: white !important;
-    border: none !important;
-    padding: 12px 24px !important;
-    transition: all 0.2s ease !important;
-    font-weight: 500 !important;
+  background-color: #ae1758 !important;
+  color: white !important;
+  border: none !important;
+  padding: 12px 24px !important;
+  transition: all 0.2s ease !important;
+  font-weight: 500 !important;
 }
 
 .btn-techtrade-primary:hover {
-    background-color: #8f1349 !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(174, 23, 88, 0.2);
+  background-color: #8f1349 !important;
+  box-shadow: 0 4px 6px rgba(174, 23, 88, 0.2);
 }
 
 .btn-techtrade-primary:active {
-    transform: translateY(0);
-    box-shadow: none;
+  box-shadow: none;
 }
 
 /* Wishlist button specific styles */
 .wishlist-btn {
-    background-color: white !important;
-    border: 2px solid #dee2e6 !important;
-    padding: 12px !important;
-    transition: all 0.2s ease !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+  background-color: white !important;
+  border: 2px solid #dee2e6 !important;
+  padding: 12px !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .wishlist-btn:hover {
-    border-color: #ae1758 !important;
-    background-color: rgba(174, 23, 88, 0.05) !important;
+  border-color: #ae1758 !important;
+  background-color: rgba(174, 23, 88, 0.05) !important;
 }
 
 .wishlist-btn .bi-heart {
-    font-size: 1.2rem;
-    transition: all 0.2s ease;
-    color: #6c757d;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  color: #6c757d;
 }
 
 .wishlist-btn:hover .bi-heart:not(.text-danger) {
-    color: #ae1758;
+  color: #ae1758;
 }
 
 .wishlist-btn .bi-heart-fill {
-    color: #ae1758;
-    font-size: 1.2rem;
+  color: #ae1758;
+  font-size: 1.2rem;
 }
 
 /* Button group layout */
 .d-flex.gap-2 {
-    margin-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .d-flex.gap-2 .btn {
-    border-radius: 8px;
+  border-radius: 8px;
 }
 
 /* Wishlist specific styles */
 .wishlist-remove-btn {
-    position: absolute !important;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(255, 255, 255, 0.9) !important;
-    border-radius: 50% !important;
-    width: 32px;
-    height: 32px;
-    padding: 0 !important;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    border: none !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease !important;
+  position: absolute !important;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 50% !important;
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease !important;
 }
 
 .wishlist-remove-btn:hover {
-    background-color: #ae1758 !important;
+  background-color: #ae1758 !important;
 }
 
 .wishlist-remove-btn:hover i {
-    color: white;
+  color: white;
 }
 
 .wishlist-remove-btn i {
-    font-size: 16px;
-    color: #ae1758;
-    transition: color 0.2s ease;
+  font-size: 16px;
+  color: #ae1758;
+  transition: color 0.2s ease;
 }
 
 .product-card {
-    border: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .product-card .product-image {
-    height: 200px;
-    object-fit: contain;
-    padding: 1rem;
-    background-color: #f8f9fa;
+  height: 200px;
+  object-fit: contain;
+  padding: 1rem;
+  background-color: #f8f9fa;
 }
 
 .product-card .product-price {
-    color: #ae1758;
-    font-weight: 600;
+  color: #ae1758;
+  font-weight: 600;
 }
 
 .product-card-img-wrapper {
-    position: relative;
-    overflow: hidden;
-    background-color: #f8f9fa;
-    border-radius: 8px 8px 0 0;
+  position: relative;
+  overflow: hidden;
+  background-color: #f8f9fa;
+  border-radius: 8px 8px 0 0;
 }
 
 /* Breadcrumb styles */
 .breadcrumb-item a {
-    color: #ae1758 !important;
-    text-decoration: none;
-    transition: color 0.2s ease;
+  color: #ae1758 !important;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .breadcrumb-item a:hover {
-    color: #8f1349 !important;
-    text-decoration: underline;
+  color: #8f1349 !important;
+  text-decoration: underline;
 }
 
 .breadcrumb-item.active {
-    color: #6c757d;
+  color: #6c757d;
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
-    color: #6c757d;
+  color: #6c757d;
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 /* Product page specific carousel styles */
 #productCarousel .carousel-indicators {
@@ -664,53 +662,267 @@ body {
 .list-group-item.active,
 .list-group-item:active,
 .list-group-item.show {
-    background-color: #ae1758 !important;
-    border-color: #ae1758 !important;
-    color: white !important;
+  background-color: #ae1758 !important;
+  border-color: #ae1758 !important;
+  color: white !important;
 }
 
 .list-group-item:focus {
-    color: #ae1758;
-    background-color: #f8f9fa;
+  color: #ae1758;
+  background-color: #f8f9fa;
 }
 
 /* Override dropdown active/focus states */
 .dropdown-item:active,
 .dropdown-item.active {
-    background-color: #ae1758 !important;
-    color: white !important;
+  background-color: #ae1758 !important;
+  color: white !important;
 }
 
 .dropdown-item:focus,
 .dropdown-item:hover {
-    background-color: rgba(174, 23, 88, 0.1);
-    color: #ae1758;
+  background-color: rgba(174, 23, 88, 0.1);
+  color: #ae1758;
 }
 
 /* Override button focus states */
 .btn:focus,
 .btn.focus {
-    box-shadow: 0 0 0 0.25rem rgba(174, 23, 88, 0.25) !important;
+  box-shadow: 0 0 0 0.25rem rgba(174, 23, 88, 0.25) !important;
 }
 
 /* Ensure text is white when button is active */
 .btn:active,
 .btn.active {
-    background-color: #ae1758 !important;
-    border-color: #ae1758 !important;
-    color: white !important;
+  background-color: #ae1758 !important;
+  border-color: #ae1758 !important;
+  color: white !important;
 }
 
 /* Override form control focus */
 .form-control:focus,
 .form-select:focus {
-    border-color: #ae1758 !important;
-    box-shadow: 0 0 0 0.25rem rgba(174, 23, 88, 0.25) !important;
+  border-color: #ae1758 !important;
+  box-shadow: 0 0 0 0.25rem rgba(174, 23, 88, 0.25) !important;
 }
 
 /* Ensure dropdown text is white when selected */
 .form-select option:checked,
 .form-select option:active {
-    background-color: #ae1758 !important;
-    color: white !important;
+  background-color: #ae1758 !important;
+  color: white !important;
+}
+
+/* Add to cart button styling */
+.btn-add-to-cart {
+  background-color: #ae1758 !important;
+  border-color: #ae1758 !important;
+  color: white !important;
+}
+
+.btn-add-to-cart:hover {
+  background-color: #8f1349 !important; /* Slightly darker shade for hover */
+  border-color: #8f1349 !important;
+}
+
+.btn-add-to-cart:focus {
+  box-shadow: 0 0 0 0.25rem rgba(174, 23, 88, 0.25) !important;
+}
+
+/* Trade-in toggle styling */
+.form-check-input:checked {
+  background-color: #ae1758 !important;
+  border-color: #ae1758 !important;
+}
+
+.form-check-input:focus {
+  border-color: #ae1758 !important;
+  box-shadow: 0 0 0 0.25rem rgba(174, 23, 88, 0.25) !important;
+}
+
+.form-switch .form-check-input:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(174, 23, 88, 0.25)'/%3e%3c/svg%3e") !important;
+}
+
+.form-switch .form-check-input:checked {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e") !important;
+}
+
+/* Outline button styling */
+.btn-techtrade-outline {
+  color: #ae1758 !important;
+  border-color: #ae1758 !important;
+  background-color: transparent !important;
+  padding: 12px 24px !important;
+  transition: all 0.2s ease !important;
+  font-weight: 500 !important;
+}
+
+.btn-techtrade-outline:hover {
+  color: white !important;
+  background-color: #ae1758 !important;
+  border-color: #ae1758 !important;
+}
+
+.btn-techtrade-outline:focus {
+  box-shadow: 0 0 0 0.25rem rgba(174, 23, 88, 0.25) !important;
+}
+
+.btn-techtrade-outline:active {
+  color: white !important;
+  background-color: #8f1349 !important; /* Darker shade for active state */
+  border-color: #8f1349 !important;
+}
+
+/* Admin nav pills styling */
+.nav-pills .nav-link {
+  color: #6c757d;
+  transition: all 0.2s ease;
+}
+
+.nav-pills .nav-link:hover {
+  color: #ae1758;
+  background-color: rgba(174, 23, 88, 0.05);
+}
+
+.nav-pills .nav-link.active {
+  background-color: #ae1758 !important;
+  color: white !important;
+}
+
+/* Admin table styling */
+.admin-table td {
+  max-width: 200px;
+  vertical-align: middle;
+}
+
+.admin-table .product-name-cell {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-table .product-name-cell:hover {
+  position: relative;
+}
+
+.admin-table .product-name-cell:hover span {
+  position: absolute;
+  background: white;
+  padding: 5px 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  white-space: normal;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  word-wrap: break-word;
+}
+
+/* Product Description Styling */
+.product-description {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.product-description h1 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.product-description h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.product-description h3 {
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.product-description p {
+  margin-bottom: 1rem;
+}
+
+.product-description ul,
+.product-description ol {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+.product-description li {
+  margin-bottom: 0.5rem;
+}
+
+.product-description strong {
+  color: #111;
+}
+
+/* Ensure tables are responsive */
+.product-description table {
+  max-width: 100%;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+}
+
+.product-description table td,
+.product-description table th {
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+}
+
+/* Handle images in description */
+.product-description img {
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+}
+
+/* Product Description Read More Styling */
+.description-content {
+    position: relative;
+    max-height: 230px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.description-content.collapsed::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  pointer-events: none;
+}
+
+.description-content.expanded {
+  max-height: 2000px;
+}
+
+.read-more-link {
+    color: #0066c0;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.read-more-link:hover {
+    color: #c45500;
+    text-decoration: underline;
+}
+
+.read-more-link.hidden {
+    display: none;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.table {
+    min-width: 100%; /* Ensure table takes full width */
 }

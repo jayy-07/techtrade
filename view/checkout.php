@@ -53,7 +53,7 @@ if (empty($cartItems)) {
                             </div>
                             <div class="mb-3">
                                 <label for="address" class="form-label">Delivery Address</label>
-                                <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                                <textarea class="form-control" id="address" name="address" rows="3" required><?= htmlspecialchars($_SESSION['user_address'] ?? '') ?></textarea>
                             </div>
                         </form>
                     </div>
@@ -80,10 +80,16 @@ if (empty($cartItems)) {
                                         <?php endif; ?>
                                     </div>
                                     <div class="text-end">
-                                        <div class="h6 mb-0">$<?= number_format($item['total_discounted_price'], 2) ?></div>
+                                        <?php 
+                                            // Calculate the original price and discounted price
+                                            $originalPrice = $item['original_unit_price'] / (1 - ($item['discount'] / 100));
+                                            $discountedPrice = $item['original_unit_price'];
+                                        ?>
+                                        <div class="h6 mb-0">$<?= number_format($discountedPrice, 2) ?></div>
                                         <?php if ($item['discount'] > 0): ?>
                                             <small class="text-muted">
-                                                <del>$<?= number_format($item['total_original_price'], 2) ?></del>
+                                                <del>$<?= number_format($originalPrice, 2) ?></del>
+                                                (<?= number_format($item['discount'], 0) ?>% off)
                                             </small>
                                         <?php endif; ?>
                                     </div>

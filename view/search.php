@@ -2,6 +2,8 @@
 require_once '../controllers/CategoryController.php';
 require_once '../controllers/ProductController.php';
 require_once '../controllers/BrandController.php';
+require_once '../settings/core.php';
+check_login();
 
 $categoryController = new CategoryController();
 $brandController = new BrandController();

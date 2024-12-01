@@ -33,7 +33,7 @@ function check_login() {
 
 function check_admin() {
     check_login();
-    if ($_SESSION['role'] !== 'administrator') {
+    if ($_SESSION['role'] !== 'Administrator') {
         header("Location: ../view/home.php");
         exit;
     }
@@ -41,7 +41,7 @@ function check_admin() {
 
 function check_seller() {
     check_login();
-    if ($_SESSION['role'] !== 'seller') {
+    if ($_SESSION['role'] !== 'Seller') {
         header("Location: ../view/home.php");
         exit;
     }
@@ -49,8 +49,8 @@ function check_seller() {
 
 function check_customer() {
     check_login();
-    if ($_SESSION['role'] !== 'customer') {
-        if ($_SESSION['role'] === 'administrator') {
+    if ($_SESSION['role'] !== 'Customer') {
+        if ($_SESSION['role'] === 'Administrator') {
             header("Location: ../admin/users.php");
         } else {
             header("Location: ../seller/seller_inventory.php");

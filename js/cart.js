@@ -121,4 +121,25 @@ $(document).ready(function() {
             }
         });
     });
+
+    function calculateTradeInValue(condition, duration, price) {
+        const conditionMultiplier = {
+            Excellent: 0.8,
+            Good: 0.6,
+            Fair: 0.4,
+            Poor: 0.2,
+        };
+        const usageMultiplier = {
+            "Less than 6 months": 1.0,
+            "6-12 months": 0.9,
+            "1-2 years": 0.7,
+            "2-3 years": 0.5,
+            "More than 3 years": 0.3,
+        };
+
+        const conditionValue = conditionMultiplier[condition] || 0;
+        const usageValue = usageMultiplier[duration] || 0;
+
+        return price * conditionValue * usageValue;
+    }
 }); 

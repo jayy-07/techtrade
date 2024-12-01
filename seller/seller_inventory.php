@@ -3,6 +3,7 @@ require_once '../settings/core.php';
 require_once '../controllers/ProductController.php';
 require_once '../controllers/BrandController.php';
 require_once '../controllers/CategoryController.php';
+require_once 'header.php';
 check_seller();
 
 // Get all products
@@ -27,19 +28,13 @@ $categories = $categoryController->index();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seller - Inventory</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="../css/home.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container mt-4">
-        <h1 class='text-center mb-3'>
-            <a class="navbar-brand font-weight-bold d-flex align-items-center justify-content-center" id="logo-text" href="home.php">
-                <img src="../images/header_logo.png" alt="Logo" style="width: 25px; height: 25px; margin-right: 10px;" />
-                TechTrade
-            </a>
-        </h1>
-
         <ul class="nav nav-pills mt-4 mb-4 justify-content-center">
             <li class="nav-item">
                 <a class="nav-link active" href="seller_inventory.php">Inventory</a>
@@ -57,50 +52,56 @@ $categories = $categoryController->index();
         </div>
 
         <div id="main-content">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Brand</th>
-                        <th>Price</th>
-                        <th>Discount (%)</th>
-                        <th>Stock</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $sellerId = $_SESSION['user_id'];
-                    $sellerProducts = $productController->getProduct()->get_seller_products($sellerId);
-
-                    foreach ($sellerProducts as $product) :
-                    ?>
-                        <tr data-product-id="<?= $product['product_id'] ?>">
-                            <td><?= htmlspecialchars($product['product_name']) ?></td>
-                            <td><?= htmlspecialchars($product['category_name']) ?></td>
-                            <td><?= htmlspecialchars($product['brand_name']) ?></td>
-                            <td><?= htmlspecialchars($product['price']) ?></td>
-                            <td><?= htmlspecialchars($product['discount']) ?></td>
-                            <td><?= htmlspecialchars($product['stock_quantity']) ?></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm edit-product" data-bs-toggle="modal" data-bs-target="#editProductModal"
-                                    data-product-id="<?= $product['product_id'] ?>"
-                                    data-product-name="<?= htmlspecialchars($product['product_name']) ?>"
-                                    data-product-price="<?= htmlspecialchars($product['price']) ?>"
-                                    data-product-stock="<?= htmlspecialchars($product['stock_quantity']) ?>"
-                                    data-product-discount="<?= htmlspecialchars($product['discount']) ?>"
-                                    data-product-description="<?= htmlspecialchars($product['description']) ?>">
-                                    Edit
-                                </button>
-                                <button class="btn btn-danger btn-sm delete-product" data-bs-toggle="modal" data-bs-target="#deleteProductModal" data-product-id="<?= $product['product_id'] ?>" data-product-name="<?= htmlspecialchars($product['product_name']) ?>">
-                                    Delete
-                                </button>
-                            </td>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%">Product Name</th>
+                            <th style="width: 15%">Category</th>
+                            <th style="width: 15%">Brand</th>
+                            <th style="width: 10%">Price</th>
+                            <th style="width: 10%">Discount</th>
+                            <th style="width: 10%">Stock</th>
+                            <th style="width: 15%">Actions</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $sellerId = $_SESSION['user_id'];
+                        $sellerProducts = $productController->getProduct()->get_seller_products($sellerId);
+
+                        foreach ($sellerProducts as $product) :
+                        ?>
+                            <tr data-product-id="<?= $product['product_id'] ?>">
+                                <td class="product-name-cell">
+                                    <span title="<?= htmlspecialchars($product['product_name']) ?>">
+                                        <?= htmlspecialchars($product['product_name']) ?>
+                                    </span>
+                                </td>
+                                <td><?= htmlspecialchars($product['category_name']) ?></td>
+                                <td><?= htmlspecialchars($product['brand_name']) ?></td>
+                                <td>$<?= number_format($product['price'], 2) ?></td>
+                                <td><?= $product['discount'] ?>%</td>
+                                <td><?= htmlspecialchars($product['stock_quantity']) ?></td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm edit-product" data-bs-toggle="modal" data-bs-target="#editProductModal"
+                                        data-product-id="<?= $product['product_id'] ?>"
+                                        data-product-name="<?= htmlspecialchars($product['product_name']) ?>"
+                                        data-product-price="<?= htmlspecialchars($product['price']) ?>"
+                                        data-product-stock="<?= htmlspecialchars($product['stock_quantity']) ?>"
+                                        data-product-discount="<?= htmlspecialchars($product['discount']) ?>"
+                                        data-product-description="<?= htmlspecialchars($product['description']) ?>">
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-danger btn-sm delete-product" data-bs-toggle="modal" data-bs-target="#deleteProductModal" data-product-id="<?= $product['product_id'] ?>" data-product-name="<?= htmlspecialchars($product['product_name']) ?>">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

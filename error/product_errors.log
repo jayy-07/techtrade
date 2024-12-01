@@ -2,3 +2,15 @@
 2024-11-26 18:10:18 - Error adding product: Cannot add or update a child row: a foreign key constraint fails (`techtrade`.`products`, CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`))
 2024-11-28 19:12:03 - Error adding product: Cannot add or update a child row: a foreign key constraint fails (`techtrade`.`products`, CONSTRAINT `products_ibfk_2` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`brand_id`))
 2024-11-29 21:54:26 - Error adding seller product: Duplicate entry '8-58' for key 'PRIMARY'
+2024-11-30 22:09:49 - Error adding product: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 's your favorite influencer wearing? Where'd they go on vacation? What's that ...' at line 2
+2024-11-30 22:10:20 - Error adding product: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 's your favorite influencer wearing? Where'd they go on vacation? What's that ...' at line 2
+2024-11-30 22:12:21 - Error updating product: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 's your favorite influencer wearing? Where'd they go on vacation? What's that ...' at line 5
+2024-11-30 22:15:49 - Error updating product: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 's your favorite influencer wearing? Where'd they go on vacation? What's that ...' at line 5
+2024-11-30 22:58:53 - Error updating product: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 's length.</li>
+    <li><strong>Functionality:</strong> Successfully passed a...' at line 5
+2024-11-30 22:59:13 - Error updating product: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 's length.</li>
+    <li><strong>Functionality:</strong> Successfully passed a...' at line 5
+2024-11-30 22:59:19 - Error updating product: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 's length.</li>
+    <li><strong>Functionality:</strong> Successfully passed a...' at line 5
+2024-11-30 23:00:04 - Error updating product: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 's length.</li>
+    <li><strong>Functionality:</strong> Successfully passed a...' at line 5

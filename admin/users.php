@@ -16,19 +16,14 @@ $users = $controller->getAllUsers();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Users</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="../css/home.css" rel="stylesheet">
 </head>
+<?php include 'header.php'; ?>
 
 <body>
     <div class="container mt-4">
-        <h1 class='text-center mb-3'>
-            <a class="navbar-brand font-weight-bold d-flex align-items-center justify-content-center" id="logo-text" href="home.php">
-                <img src="../images/header_logo.png" alt="Logo" style="width: 25px; height: 25px; margin-right: 10px;" />
-                TechTrade
-            </a>
-        </h1>
-
         <!-- Navigation Pills -->
         <ul class="nav nav-pills mt-4 mb-4 justify-content-center">
             <li class="nav-item">
@@ -38,10 +33,7 @@ $users = $controller->getAllUsers();
                 <a class="nav-link" href="products.php">Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Orders</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Reports</a>
+                <a class="nav-link" href="orders.php">Orders</a>
             </li>
         </ul>
         <div class="d-flex justify-content-between mb-3">
@@ -118,9 +110,9 @@ $users = $controller->getAllUsers();
                         <div class="mb-3">
                             <label class="form-label">Role</label>
                             <select class="form-select" id="userRole" name="role" required>
-                                <option value="customer">Customer</option>
-                                <option value="seller">Seller</option>
-                                <option value="administrator">Administrator</option>
+                                <option value="Customer">Customer</option>
+                                <option value="Seller">Seller</option>
+                                <option value="Administrator">Administrator</option>
                             </select>
                         </div>
                     </form>

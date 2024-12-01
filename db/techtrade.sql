@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2024 at 04:06 AM
+-- Generation Time: Nov 30, 2024 at 09:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,6 +31,29 @@ CREATE TABLE `brands` (
   `brand_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `brands`
+--
+
+INSERT INTO `brands` (`brand_id`, `name`) VALUES
+(1, 'Apple'),
+(2, 'Samsung'),
+(3, 'Sony'),
+(4, 'LG'),
+(5, 'Huawei'),
+(6, 'Xiaomi'),
+(7, 'HP'),
+(8, 'Dell'),
+(9, 'Asus'),
+(10, 'Acer'),
+(11, 'Microsoft'),
+(12, 'Canon'),
+(13, 'Nikon'),
+(14, 'Bose'),
+(15, 'JBL'),
+(16, 'Google'),
+(17, 'Valve');
 
 -- --------------------------------------------------------
 
@@ -70,6 +93,22 @@ CREATE TABLE `categories` (
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`category_id`, `name`) VALUES
+(1, 'Smartphones'),
+(2, 'Laptops'),
+(3, 'Tablets'),
+(4, 'Cameras'),
+(5, 'TVs'),
+(6, 'Audio'),
+(7, 'Gaming Consoles'),
+(8, 'Printers'),
+(9, 'Monitors'),
+(10, 'Accessories');
+
 -- --------------------------------------------------------
 
 --
@@ -80,6 +119,13 @@ CREATE TABLE `deal_sections` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `deal_sections`
+--
+
+INSERT INTO `deal_sections` (`id`, `name`) VALUES
+(1, 'Limited Deals');
 
 -- --------------------------------------------------------
 
@@ -130,7 +176,8 @@ CREATE TABLE `payments` (
   `payment_reference` varchar(100) NOT NULL,
   `payment_status` varchar(50) NOT NULL,
   `transaction_data` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -171,6 +218,24 @@ CREATE TABLE `regions` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `regions`
+--
+
+INSERT INTO `regions` (`id`, `name`) VALUES
+(1, 'Ashanti'),
+(2, 'Brong Ahafo'),
+(3, 'Central'),
+(4, 'Eastern'),
+(5, 'Greater Accra'),
+(6, 'Northern'),
+(7, 'Savannah'),
+(8, 'Upper East'),
+(9, 'Upper West'),
+(10, 'Volta'),
+(11, 'Western'),
+(12, 'Western North');
 
 -- --------------------------------------------------------
 
@@ -254,13 +319,14 @@ CREATE TABLE `users` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `wishlist`
+-- Table structure for table `wishlists`
 --
 
-CREATE TABLE `wishlist` (
+CREATE TABLE `wishlists` (
   `wishlist_id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -313,9 +379,9 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`order_item_id`),
-  ADD KEY `order_id` (`order_id`),
-  ADD KEY `product_id` (`product_id`),
-  ADD KEY `seller_id` (`seller_id`);
+  ADD KEY `order_items_ibfk_1` (`order_id`),
+  ADD KEY `order_items_ibfk_2` (`product_id`),
+  ADD KEY `order_items_ibfk_3` (`seller_id`);
 
 --
 -- Indexes for table `payments`
@@ -329,8 +395,8 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`product_id`),
-  ADD KEY `category_id` (`category_id`),
-  ADD KEY `brand_id` (`brand_id`);
+  ADD KEY `products_ibfk_1` (`category_id`),
+  ADD KEY `products_ibfk_2` (`brand_id`);
 
 --
 -- Indexes for table `product_images`
@@ -351,30 +417,30 @@ ALTER TABLE `regions`
 --
 ALTER TABLE `reviews`
   ADD PRIMARY KEY (`review_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `product_id` (`product_id`);
+  ADD KEY `reviews_ibfk_1` (`user_id`),
+  ADD KEY `reviews_ibfk_2` (`product_id`);
 
 --
 -- Indexes for table `section_products`
 --
 ALTER TABLE `section_products`
   ADD PRIMARY KEY (`deal_section_id`,`product_id`),
-  ADD KEY `product_id` (`product_id`);
+  ADD KEY `section_products_ibfk_2` (`product_id`);
 
 --
 -- Indexes for table `sellers_products`
 --
 ALTER TABLE `sellers_products`
   ADD PRIMARY KEY (`seller_id`,`product_id`),
-  ADD KEY `product_id` (`product_id`);
+  ADD KEY `sellers_products_ibfk_2` (`product_id`);
 
 --
 -- Indexes for table `trade_ins`
 --
 ALTER TABLE `trade_ins`
   ADD PRIMARY KEY (`trade_in_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `order_id` (`order_id`);
+  ADD KEY `trade_ins_ibfk_1` (`user_id`),
+  ADD KEY `trade_ins_ibfk_2` (`order_id`);
 
 --
 -- Indexes for table `users`
@@ -384,12 +450,12 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indexes for table `wishlist`
+-- Indexes for table `wishlists`
 --
-ALTER TABLE `wishlist`
+ALTER TABLE `wishlists`
   ADD PRIMARY KEY (`wishlist_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `product_id` (`product_id`);
+  ADD UNIQUE KEY `unique_user_product` (`user_id`,`product_id`),
+  ADD KEY `wishlists_ibfk_2` (`product_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -399,67 +465,67 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `cart_item_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cart_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `deal_sections`
 --
 ALTER TABLE `deal_sections`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=345;
 
 --
 -- AUTO_INCREMENT for table `regions`
 --
 ALTER TABLE `regions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -471,19 +537,19 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `trade_ins`
 --
 ALTER TABLE `trade_ins`
-  MODIFY `trade_in_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `trade_in_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `wishlist`
+-- AUTO_INCREMENT for table `wishlists`
 --
-ALTER TABLE `wishlist`
-  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `wishlists`
+  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
@@ -513,22 +579,16 @@ ALTER TABLE `orders`
 -- Constraints for table `order_items`
 --
 ALTER TABLE `order_items`
-  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
-  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
-  ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`);
-
---
--- Constraints for table `payments`
---
-ALTER TABLE `payments`
-  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
-  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`),
-  ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`brand_id`);
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`brand_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `product_images`
@@ -540,36 +600,36 @@ ALTER TABLE `product_images`
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `section_products`
 --
 ALTER TABLE `section_products`
-  ADD CONSTRAINT `section_products_ibfk_1` FOREIGN KEY (`deal_section_id`) REFERENCES `deal_sections` (`id`),
-  ADD CONSTRAINT `section_products_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+  ADD CONSTRAINT `section_products_ibfk_1` FOREIGN KEY (`deal_section_id`) REFERENCES `deal_sections` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `section_products_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `sellers_products`
 --
 ALTER TABLE `sellers_products`
-  ADD CONSTRAINT `sellers_products_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `sellers_products_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+  ADD CONSTRAINT `sellers_products_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `sellers_products_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `trade_ins`
 --
 ALTER TABLE `trade_ins`
-  ADD CONSTRAINT `trade_ins_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `trade_ins_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
+  ADD CONSTRAINT `trade_ins_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `trade_ins_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `wishlist`
+-- Constraints for table `wishlists`
 --
-ALTER TABLE `wishlist`
-  ADD CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+ALTER TABLE `wishlists`
+  ADD CONSTRAINT `wishlists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `wishlists_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

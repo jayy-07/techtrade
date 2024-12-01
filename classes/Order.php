@@ -291,4 +291,89 @@ class Order extends db_connection {
             return [];
         }
     }
+
+    public function getAllOrders() {
+        try {
+            $this->db_connect();
+            
+            $query = "SELECT o.*, 
+                            u.first_name, 
+                            u.last_name,
+                            u.email,
+                            COUNT(oi.order_item_id) as total_items,
+                            CONCAT(u.first_name, ' ', u.last_name) as customer_name,
+                            p.payment_status
+                    FROM orders o
+                    JOIN users u ON o.user_id = u.user_id
+                    LEFT JOIN order_items oi ON o.order_id = oi.order_id
+                    LEFT JOIN (
+                        SELECT order_id, payment_status,
+                               ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY created_at DESC) as rn
+                        FROM payments
+                    ) p ON o.order_id = p.order_id AND p.rn = 1
+                    GROUP BY o.order_id
+                    ORDER BY o.created_at DESC";
+                    
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } catch (Exception $e) {
+            error_log("Order::getAllOrders - Error: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function getOrderDetails($orderId) {
+        try {
+            $this->db_connect();
+            
+            // Get order information with user details and latest payment status
+            $query = "SELECT o.*, 
+                            u.first_name, 
+                            u.last_name,
+                            u.email,
+                            u.phone,
+                            CONCAT(u.first_name, ' ', u.last_name) as customer_name,
+                            p.payment_status,
+                            p.created_at as payment_date
+                    FROM orders o
+                    JOIN users u ON o.user_id = u.user_id
+                    LEFT JOIN (
+                        SELECT order_id, payment_status, created_at,
+                               ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY created_at DESC) as rn
+                        FROM payments
+                    ) p ON o.order_id = p.order_id AND p.rn = 1
+                    WHERE o.order_id = ?";
+                    
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("i", $orderId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $order = $result->fetch_assoc();
+
+            if (!$order) {
+                return null;
+            }
+
+            // Get order items
+            $query = "SELECT oi.*, 
+                            p.name as product_name,
+                            p.image_path
+                    FROM order_items oi
+                    JOIN products p ON oi.product_id = p.product_id
+                    WHERE oi.order_id = ?";
+                    
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("i", $orderId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $order['items'] = $result->fetch_all(MYSQLI_ASSOC);
+
+            return $order;
+        } catch (Exception $e) {
+            error_log("Order::getOrderDetails - Error: " . $e->getMessage());
+            return null;
+        }
+    }
 } 

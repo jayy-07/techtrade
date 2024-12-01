@@ -25,6 +25,7 @@ class LoginController
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['role'] = $user['role'];
             $_SESSION['user_email'] = $user['email'];
+            $_SESSION['first_name'] = $user['first_name'];
             $_SESSION['user_address'] = $user['address'];
             $_SESSION['user_phone'] = $user['phone'];
             $_SESSION['user_region'] = $user['region_id'];

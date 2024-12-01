@@ -4,7 +4,7 @@ require_once '../settings/db_class.php';
 
 class Cart extends db_connection {
 
-    public function addToCart($userId, $productId, $sellerId, $price, $tradeInDetails = null) {
+    public function addToCart($userId, $productId, $price, $tradeInDetails = null) {
         try {
             // Start transaction
             $this->db_connect();
@@ -34,13 +34,36 @@ class Cart extends db_connection {
                 error_log("Using existing cart with ID: $cartId");
             }
 
+            // Get original price before discount
+            $sql = "SELECT price, discount FROM sellers_products WHERE product_id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("i", $productId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $productData = $result->fetch_assoc();
+            
+            $originalPrice = $productData['price'];
+            $discount = $productData['discount'];
+            $discountedPrice = $originalPrice * (1 - ($discount / 100));
+
             // Calculate trade-in value if applicable
             $tradeInId = null;
             if ($tradeInDetails) {
-                $tradeInValue = $this->calculateTradeInValue($tradeInDetails);
+                $tradeInValue = $this->calculateTradeInValue($tradeInDetails, $originalPrice);
+                
+                // Ensure trade-in value doesn't exceed 90% of discounted price
+                if ($tradeInValue >= $discountedPrice * 0.9) {
+                    $tradeInValue = $discountedPrice * 0.9;
+                }
+                
+                // Ensure final price after trade-in is positive
+                $finalPrice = $discountedPrice - $tradeInValue;
+                if ($finalPrice <= 0) {
+                    throw new Exception("Final price must be greater than zero");
+                }
+
                 $tradeInId = $this->addTradeIn($tradeInDetails, $tradeInValue);
-                $price -= $tradeInValue; // Deduct trade-in value from price
-                error_log("Applied trade-in with ID: $tradeInId, Value: $tradeInValue");
+                $price = $finalPrice;
             }
 
             // Check if item already exists in cart
@@ -90,8 +113,7 @@ class Cart extends db_connection {
         return $this->get_insert_id();
     }
 
-    private function calculateTradeInValue($tradeInDetails) {
-        // Basic trade-in value calculation based on condition and usage
+    public function calculateTradeInValue($tradeInDetails, $originalPrice) {
         $baseValue = $tradeInDetails['purchase_price'];
         $conditionMultiplier = [
             'Excellent' => 0.8,
@@ -109,8 +131,15 @@ class Cart extends db_connection {
 
         $conditionValue = $conditionMultiplier[$tradeInDetails['device_condition']] ?? 0;
         $usageValue = $usageMultiplier[$tradeInDetails['usage_duration']] ?? 0;
-
-        return $baseValue * $conditionValue * $usageValue;
+        
+        $tradeInValue = $baseValue * $conditionValue * $usageValue;
+        
+        // Calculate discounted price
+        $discountedPrice = $originalPrice * 0.8; // Assuming 20% discount
+        
+        // Cap trade-in value at 90% of discounted price
+        $maxTradeIn = $discountedPrice * 0.9;
+        return min($tradeInValue, $maxTradeIn);
     }
 
     public function getCartItems($userId) {
@@ -120,7 +149,8 @@ class Cart extends db_connection {
             $sql = "SELECT 
                     ci.cart_item_id, 
                     ci.quantity, 
-                    ci.price as discounted_price, 
+                    ci.price as discounted_price,
+                    sp.price as original_price, 
                     p.name as product_name, 
                     p.product_id, 
                     pi.image_path,
@@ -132,12 +162,12 @@ class Cart extends db_connection {
                     t.device_condition, 
                     t.trade_in_value,
                     (ci.price * ci.quantity) as total_discounted_price,
-                    ROUND(ci.price / (1 - COALESCE(sp.discount, 0) / 100), 2) as original_unit_price,
-                    ROUND((ci.price / (1 - COALESCE(sp.discount, 0) / 100)) * ci.quantity, 2) as total_original_price
+                    sp.price as original_unit_price,
+                    (sp.price * ci.quantity) as total_original_price
                     FROM carts c
                     JOIN cart_items ci ON c.cart_id = ci.cart_id
                     JOIN products p ON ci.product_id = p.product_id
-                    LEFT JOIN sellers_products sp ON p.product_id = sp.product_id
+                    JOIN sellers_products sp ON p.product_id = sp.product_id
                     LEFT JOIN users u ON sp.seller_id = u.user_id AND u.role = 'Seller'
                     LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.is_primary = 1
                     LEFT JOIN trade_ins t ON ci.trade_in_id = t.trade_in_id
@@ -160,12 +190,12 @@ class Cart extends db_connection {
             $this->db_connect();
             
             $sql = "SELECT 
-                    SUM(ROUND(ci.price / (1 - COALESCE(sp.discount, 0) / 100), 2) * ci.quantity) as subtotal,
-                    SUM(ROUND(ci.price / (1 - COALESCE(sp.discount, 0) / 100), 2) * ci.quantity - (ci.price * ci.quantity)) as total_discount,
+                    SUM(sp.price / (1 - (sp.discount / 100)) * ci.quantity) as subtotal,
+                    SUM((sp.price / (1 - (sp.discount / 100))) * ci.quantity * (sp.discount / 100)) as total_discount,
                     SUM(COALESCE(t.trade_in_value, 0)) as total_trade_in
                     FROM carts c
-                    JOIN cart_items ci ON c.cart_id = c.cart_id
-                    LEFT JOIN sellers_products sp ON ci.product_id = sp.product_id
+                    JOIN cart_items ci ON c.cart_id = ci.cart_id
+                    JOIN sellers_products sp ON ci.product_id = sp.product_id
                     LEFT JOIN trade_ins t ON ci.trade_in_id = t.trade_in_id
                     WHERE c.user_id = ?";
             
@@ -179,7 +209,13 @@ class Cart extends db_connection {
             $totals['subtotal'] = $totals['subtotal'] ?? 0;
             $totals['total_discount'] = $totals['total_discount'] ?? 0;
             $totals['total_trade_in'] = $totals['total_trade_in'] ?? 0;
-            $totals['final_total'] = $totals['subtotal'] - $totals['total_discount'] - $totals['total_trade_in'];
+            
+            // Calculate final total
+            $afterDiscount = $totals['subtotal'] - $totals['total_discount'];
+            $finalTotal = $afterDiscount - $totals['total_trade_in'];
+            
+            // Ensure final total cannot be less than 1% of after-discount price
+            $totals['final_total'] = max($afterDiscount * 0.01, $finalTotal);
             
             return $totals;
         } catch (Exception $e) {

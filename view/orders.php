@@ -1,8 +1,6 @@
 <?php
 require_once '../settings/core.php';
 require_once '../controllers/OrderController.php';
-
-// Check if user is logged in
 check_login();
 
 $orderController = new OrderController();

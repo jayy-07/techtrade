@@ -2,8 +2,7 @@
 require_once '../settings/core.php';
 require_once '../controllers/ProductController.php';
 require_once '../controllers/WishlistController.php';
-
-// Check if the product_id is provided in the URL
+check_login();
 
 $product_id = $_GET['product_id'];
 
@@ -119,7 +118,17 @@ $isInWishlist = isset($_SESSION['user_id']) ?
                 </nav>
                 <h2 class="product-title"><?= $product['name'] ?></h2>
                 <p class="text-muted">Sold by: <strong><?= $cheapestSeller['seller_name'] ?? 'N/A' ?></strong></p>
-                <p class="product-description"><?= $product['description'] ?></p>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h5 class="mb-3"><strong>About this item</strong></h5>
+                        <div class="product-description">
+                            <div class="description-content collapsed">
+                                <?= $product['description'] ?>
+                            </div>
+                            <a class="read-more-link">Read more</a>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="mb-3">
                     <h4 class="product-price">$<?= $cheapestSeller['price'] ?? 'N/A' ?></h4>
@@ -216,7 +225,13 @@ $isInWishlist = isset($_SESSION['user_id']) ?
                         <label for="modalDeviceType" class="form-label">Select your device type:</label>
                         <select id="modalDeviceType" class="form-select">
                             <option selected disabled>Select your device</option>
-                            <option value="phone">Phone</option>
+                            <option value="Phone">Phone</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="Monitor">Monitor</option>
+                            <option value="Gaming Console">Gaming Console</option>
+                            <option value="Printer">Printer</option>
+                            <option value="Tablet">Tablet</option>
+                            <option value="TV">TV</option>
                         </select>
                     </div>
 
@@ -250,7 +265,7 @@ $isInWishlist = isset($_SESSION['user_id']) ?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" id="confirmTradeInButton" class="btn btn-primary"><i class="bi bi-cart me-2"></i>Add to Cart</button>
+                    <button type="button" id="confirmTradeInButton" class="btn btn-add-to-cart"><i class="bi bi-cart me-2"></i>Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -269,7 +284,7 @@ $isInWishlist = isset($_SESSION['user_id']) ?
 
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../js/product_page.js"></script>
+    <script src="../js/product_page.js"></script>c
 
 
 </body>

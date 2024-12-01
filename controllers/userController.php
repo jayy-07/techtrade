@@ -40,4 +40,61 @@ class UserController {
     public function updateAddress($data) {
         return $this->user->update_user_address($data);
     }
+
+    public function updateUserRole($userId, $newRole) {
+        try {
+            // Validate inputs
+            if (!$userId || !in_array($newRole, ['Customer', 'Seller', 'Administrator'])) {
+                error_log("UserController - Invalid role update parameters: User ID = $userId, Role = $newRole");
+                return false;
+            }
+
+            // Log the attempt
+            error_log("UserController - Attempting to update role: User ID = $userId, New Role = $newRole");
+
+            // Use the User class method to update the role
+            $result = $this->user->update_user_role($userId, $newRole);
+
+            if ($result) {
+                error_log("UserController - Successfully updated user role");
+                return true;
+            } else {
+                error_log("UserController - Failed to update user role");
+                return false;
+            }
+
+        } catch (Exception $e) {
+            error_log("UserController - Error updating user role: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function deleteUser($userId) {
+        try {
+            // Validate input
+            if (!$userId) {
+                error_log("UserController - Invalid user ID for deletion: $userId");
+                return false;
+            }
+
+            // Log the attempt
+            error_log("UserController - Attempting to delete user: User ID = $userId");
+
+            // Use the User class method to delete the user
+            $result = $this->user->delete_user($userId);
+    
+
+            if ($result) {
+                error_log("UserController - Successfully deleted user");
+                return true;
+            } else {
+                error_log("UserController - Failed to delete user");
+                return false;
+            }
+
+        } catch (Exception $e) {
+            error_log("UserController - Error deleting user: " . $e->getMessage());
+            return false;
+        }
+    }
 }

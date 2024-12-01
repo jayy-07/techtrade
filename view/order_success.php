@@ -1,12 +1,7 @@
 <?php
 require_once '../settings/core.php';
 require_once '../classes/Order.php';
-
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
+check_login();
 
 // Get order ID from URL parameter
 $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : null;
@@ -132,10 +127,10 @@ if (!$orderDetails || $orderDetails['user_id'] != $_SESSION['user_id']) {
                 </div>
 
                 <div class="text-center">
-                    <a href="orders.php" class="btn btn-primary me-2">
+                    <a href="orders.php" class="btn btn-techtrade-primary me-2">
                         <i class="bi bi-list-ul me-2"></i>View All Orders
                     </a>
-                    <a href="index.php" class="btn btn-outline-primary">
+                    <a href="home.php" class="btn btn-techtrade-outline">
                         <i class="bi bi-shop me-2"></i>Continue Shopping
                     </a>
                 </div>

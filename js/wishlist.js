@@ -8,7 +8,7 @@ $(document).ready(function() {
         bsToast.show();
     }
 
-    $('.wishlist-btn').on('click', function() {
+    $('.wishlist-remove-btn').on('click', function() {
         const button = $(this);
         const productId = button.data('product-id');
         const card = button.closest('.col');

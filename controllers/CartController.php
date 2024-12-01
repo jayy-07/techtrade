@@ -9,8 +9,8 @@ class CartController {
         $this->cart = new Cart();
     }
 
-    public function addToCart($userId, $productId, $sellerId, $price, $tradeInDetails = null) {
-        return $this->cart->addToCart($userId, $productId, $sellerId, $price, $tradeInDetails);
+    public function addToCart($userId, $productId, $price, $tradeInDetails = null) {
+        return $this->cart->addToCart($userId, $productId, $price, $tradeInDetails);
     }
 
     public function getCartItems($userId) {
@@ -72,5 +72,9 @@ class CartController {
     public function clearCart($userId) {
         $cart = new Cart();
         return $cart->clearCart($userId);
+    }
+
+    public function calculateTradeInValue($tradeInDetails, $originalPrice) {
+        return $this->cart->calculateTradeInValue($tradeInDetails, $originalPrice);
     }
 }

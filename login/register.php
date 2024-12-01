@@ -78,7 +78,7 @@ $regions = fetch_regions();
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="password" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$" />
+                  <input type="password" class="form-control" name="password" id="password" required pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$" oninvalid="setCustomValidity('Password must be a minimum of 6 characters. At least 1 uppercase letter, 1 lowercase letter, and 1 number. No spaces. ')" oninput="setCustomValidity('')" placeholder="Enter your password">
                 </div>
                 <div class="col-md-6">
                   <label for="confirm-password" class="form-label">Confirm Password</label>

@@ -1,2 +1,60 @@
 2024-11-27 23:32:45 - Error updating seller product: Unknown column 'c.id' in 'on clause'
 2024-11-27 23:36:00 - Error updating seller product: Unknown column 'b.id' in 'on clause'
+[30-Nov-2024 17:28:18 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method UserController::updateUserRole() in C:\xamppnew\htdocs\techtrade\actions\manage_users.php:19
+Stack trace:
+#0 {main}
+  thrown in C:\xamppnew\htdocs\techtrade\actions\manage_users.php on line 19
+[30-Nov-2024 17:28:30 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method UserController::updateUserRole() in C:\xamppnew\htdocs\techtrade\actions\manage_users.php:19
+Stack trace:
+#0 {main}
+  thrown in C:\xamppnew\htdocs\techtrade\actions\manage_users.php on line 19
+[30-Nov-2024 20:57:02 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method UserController::updateUserRole() in C:\xamppnew\htdocs\techtrade\actions\manage_users.php:19
+Stack trace:
+#0 {main}
+  thrown in C:\xamppnew\htdocs\techtrade\actions\manage_users.php on line 19
+[30-Nov-2024 21:00:03 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method UserController::updateUserRole() in C:\xamppnew\htdocs\techtrade\actions\manage_users.php:19
+Stack trace:
+#0 {main}
+  thrown in C:\xamppnew\htdocs\techtrade\actions\manage_users.php on line 19
+[30-Nov-2024 21:01:07 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method UserController::updateUserRole() in C:\xamppnew\htdocs\techtrade\actions\manage_users.php:19
+Stack trace:
+#0 {main}
+  thrown in C:\xamppnew\htdocs\techtrade\actions\manage_users.php on line 19
+[30-Nov-2024 21:07:21 Europe/Berlin] UserController - Attempting to update role: User ID = 10, New Role = customer
+[30-Nov-2024 21:07:21 Europe/Berlin] UserController - Successfully updated user role
+[30-Nov-2024 21:07:55 Europe/Berlin] UserController - Invalid role update parameters: User ID = 10, Role = Customer
+[30-Nov-2024 21:08:38 Europe/Berlin] UserController - Invalid role update parameters: User ID = 10, Role = Seller
+[30-Nov-2024 21:08:46 Europe/Berlin] UserController - Invalid role update parameters: User ID = 10, Role = Seller
+[30-Nov-2024 21:09:36 Europe/Berlin] UserController - Invalid role update parameters: User ID = 10, Role = Seller
+[30-Nov-2024 21:10:11 Europe/Berlin] UserController - Attempting to update role: User ID = 10, New Role = Seller
+[30-Nov-2024 21:10:11 Europe/Berlin] UserController - Successfully updated user role
+[30-Nov-2024 21:12:28 Europe/Berlin] UserController - Attempting to delete user: User ID = 9
+[30-Nov-2024 21:12:28 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`sellers_products`, CONSTRAINT `sellers_products_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:12:37 Europe/Berlin] UserController - Attempting to delete user: User ID = 9
+[30-Nov-2024 21:12:37 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`sellers_products`, CONSTRAINT `sellers_products_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:13:27 Europe/Berlin] UserController - Attempting to delete user: User ID = 9
+[30-Nov-2024 21:13:27 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`sellers_products`, CONSTRAINT `sellers_products_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:14:00 Europe/Berlin] UserController - Attempting to delete user: User ID = 9
+[30-Nov-2024 21:14:00 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`sellers_products`, CONSTRAINT `sellers_products_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:14:30 Europe/Berlin] UserController - Attempting to delete user: User ID = 9
+[30-Nov-2024 21:14:30 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`sellers_products`, CONSTRAINT `sellers_products_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:14:36 Europe/Berlin] UserController - Attempting to delete user: User ID = 9
+[30-Nov-2024 21:14:36 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`sellers_products`, CONSTRAINT `sellers_products_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:16:33 Europe/Berlin] UserController - Attempting to delete user: User ID = 9
+[30-Nov-2024 21:16:33 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`sellers_products`, CONSTRAINT `sellers_products_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:21:43 Europe/Berlin] UserController - Attempting to delete user: User ID = 10
+[30-Nov-2024 21:21:43 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`wishlists`, CONSTRAINT `wishlists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:21:55 Europe/Berlin] UserController - Attempting to delete user: User ID = 10
+[30-Nov-2024 21:21:55 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`wishlists`, CONSTRAINT `wishlists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:22:17 Europe/Berlin] UserController - Attempting to delete user: User ID = 10
+[30-Nov-2024 21:22:17 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`wishlists`, CONSTRAINT `wishlists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:23:54 Europe/Berlin] UserController - Attempting to delete user: User ID = 10
+[30-Nov-2024 21:23:54 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`wishlists`, CONSTRAINT `wishlists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:24:48 Europe/Berlin] UserController - Attempting to delete user: User ID = 10
+[30-Nov-2024 21:24:48 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`wishlists`, CONSTRAINT `wishlists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:27:09 Europe/Berlin] UserController - Attempting to delete user: User ID = 8
+[30-Nov-2024 21:27:09 Europe/Berlin] UserController - Error deleting user: Cannot delete or update a parent row: a foreign key constraint fails (`techtrade`.`order_items`, CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`))
+[30-Nov-2024 21:32:11 Europe/Berlin] UserController - Attempting to delete user: User ID = 8
+[30-Nov-2024 21:32:11 Europe/Berlin] UserController - Successfully deleted user
+[30-Nov-2024 21:46:12 Europe/Berlin] UserController - Attempting to delete user: User ID = 7
+[30-Nov-2024 21:46:12 Europe/Berlin] UserController - Successfully deleted user
