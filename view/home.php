@@ -32,22 +32,22 @@ $sectionsWithProducts = $sectionController->getAllSectionsWithProducts();
             <div class="carousel-item active">
                 <img src="https://www.freewebheaders.com/wp-content/gallery/abstract-size-800x200/multicolor-vertical-shiny-lines-abstract-header-800x200.jpg" class="d-block w-100" alt="First Slide">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>First Slide Label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
+                    <h5>Welcome to TechTrade</h5>
+                    <p>Your one stop shop for all your tech needs</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="https://www.freewebheaders.com/wp-content/gallery/abstract-size-800x200/mixed-red-orange-color-abstract-header-800x200.jpg" class="d-block w-100" alt="Second Slide">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>Second Slide Label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
+                    <h5>Shop with confidence</h5>
+                    <p>We offer a wide range of products from top brands</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="https://www.freewebheaders.com/wp-content/gallery/abstract-size-800x200/cache/lines-abstract-art-multicolor-header-800x200.jpg-nggid0511679-ngg0dyn-800x200x100-00f0w010c010r110f110r010t010.jpg" class="d-block w-100" alt="Third Slide">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>Third Slide Label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
+                    <h5>Secure</h5>
+                    <p>We use the latest security measures to ensure your data is safe</p>
                 </div>
             </div>
         </div>

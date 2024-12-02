@@ -267,10 +267,13 @@ class Order extends db_connection {
      * @return array Array of order items
      */
     private function getOrderItems($orderId) {
-        $sql = "SELECT oi.*, p.name as product_name, p.image_path,
+        $sql = "SELECT oi.*, 
+                p.name as product_name, 
+                pi.image_path,
                 CONCAT(u.first_name, ' ', u.last_name) as seller_name
                 FROM order_items oi
                 JOIN products p ON oi.product_id = p.product_id
+                LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.is_primary = 1
                 JOIN users u ON oi.seller_id = u.user_id
                 WHERE oi.order_id = ?";
                 

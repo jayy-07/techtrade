@@ -802,6 +802,13 @@ body {
   text-overflow: ellipsis;
 }
 
+.product-name-cell {
+  max-width: 250px; /* Adjust width as needed */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .admin-table .product-name-cell:hover {
   position: relative;
 }

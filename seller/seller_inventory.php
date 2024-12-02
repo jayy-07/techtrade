@@ -74,7 +74,7 @@ $categories = $categoryController->index();
                         foreach ($sellerProducts as $product) :
                         ?>
                             <tr data-product-id="<?= $product['product_id'] ?>">
-                                <td>
+                                <td class="product-name-cell">
                                     <div class="text-truncate" 
                                          data-bs-toggle="tooltip" 
                                          data-bs-placement="top" 

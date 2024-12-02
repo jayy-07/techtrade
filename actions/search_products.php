@@ -39,7 +39,7 @@ if (empty($products)) {
                 <button class="btn btn-techtrade-outline me-2" onclick="resetFilters()">
                     <i class="bi bi-arrow-counterclockwise"></i> Reset Filters
                 </button>
-                <a href="home.php" class="btn btn-outline-secondary">
+                <a href="home.php" class="btn btn-techtrade-outline">
                     <i class="bi bi-house"></i> Back to Home
                 </a>
             </div>
