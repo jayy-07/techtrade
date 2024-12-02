@@ -4,7 +4,7 @@
 define("SERVER","localhost");
 define("USERNAME","root");
 define("PASSWD","");
-define("DATABASE","techtrade");
+define("DATABASE","webtech_fall2024_joel_kodji");
 
 
 

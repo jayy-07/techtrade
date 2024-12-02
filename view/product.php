@@ -38,7 +38,7 @@ $isInWishlist = isset($_SESSION['user_id']) ?
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $product['name'] ?></title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
-    <link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="../css/home.css" rel="stylesheet">
 </head>
@@ -116,7 +116,7 @@ $isInWishlist = isset($_SESSION['user_id']) ?
                         </li>
                     </ol>
                 </nav>
-                <h2 class="product-title"><?= $product['name'] ?></h2>
+                <h3 class="product-title"><?= $product['name'] ?></h3>
                 <p class="text-muted">Sold by: <strong><?= $cheapestSeller['seller_name'] ?? 'N/A' ?></strong></p>
                 <div class="row mt-4">
                     <div class="col-12">
