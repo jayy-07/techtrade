@@ -46,7 +46,7 @@ $categories = $categoryController->index();
 
         <div class="d-flex justify-content-between mb-3">
             <h2>Products</h2>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+            <button type="button" class="btn btn-techtrade-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
                 Add Product
             </button>
         </div>
@@ -66,9 +66,13 @@ $categories = $categoryController->index();
                         <?php foreach ($products as $product) : ?>
                             <tr data-product-id="<?= $product['product_id'] ?>">
                                 <td class="product-name-cell">
-                                    <span title="<?= htmlspecialchars($product['name']) ?>">
+                                    <div class="text-truncate" 
+                                         data-bs-toggle="tooltip" 
+                                         data-bs-placement="top" 
+                                         title="<?= htmlspecialchars($product['name']) ?>"
+                                         style="max-width: 250px;">
                                         <?= htmlspecialchars($product['name']) ?>
-                                    </span>
+                                    </div>
                                 </td>
                                 <td>
                                     <?php
@@ -249,51 +253,7 @@ $categories = $categoryController->index();
     <script src="../js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="../js/jquery.min.js"></script>
     <script src="../js/products.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Open Edit Modal
-            $(".edit-product").on("click", function() {
-                const productId = $(this).data("product-id");
-                const productName = $(this).data("product-name");
-                const productCategoryId = $(this).data("product-category-id");
-                const productBrandId = $(this).data("product-brand-id");
-                const productDescription = $(this).data("product-description");
-
-                $("#editProductForm #edit_product_id").val(productId);
-                $("#editProductForm #edit_product_name").val(productName);
-                $("#editProductForm #edit_category_id").val(productCategoryId);
-                $("#editProductForm #edit_brand_id").val(productBrandId);
-                $("#editProductForm #edit_description").val(productDescription);
-
-                // Fetch and populate image URLs
-                $.ajax({
-                    url: `../actions/get_product_images.php?product_id=${productId}`,
-                    type: 'GET',
-                    success: function(response) {
-                        const images = JSON.parse(response);
-                        const imageInputs = $(".edit-image-url");
-                        images.forEach((image, index) => {
-                            $(imageInputs[index]).val(image.image_path);
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                        $("#toastMessage").text("An error occurred while fetching images.");
-                        $("#toastContainer").toast("show");
-                    }
-                });
-            });
-
-            // Open Delete Modal
-            $(".delete-product").on("click", function() {
-                const productId = $(this).data("product-id");
-                const productName = $(this).data("product-name");
-
-                $("#deleteProductName").text(productName);
-                $("#confirmDeleteProduct").data("product-id", productId);
-            });
-        });
-    </script>
+    <script src="../js/tooltips.js"></script>
 </body>
 
 </html>

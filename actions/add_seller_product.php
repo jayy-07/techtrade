@@ -1,10 +1,7 @@
 <?php
 require_once '../controllers/SellerProductController.php';
 require_once '../settings/core.php';
-
-if (!is_logged_in() || !check_user_role('seller')) {
-    redirect('../login/login.php');
-} 
+check_seller();
 
 function log_error($error_message)
 {

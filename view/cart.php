@@ -57,11 +57,12 @@ $cartTotal = $cartController->getCartTotal($_SESSION['user_id']);
                                 <div class="col-md-9">
                                     <div class="card-body h-100 d-flex flex-column">
                                         <div class="d-flex justify-content-between">
-                                            <h5 class="card-title text-truncate" title="<?= htmlspecialchars($item['product_name']) ?>">
-                                                <a href="product.php?product_id=<?= htmlspecialchars($item['product_id']) ?>" class="text-decoration-none text-dark">
-                                                    <?= htmlspecialchars($item['product_name']) ?>
-                                                </a>
-                                            </h5>
+                                            <h6 class="mb-1 text-truncate" 
+                                                data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" 
+                                                title="<?= htmlspecialchars($item['product_name']) ?>">
+                                                <?= htmlspecialchars($item['product_name']) ?>
+                                            </h6>
                                             <button class="btn btn-link text-danger remove-item" title="Remove item">
                                                 <i class="bi bi-trash"></i>
                                             </button>
@@ -195,6 +196,7 @@ $cartTotal = $cartController->getCartTotal($_SESSION['user_id']);
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/cart.js"></script>
+    <script src="../js/tooltips.js"></script>
 </body>
 
 </html>

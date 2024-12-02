@@ -44,7 +44,7 @@ $(document).ready(function() {
                                 We encountered an error while loading the products.
                                 Please try again later.
                             </p>
-                            <button class="btn btn-outline-primary" onclick="resetFilters()">
+                            <button class="btn btn-techtrade-outline" onclick="resetFilters()">
                                 <i class="bi bi-arrow-counterclockwise"></i> Reset Filters
                             </button>
                         </div>

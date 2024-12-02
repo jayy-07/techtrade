@@ -183,32 +183,77 @@ class Order extends db_connection {
         }
     }
 
-    private function getOrderItems($order_id) {
+    public function getOrderDetails($orderId) {
         try {
-            $sql = "SELECT oi.*, 
-                    p.name as product_name,
-                    pi.image_path,
-                    CONCAT(u.first_name, ' ', u.last_name) as seller_name
-                    FROM order_items oi
-                    JOIN products p ON oi.product_id = p.product_id
-                    LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.is_primary = 1
-                    LEFT JOIN users u ON oi.seller_id = u.user_id
-                    WHERE oi.order_id = ?";
+            $this->db_connect();
+            
+            // Get order header information
+            $sql = "SELECT 
+                    o.*,
+                    CONCAT(u.first_name, ' ', u.last_name) as customer_name,
+                    u.email as customer_email,
+                    u.phone as customer_phone,
+                    p.payment_status
+                    FROM orders o
+                    JOIN users u ON o.user_id = u.user_id
+                    LEFT JOIN (
+                        SELECT 
+                            order_id,
+                            payment_status,
+                            ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY updated_at DESC, created_at DESC) as rn
+                        FROM payments
+                    ) p ON o.order_id = p.order_id AND p.rn = 1
+                    WHERE o.order_id = ?";
             
             $stmt = $this->db->prepare($sql);
-            if (!$stmt) {
-                throw new Exception("Failed to prepare statement for order items: " . $this->db->error);
+            $stmt->bind_param("i", $orderId);
+            $stmt->execute();
+            $order = $stmt->get_result()->fetch_assoc();
+            
+            if (!$order) {
+                return null;
             }
             
-            $stmt->bind_param("i", $order_id);
-            $stmt->execute();
+            // Get order items
+            $itemsSql = "SELECT 
+                        oi.*,
+                        p.name as product_name,
+                        pi.image_path,
+                        CONCAT(u.first_name, ' ', u.last_name) as seller_name,
+                        oi.trade_in_details
+                        FROM order_items oi
+                        JOIN products p ON oi.product_id = p.product_id
+                        LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.is_primary = 1
+                        LEFT JOIN users u ON oi.seller_id = u.user_id
+                        WHERE oi.order_id = ?";
             
-            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $itemsStmt = $this->db->prepare($itemsSql);
+            $itemsStmt->bind_param("i", $orderId);
+            $itemsStmt->execute();
+            $order['items'] = $itemsStmt->get_result()->fetch_all(MYSQLI_ASSOC);
             
+            // Set default value if payment status is null
+            $order['payment_status'] = $order['payment_status'] ?? 'Pending';
+            
+            return $order;
         } catch (Exception $e) {
-            error_log("Order Class - Error getting order items: " . $e->getMessage());
-            return [];
+            error_log("Error in getOrderDetails: " . $e->getMessage());
+            return null;
         }
+    }
+
+    private function getOrderItems($orderId) {
+        $sql = "SELECT oi.*, p.name as product_name, p.image_path,
+                CONCAT(u.first_name, ' ', u.last_name) as seller_name
+                FROM order_items oi
+                JOIN products p ON oi.product_id = p.product_id
+                JOIN users u ON oi.seller_id = u.user_id
+                WHERE oi.order_id = ?";
+                
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $orderId);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
     public function updateOrderStatus($order_id, $status) {
@@ -316,80 +361,124 @@ class Order extends db_connection {
         try {
             $this->db_connect();
             
-            $sql = "SELECT o.*,
-                           CONCAT(u.first_name, ' ', u.last_name) as customer_name,
-                           u.email,
-                           (SELECT COUNT(*) FROM order_items WHERE order_id = o.order_id) as total_items,
-                           COALESCE(
-                               (SELECT payment_status 
-                                FROM payments 
-                                WHERE order_id = o.order_id 
-                                ORDER BY created_at DESC 
-                                LIMIT 1),
-                               o.payment_status
-                           ) as payment_status
+            $sql = "SELECT 
+                    o.order_id,
+                    o.user_id,
+                    o.created_at,
+                    o.shipping_address,
+                    o.total_amount,
+                    CONCAT(u.first_name, ' ', u.last_name) as customer_name,
+                    u.email as customer_email,
+                    COALESCE(
+                        (SELECT payment_status 
+                         FROM payments 
+                         WHERE order_id = o.order_id 
+                         ORDER BY updated_at DESC, created_at DESC 
+                         LIMIT 1),
+                        'Pending'
+                    ) as payment_status,
+                    COUNT(oi.order_item_id) as total_items
                     FROM orders o
                     JOIN users u ON o.user_id = u.user_id
+                    JOIN order_items oi ON o.order_id = oi.order_id
+                    GROUP BY o.order_id, o.user_id, o.created_at, o.shipping_address, 
+                             o.total_amount, customer_name, u.email
                     ORDER BY o.created_at DESC";
             
             $result = $this->db->query($sql);
-            
-            if (!$result) {
-                throw new Exception("Failed to fetch orders: " . $this->db->error);
-            }
-            
             return $result->fetch_all(MYSQLI_ASSOC);
-            
         } catch (Exception $e) {
-            error_log("Order Class - Error in getAllOrders: " . $e->getMessage());
+            error_log("Error in getAllOrders: " . $e->getMessage());
             return [];
         }
     }
 
-    public function getOrderDetails($orderId) {
+    public function getSellerOrders($sellerId) {
         try {
-            // Establish database connection
             $this->db_connect();
-            error_log("Order Class - Database connected for getOrderDetails");
+            
+            $sql = "SELECT 
+                    o.order_id,
+                    o.created_at,
+                    oi.quantity,
+                    oi.price,
+                    p.name as product_name,
+                    CONCAT(u.first_name, ' ', u.last_name) as customer_name,
+                    COALESCE(
+                        (SELECT payment_status 
+                         FROM payments 
+                         WHERE order_id = o.order_id 
+                         ORDER BY updated_at DESC, created_at DESC 
+                         LIMIT 1),
+                        'Pending'
+                    ) as payment_status
+                    FROM orders o
+                    JOIN order_items oi ON o.order_id = oi.order_id
+                    JOIN products p ON oi.product_id = p.product_id
+                    JOIN users u ON o.user_id = u.user_id
+                    WHERE oi.seller_id = ?
+                    ORDER BY o.created_at DESC";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("i", $sellerId);
+            $stmt->execute();
+            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        } catch (Exception $e) {
+            error_log("Error in getSellerOrders: " . $e->getMessage());
+            return [];
+        }
+    }
 
-            // Get order information
-            $sql = "SELECT o.*, 
-                           u.first_name, 
-                           u.last_name,
-                           u.email,
-                           u.phone,
-                           CONCAT(u.first_name, ' ', u.last_name) as customer_name
+    public function getSellerOrderDetails($orderId, $sellerId) {
+        try {
+            $this->db_connect();
+            
+            // Get order header information
+            $sql = "SELECT 
+                    o.*,
+                    CONCAT(u.first_name, ' ', u.last_name) as customer_name,
+                    u.email as customer_email,
+                    u.phone as customer_phone,
+                    COALESCE(
+                        (SELECT payment_status 
+                         FROM payments 
+                         WHERE order_id = o.order_id 
+                         ORDER BY updated_at DESC, created_at DESC 
+                         LIMIT 1),
+                        'Pending'
+                    ) as payment_status
                     FROM orders o
                     JOIN users u ON o.user_id = u.user_id
                     WHERE o.order_id = ?";
-                    
+            
             $stmt = $this->db->prepare($sql);
             $stmt->bind_param("i", $orderId);
             $stmt->execute();
-            $result = $stmt->get_result();
-            $order = $result->fetch_assoc();
-
+            $order = $stmt->get_result()->fetch_assoc();
+            
             if (!$order) {
                 return null;
             }
-
-            // Get order items
-            $sql = "SELECT oi.*, 
-                           p.name as product_name,
-                           p.image_path
-                    FROM order_items oi
-                    JOIN products p ON oi.product_id = p.product_id
-                    WHERE oi.order_id = ?";
-                    
-            $stmt = $this->db->prepare($sql);
-            $stmt->bind_param("i", $orderId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $order['items'] = $result->fetch_all(MYSQLI_ASSOC);
-
+            
+            // Get only this seller's items from the order
+            $itemsSql = "SELECT 
+                        oi.*,
+                        p.name as product_name,
+                        pi.image_path,
+                        oi.trade_in_details
+                        FROM order_items oi
+                        JOIN products p ON oi.product_id = p.product_id
+                        LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.is_primary = 1
+                        WHERE oi.order_id = ? AND oi.seller_id = ?";
+            
+            $itemsStmt = $this->db->prepare($itemsSql);
+            $itemsStmt->bind_param("ii", $orderId, $sellerId);
+            $itemsStmt->execute();
+            $order['items'] = $itemsStmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            
             return $order;
         } catch (Exception $e) {
-            error_log("Order::getOrderDetails - Error: " . $e->getMessage());
+            error_log("Error in getSellerOrderDetails: " . $e->getMessage());
             return null;
         }
     }

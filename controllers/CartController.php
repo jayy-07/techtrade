@@ -9,8 +9,8 @@ class CartController {
         $this->cart = new Cart();
     }
 
-    public function addToCart($userId, $productId, $price, $tradeInDetails = null) {
-        return $this->cart->addToCart($userId, $productId, $price, $tradeInDetails);
+    public function addToCart($userId, $productId, $sellerId, $price, $tradeInDetails = null) {
+        return $this->cart->addToCart($userId, $productId, $sellerId, $price, $tradeInDetails);
     }
 
     public function getCartItems($userId) {

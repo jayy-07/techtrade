@@ -63,6 +63,7 @@ try {
     $result = $cartController->addToCart(
         $_SESSION['user_id'],
         $product_id,
+        $seller_id,
         $price,
         $tradeInDetails
     );

@@ -69,7 +69,13 @@ if (empty($cartItems)) {
                                         alt="<?= htmlspecialchars($item['product_name']) ?>"
                                         class="product-image me-3">
                                     <div class="flex-grow-1">
-                                        <h6 class="mb-0"><?= htmlspecialchars($item['product_name']) ?></h6>
+                                        <div class="text-truncate" 
+                                             data-bs-toggle="tooltip" 
+                                             data-bs-placement="top" 
+                                             title="<?= htmlspecialchars($item['product_name']) ?>"
+                                             style="max-width: 300px;">
+                                            <?= htmlspecialchars($item['product_name']) ?>
+                                        </div>
                                         <small class="text-muted">Quantity: <?= $item['quantity'] ?></small>
                                         <?php if (!empty($item['trade_in_id'])): ?>
                                             <br>
@@ -171,6 +177,7 @@ if (empty($cartItems)) {
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/checkout.js"></script>
+    <script src="../js/tooltips.js"></script>
 </body>
 
 </html>

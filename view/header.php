@@ -1,6 +1,6 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
+        <div class="container-fluid">
             <button
                 class="btn me-3"
                 type="button"
@@ -14,8 +14,8 @@
                 TechTrade
             </a>
 
-            <ul class="navbar-nav w-100 d-flex align-items-center" id="navbar-right">
-                <ul class="navbar-nav mr-auto">
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto d-flex align-items-center" id="navbar-right">
                     <li class="nav-item dropdown" id="dropdown-menu">
                         <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle me-1"></i> Hi, <?= htmlspecialchars($_SESSION['first_name']) ?>
@@ -59,11 +59,11 @@
                         placeholder="Search products..."
                         aria-label="Search"
                         value="<?= isset($_GET['q']) ? htmlspecialchars($_GET['q']) : '' ?>" />
-                    <button id="search-btn" class="btn" type="submit">
+                    <button id="search-btn" class="btn btn-primary-light" type="submit">
                         <i class="bi bi-search"></i>
                     </button>
                 </form>
-            </ul>
+            </div>
         </div>
     </nav>
 

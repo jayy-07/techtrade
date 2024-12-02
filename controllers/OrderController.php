@@ -80,4 +80,21 @@ class OrderController {
             return [];
         }
     }
+
+    public function getOrderDetails($orderId) {
+        try {
+            return $this->order->getOrderDetails($orderId);
+        } catch (Exception $e) {
+            error_log("Error getting order details: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getSellerOrders($sellerId) {
+        return $this->order->getSellerOrders($sellerId);
+    }
+
+    public function getSellerOrderDetails($orderId, $sellerId) {
+        return $this->order->getSellerOrderDetails($orderId, $sellerId);
+    }
 } 

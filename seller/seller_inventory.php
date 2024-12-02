@@ -6,6 +6,7 @@ require_once '../controllers/CategoryController.php';
 require_once 'header.php';
 check_seller();
 
+
 // Get all products
 $productController = new ProductController();
 $products = $productController->index();
@@ -46,7 +47,7 @@ $categories = $categoryController->index();
 
         <div class="d-flex justify-content-between mb-3">
             <h2>Inventory</h2>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+            <button type="button" class="btn btn-techtrade-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
                 Add Product
             </button>
         </div>
@@ -73,10 +74,13 @@ $categories = $categoryController->index();
                         foreach ($sellerProducts as $product) :
                         ?>
                             <tr data-product-id="<?= $product['product_id'] ?>">
-                                <td class="product-name-cell">
-                                    <span title="<?= htmlspecialchars($product['product_name']) ?>">
+                                <td>
+                                    <div class="text-truncate" 
+                                         data-bs-toggle="tooltip" 
+                                         data-bs-placement="top" 
+                                         title="<?= htmlspecialchars($product['product_name']) ?>">
                                         <?= htmlspecialchars($product['product_name']) ?>
-                                    </span>
+                                    </div>
                                 </td>
                                 <td><?= htmlspecialchars($product['category_name']) ?></td>
                                 <td><?= htmlspecialchars($product['brand_name']) ?></td>
@@ -204,6 +208,7 @@ $categories = $categoryController->index();
     <script src="../js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="../js/jquery.min.js"></script>
     <script src="../js/seller_inventory.js"></script>
+    <script src="../js/tooltips.js"></script>
     <script>
         $(document).ready(function() {
             // Open Edit Modal

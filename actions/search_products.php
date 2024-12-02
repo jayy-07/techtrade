@@ -30,7 +30,7 @@ if (empty($products)) {
                 <?php endif; ?>
             </p>
             <div class="mt-3">
-                <button class="btn btn-outline-primary me-2" onclick="resetFilters()">
+                <button class="btn btn-techtrade-outline me-2" onclick="resetFilters()">
                     <i class="bi bi-arrow-counterclockwise"></i> Reset Filters
                 </button>
                 <a href="home.php" class="btn btn-outline-secondary">

@@ -1,10 +1,11 @@
 <?php
 require_once '../settings/core.php';
-require_once '../controllers/orderController.php';
-check_admin();
+require_once '../controllers/OrderController.php';
+require_once 'header.php';
+check_seller();
 
 $orderController = new OrderController();
-$orders = $orderController->getAllOrders(); // We'll need to create this method
+$orders = $orderController->getSellerOrders($_SESSION['user_id']);
 ?>
 
 <!DOCTYPE html>
@@ -13,26 +14,21 @@ $orders = $orderController->getAllOrders(); // We'll need to create this method
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Orders</title>
+    <title>Seller - Orders</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="../css/home.css" rel="stylesheet">
 </head>
 
-<?php include 'header.php'; ?>
-
 <body>
     <div class="container mt-4">
         <ul class="nav nav-pills mt-4 mb-4 justify-content-center">
             <li class="nav-item">
-                <a class="nav-link" href="users.php">Users</a>
+                <a class="nav-link" href="seller_inventory.php">Inventory</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="products.php">Products</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="admin_orders.php">Orders</a>
+                <a class="nav-link active" href="seller_orders.php">Orders</a>
             </li>
         </ul>
 
@@ -41,14 +37,15 @@ $orders = $orderController->getAllOrders(); // We'll need to create this method
         </div>
 
         <div class="table-responsive">
-            <table class="table table-striped admin-table">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Order ID</th>
                         <th>Customer</th>
                         <th>Date</th>
-                        <th>Items</th>
-                        <th>Total Amount</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
                         <th>Payment Status</th>
                         <th>Actions</th>
                     </tr>
@@ -59,8 +56,17 @@ $orders = $orderController->getAllOrders(); // We'll need to create this method
                             <td>#<?= htmlspecialchars($order['order_id']) ?></td>
                             <td><?= htmlspecialchars($order['customer_name']) ?></td>
                             <td><?= date('M j, Y', strtotime($order['created_at'])) ?></td>
-                            <td><?= $order['total_items'] ?> items</td>
-                            <td>$<?= number_format($order['total_amount'], 2) ?></td>
+                            <td>
+                                <div class="text-truncate" 
+                                     data-bs-toggle="tooltip" 
+                                     data-bs-placement="top" 
+                                     title="<?= htmlspecialchars($order['product_name']) ?>"
+                                     style="max-width: 200px;">
+                                    <?= htmlspecialchars($order['product_name']) ?>
+                                </div>
+                            </td>
+                            <td><?= htmlspecialchars($order['quantity']) ?></td>
+                            <td>$<?= number_format($order['price'] * $order['quantity'], 2) ?></td>
                             <td>
                                 <span class="badge bg-<?= $order['payment_status'] === 'Completed' ? 'success' : 'warning' ?>">
                                     <?= htmlspecialchars($order['payment_status']) ?>
@@ -98,7 +104,14 @@ $orders = $orderController->getAllOrders(); // We'll need to create this method
 
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/jquery.min.js"></script>
-    <script src="../js/admin_orders.js"></script>
+    <script src="../js/tooltips.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.view-order').on('click', function() {
+                const orderId = $(this).data('order-id');
+                $('#orderDetailsContent').load('../actions/get_seller_order_details.php?order_id=' + orderId);
+            });
+        });
+    </script>
 </body>
-
-</html>
+</html> 

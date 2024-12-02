@@ -47,8 +47,23 @@ class Product extends db_connection
 
     public function get_product_images($product_id)
     {
-        $sql = "SELECT * FROM product_images WHERE `product_id` = '$product_id'";
-        return $this->db_fetch_all($sql);
+        try {
+            $this->db_connect();
+            
+            $sql = "SELECT image_path FROM product_images 
+                    WHERE product_id = ? 
+                    ORDER BY is_primary DESC, image_id ASC";
+                    
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("i", $product_id);
+            $stmt->execute();
+            
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } catch (Exception $e) {
+            error_log("Error in get_product_images: " . $e->getMessage());
+            return [];
+        }
     }
 
     public function add_product_image($product_id, $image_path, $is_primary = false)

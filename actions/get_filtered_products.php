@@ -35,7 +35,7 @@ if (empty($products)) {
                 <?php endif; ?>
             </p>
             <?php if ($categoryId || $brandId || $priceRange || $sortBy): ?>
-                <button class="btn btn-outline-primary" onclick="resetFilters()">
+                <button class="btn btn-techtrade-outline" onclick="resetFilters()">
                     <i class="bi bi-arrow-counterclockwise"></i> Reset Filters
                 </button>
             <?php endif; ?>
