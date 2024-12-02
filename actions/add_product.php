@@ -17,10 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response = $productController->create();
 
         if (is_string($response) && strpos($response, 'successfully') !== false) {
-            // Instead of constructing a JSON response, just send the success message
             echo $response; 
         } else {
-            // If there was an error, echo the error message
             echo $response; 
         }
     } catch (Exception $e) {

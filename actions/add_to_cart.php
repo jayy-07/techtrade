@@ -69,7 +69,6 @@ try {
     );
 
     echo json_encode($result);
-
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }

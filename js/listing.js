@@ -1,20 +1,28 @@
 $(document).ready(function() {
-    // Function to show loading state
+    /**
+     * Shows loading spinner and hides product listing
+     */
     function showLoading() {
         $('#productListing').hide();
         $('#loadingState').show();
     }
 
-    // Function to hide loading state
+    /**
+     * Hides loading spinner and shows product listing
+     */
     function hideLoading() {
         $('#loadingState').hide();
         $('#productListing').show();
     }
 
-    // Function to update product listing
+    /**
+     * Fetches and updates product listing based on current filter values
+     * Shows loading state while request is in progress
+     */
     function updateProducts() {
         showLoading();
 
+        // Get current filter values
         const category = $('#categoryFilter').val();
         const brand = $('#brandFilter').val();
         const price = $('#priceFilter').val();
@@ -35,6 +43,7 @@ $(document).ready(function() {
             },
             error: function() {
                 hideLoading();
+                // Show error state with reset option
                 $('#productListing').html(`
                     <div class="col-12 text-center py-5">
                         <div class="empty-state">
@@ -54,8 +63,12 @@ $(document).ready(function() {
         });
     }
 
-    // Function to reset all filters
+    /**
+     * Resets all filters to their default values and updates URL
+     * Made available globally for error state reset button
+     */
     window.resetFilters = function() {
+        // Reset all filter dropdowns to first option
         $('#categoryFilter').val($('#categoryFilter option:first').val());
         $('#brandFilter').val($('#brandFilter option:first').val());
         $('#priceFilter').val($('#priceFilter option:first').val());
@@ -72,17 +85,18 @@ $(document).ready(function() {
         updateProducts();
     }
 
-    // Event listeners for filters
+    // Event listeners for all filter changes
     $('#categoryFilter, #brandFilter, #priceFilter, #sortOptions').on('change', function() {
         // Update URL with new parameters
         const url = new URL(window.location.href);
         
+        // Get current filter values
         const category = $('#categoryFilter').val();
         const brand = $('#brandFilter').val();
         const price = $('#priceFilter').val();
         const sort = $('#sortOptions').val();
 
-        // Update URL parameters
+        // Update URL parameters - only add if value exists
         if (category) url.searchParams.set('category', category);
         else url.searchParams.delete('category');
         
@@ -101,7 +115,10 @@ $(document).ready(function() {
         updateProducts();
     });
 
-    // Handle browser back/forward buttons
+    /**
+     * Handles browser back/forward navigation
+     * Updates filters and product listing based on URL parameters
+     */
     window.addEventListener('popstate', function() {
         // Get parameters from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -115,7 +132,7 @@ $(document).ready(function() {
         updateProducts();
     });
 
-    // Initialize tooltips if you're using them
+    // Initialize Bootstrap tooltips
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);

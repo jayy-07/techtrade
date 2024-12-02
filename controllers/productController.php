@@ -2,25 +2,44 @@
 
 require_once '../classes/Product.php';
 
+/**
+ * Controller class for managing product operations
+ */
 class ProductController
 {
+    /** @var Product Instance of Product class */
     private $product;
 
+    /**
+     * Constructor initializes Product instance
+     */
     public function __construct()
     {
         $this->product = new Product();
     }
 
+    /**
+     * Gets the Product instance
+     * @return Product The product instance
+     */
     public function getProduct() {
         return $this->product;
     }
 
+    /**
+     * Retrieves all products
+     * @return array Array of all products
+     */
     public function index()
     {
         $products = $this->product->get_all_products();
         return $products;
     }
 
+    /**
+     * Creates a new product with uploaded images
+     * @return string Success/failure message
+     */
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -43,6 +62,11 @@ class ProductController
         }
     }
 
+    /**
+     * Updates an existing product and its images
+     * @param int $product_id ID of product to update
+     * @return string Success/failure message
+     */
     public function edit($product_id)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -68,6 +92,11 @@ class ProductController
         }
     }
 
+    /**
+     * Deletes a product
+     * @param int $product_id ID of product to delete
+     * @return string Success/failure message
+     */
     public function delete($product_id)
     {
         if ($this->product->delete_product($product_id)) {
@@ -77,6 +106,10 @@ class ProductController
         }
     }
 
+    /**
+     * Processes uploaded image URLs from POST data
+     * @return array Array of image URLs
+     */
     private function handle_image_urls()
     {
         $image_urls = [];
@@ -88,6 +121,11 @@ class ProductController
         return $image_urls;
     }
 
+    /**
+     * Saves product images to database
+     * @param int $product_id ID of product to associate images with
+     * @param array $image_urls Array of image URLs to save
+     */
     private function save_product_images($product_id, $image_urls)
     {
         foreach ($image_urls as $index => $url) {

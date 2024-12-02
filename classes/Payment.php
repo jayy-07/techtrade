@@ -2,14 +2,29 @@
 require_once '../settings/db_class.php';
 require_once '../settings/config.php';
 
+/**
+ * Class for handling payment operations using Paystack payment gateway
+ * Extends database connection class
+ */
 class Payment extends db_connection {
+    /** @var string Paystack secret key for API authentication */
     private $paystack_secret_key;
     
+    /**
+     * Constructor - initializes database connection and sets Paystack key
+     */
     public function __construct() {
         $this->db_connect();
         $this->paystack_secret_key = PAYSTACK_SECRET_KEY;
     }
     
+    /**
+     * Initializes a new payment transaction with Paystack
+     * @param int $order_id Order ID for the payment
+     * @param string $email Customer's email address
+     * @param float $amount Payment amount
+     * @return array|bool Payment initialization data on success, false on failure
+     */
     public function initializePayment($order_id, $email, $amount) {
         try {
             error_log("Payment Class - Starting payment initialization");
@@ -18,9 +33,10 @@ class Payment extends db_connection {
             $url = "https://api.paystack.co/transaction/initialize";
             $reference = 'TRX_'.time().'_'.$order_id;
             
+            // Prepare request payload
             $fields = [
                 'email' => $email,
-                'amount' => round($amount * 100),
+                'amount' => round($amount * 100), // Convert to kobo
                 'reference' => $reference,
                 'callback_url' => BASE_URL . '/actions/verify_payment.php',
                 'metadata' => [
@@ -45,6 +61,7 @@ class Payment extends db_connection {
                 $this->storePaymentInit($order_id, $reference, $amount);
             }
 
+            // Initialize cURL request
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, true);
@@ -90,6 +107,11 @@ class Payment extends db_connection {
         }
     }
 
+    /**
+     * Verifies payment status with Paystack
+     * @param string $reference Payment reference to verify
+     * @return array|bool Payment verification data on success, false on failure
+     */
     public function verifyPayment($reference) {
         try {
             $url = "https://api.paystack.co/transaction/verify/" . rawurlencode($reference);
@@ -132,6 +154,14 @@ class Payment extends db_connection {
         }
     }
 
+    /**
+     * Stores initial payment record in database
+     * @param int $order_id Order ID
+     * @param string $reference Payment reference
+     * @param float $amount Payment amount
+     * @return bool Success/failure of operation
+     * @throws Exception If database operation fails
+     */
     private function storePaymentInit($order_id, $reference, $amount) {
         try {
             $sql = "INSERT INTO payments (
@@ -160,6 +190,13 @@ class Payment extends db_connection {
         }
     }
 
+    /**
+     * Updates payment and order status after verification
+     * @param string $reference Payment reference
+     * @param string $status New payment status
+     * @param string $transaction_data JSON encoded transaction data
+     * @return bool Success/failure of operation
+     */
     private function updatePaymentStatus($reference, $status, $transaction_data) {
         try {
             $this->db->begin_transaction();
@@ -190,6 +227,11 @@ class Payment extends db_connection {
         }
     }
 
+    /**
+     * Stores transaction details in database
+     * @param array $data Transaction data including order_id, status, reference and transaction details
+     * @return bool Success/failure of operation
+     */
     public function storeTransaction($data) {
         try {
             $this->db_connect();

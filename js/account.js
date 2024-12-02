@@ -1,23 +1,27 @@
 $(document).ready(function() {
-    // Initialize phone input
+    // Initialize international phone input with Ghana as default country
     const phoneInput = intlTelInput(document.querySelector("#phone"), {
-        initialCountry: "GH",
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        separateDialCode: true,
-        autoPlaceholder: "polite",
+        initialCountry: "GH", // Set Ghana as default
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js", // Required for validation/formatting
+        separateDialCode: true, // Show country code separately
+        autoPlaceholder: "polite", // Show example number as placeholder
     });
 
-    // Profile form submission
+    /**
+     * Handle profile form submission
+     * Validates phone number and submits form data via AJAX
+     */
     $('#profileForm').on('submit', function(e) {
         e.preventDefault();
         const phoneNumber = phoneInput.getNumber(intlTelInputUtils.numberFormat.E164);
         const phoneError = $("#phone-error");
         const errorMessage = $('#error-message');
         
+        // Clear any previous error messages
         phoneError.text("");
         errorMessage.text("");
 
-        // Phone number validation
+        // Validate phone number format and show specific error messages
         if (!phoneInput.isValidNumber()) {
             const errorCode = phoneInput.getValidationError();
             let errorText = "Invalid phone number.";
@@ -39,7 +43,7 @@ $(document).ready(function() {
             return;
         }
 
-        // Submit form via AJAX
+        // Submit profile data to server
         $.ajax({
             url: '../actions/update_profile.php',
             type: 'POST',
@@ -48,7 +52,7 @@ $(document).ready(function() {
                 const res = JSON.parse(response);
                 showToast(res.message, res.success ? 'success' : 'danger');
                 if (res.success) {
-                    // Optionally refresh the page or update the UI
+                    // Reload page after successful update
                     setTimeout(() => window.location.reload(), 1500);
                 }
             },
@@ -58,7 +62,10 @@ $(document).ready(function() {
         });
     });
 
-    // Password form submission
+    /**
+     * Handle password change form submission
+     * Validates password match and submits via AJAX
+     */
     $('#passwordForm').on('submit', function(e) {
         e.preventDefault();
         const errorMessage = $('#password-error');
@@ -67,14 +74,16 @@ $(document).ready(function() {
         const newPassword = $('#newPassword').val();
         const confirmPassword = $('#confirmPassword').val();
 
+        // Clear any previous error messages
         errorMessage.text("");
 
-        // Password match validation
+        // Validate that new passwords match
         if (newPassword !== confirmPassword) {
             errorMessage.text("New passwords do not match.");
             return;
         }
 
+        // Submit password change request
         $.ajax({
             url: '../actions/update_password.php',
             type: 'POST',
@@ -83,7 +92,7 @@ $(document).ready(function() {
                 const res = JSON.parse(response);
                 showToast(res.message, res.success ? 'success' : 'danger');
                 if (res.success) {
-                    $('#passwordForm')[0].reset();
+                    $('#passwordForm')[0].reset(); // Clear form on success
                 }
             },
             error: function() {
@@ -92,7 +101,10 @@ $(document).ready(function() {
         });
     });
 
-    // Address form submission
+    /**
+     * Handle address form submission
+     * Submits address update via AJAX
+     */
     $('#addressForm').on('submit', function(e) {
         e.preventDefault();
         
@@ -113,7 +125,11 @@ $(document).ready(function() {
         });
     });
 
-    // Function to show toast notifications
+    /**
+     * Display toast notification
+     * @param {string} message - Message to display
+     * @param {string} type - Bootstrap contextual class (primary, success, danger etc)
+     */
     function showToast(message, type = 'primary') {
         const toast = $('#toastContainer');
         toast.removeClass().addClass(`toast align-items-center text-bg-${type} border-0`);

@@ -2,15 +2,27 @@
 
 require_once '../classes/Category.php';
 
+/**
+ * Controller class for managing category operations
+ */
 class CategoryController
 {
+    /** @var Category Instance of Category class */
     private $category;
 
+    /**
+     * Constructor initializes Category instance
+     */
     public function __construct()
     {
         $this->category = new Category();
     }
 
+    /**
+     * Handles category creation from form submission
+     * Processes POST data and adds new category to database
+     * @return string Success/failure message
+     */
     public function create()
     {
         // Handle category creation form submission
@@ -29,6 +41,10 @@ class CategoryController
         }
     }
 
+    /**
+     * Retrieves all categories from database
+     * @return array Array of all categories
+     */
     public function index()
     {
         // Handle fetching and displaying all categories
@@ -36,6 +52,10 @@ class CategoryController
         return $categories;
     }
 
+    /**
+     * Gets the Category instance
+     * @return Category The category instance
+     */
     public function getCategory() {
         return $this->category;
     }

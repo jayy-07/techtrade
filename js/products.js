@@ -1,3 +1,6 @@
+/**
+ * Initializes Bootstrap tooltips for all elements with data-bs-toggle="tooltip"
+ */
 function initTooltips() {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -5,6 +8,11 @@ function initTooltips() {
     });
 }
 
+/**
+ * Shows a toast notification with the specified message and type
+ * @param {string} message - The message to display in the toast
+ * @param {string} type - The type of toast (primary, success, or danger)
+ */
 function showToast(message, type = "primary") {
   // Change toast background color based on type
   const toastContainer = $("#toastContainer");
@@ -23,7 +31,10 @@ $(document).ready(function () {
   // Initialize tooltips
   initTooltips();
 
-  // Add Product AJAX Request
+  /**
+   * Handle Add Product form submission
+   * Sends AJAX request to add new product
+   */
   $("#saveProduct").click(function (e) {
     e.preventDefault();
     var formData = $("#addProductForm").serialize();
@@ -43,7 +54,11 @@ $(document).ready(function () {
     });
   });
 
-  // Update Product AJAX Request
+  /**
+   * Handle Update Product form submission
+   * Sends AJAX request to update existing product
+   * Updates UI dynamically on success
+   */
   $("#updateProduct").click(function (e) {
     e.preventDefault();
     var formData = $("#editProductForm").serialize();
@@ -98,7 +113,11 @@ $(document).ready(function () {
     });
   });
 
-  // Delete Product AJAX Request
+  /**
+   * Handle Delete Product confirmation
+   * Sends AJAX request to delete product
+   * Removes product row from UI on success
+   */
   $("#confirmDeleteProduct").click(function (e) {
     e.preventDefault();
     const productId = $(this).data("product-id");
@@ -108,36 +127,31 @@ $(document).ready(function () {
       type: "GET",
       success: function (response) {
         try {
-          // Parse the JSON response
           const res = JSON.parse(response);
 
           if (res.success) {
-            // Display success toast message
             showToast(res.message, "success");
-
-            // Remove the corresponding row from the table
             $(`tr[data-product-id="${res.product_id}"]`).remove();
-
-            // Close the modal
             $("#deleteProductModal").modal("hide");
           } else {
-            // If not successful, display the error message in a toast
             showToast(res.message, "danger");
           }
         } catch (error) {
-          // If there's an error parsing the JSON, log it and show a generic error message
           console.error("Error parsing response:", error);
           showToast("An unexpected error occurred.", "danger");
         }
       },
       error: function () {
-        // If there's an AJAX error, show a generic error message
         showToast("An error occurred while deleting the product.", "danger");
       },
     });
   });
 
-  // Open Edit Modal (Prefill fields and fetch images)
+  /**
+   * Handle Edit Product modal opening
+   * Populates form fields with product data
+   * Fetches and displays product images
+   */
   $(document).on("click", ".edit-product", function () {
     const productId = $(this).data("product-id");
     const productName = $(this).data("product-name");
@@ -179,7 +193,10 @@ $(document).ready(function () {
     });
   });
 
-  // Open Delete Modal
+  /**
+   * Handle Delete Product modal opening
+   * Sets product details in confirmation dialog
+   */
   $(document).on("click", ".delete-product", function () {
     const productId = $(this).data("product-id");
     const productName = $(this).data("product-name");

@@ -1,29 +1,38 @@
 $(document).ready(function() {
-    // Get search query from URL
+    // Get search query from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const searchQuery = urlParams.get('q') || '';
 
-    // Function to show loading state
+    /**
+     * Shows loading spinner and hides product listing
+     */
     function showLoading() {
         $('#productListing').hide();
         $('#loadingState').show();
     }
 
-    // Function to hide loading state
+    /**
+     * Hides loading spinner and shows product listing
+     */
     function hideLoading() {
         $('#loadingState').hide();
         $('#productListing').show();
     }
 
-    // Function to update product listing
+    /**
+     * Fetches and updates product listing based on filters
+     * Makes AJAX call to search_products.php with current filter values
+     */
     function updateProducts() {
         showLoading();
 
+        // Get current filter values
         const category = $('#categoryFilter').val();
         const brand = $('#brandFilter').val();
         const price = $('#priceFilter').val();
         const sort = $('#sortOptions').val();
 
+        // Make AJAX request
         $.ajax({
             url: '../actions/search_products.php',
             type: 'GET',
@@ -40,6 +49,7 @@ $(document).ready(function() {
             },
             error: function() {
                 hideLoading();
+                // Show error state with home button
                 $('#productListing').html(`
                     <div class="col-12 text-center py-5">
                         <div class="empty-state">
@@ -59,14 +69,18 @@ $(document).ready(function() {
         });
     }
 
-    // Function to reset all filters
+    /**
+     * Resets all filter selections to their default values
+     * Updates URL to remove filter parameters while preserving search query
+     */
     window.resetFilters = function() {
+        // Reset all filters to first option
         $('#categoryFilter').val($('#categoryFilter option:first').val());
         $('#brandFilter').val($('#brandFilter option:first').val());
         $('#priceFilter').val($('#priceFilter option:first').val());
         $('#sortOptions').val($('#sortOptions option:first').val());
         
-        // Update URL to remove filter parameters but keep search query
+        // Update URL - keep search query but remove filter params
         const url = new URL(window.location.href);
         const searchQuery = url.searchParams.get('q');
         url.search = searchQuery ? `?q=${searchQuery}` : '';
@@ -75,9 +89,9 @@ $(document).ready(function() {
         updateProducts();
     }
 
-    // Event listeners for filters
+    // Add event listeners to all filter dropdowns
     $('#categoryFilter, #brandFilter, #priceFilter, #sortOptions').on('change', function() {
-        // Update URL with new parameters
+        // Update URL with new filter parameters
         const url = new URL(window.location.href);
         
         const category = $('#categoryFilter').val();
@@ -95,6 +109,6 @@ $(document).ready(function() {
         updateProducts();
     });
 
-    // Initial call to update products
+    // Load initial products when page loads
     updateProducts();
 }); 

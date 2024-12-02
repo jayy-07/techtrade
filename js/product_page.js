@@ -1,8 +1,12 @@
 $(document).ready(function () {
-  // Initialize Bootstrap Modal
+  // Initialize Bootstrap Modal for trade-in functionality
   const tradeInModal = new bootstrap.Modal($("#tradeInModal")[0]);
 
-  // Show Toast Function
+  /**
+   * Shows a toast notification with the specified message and type
+   * @param {string} message - The message to display in the toast
+   * @param {string} type - The type of toast (primary, success, or danger)
+   */
   function showToast(message, type = "primary") {
     const toastContainer = $("#toastContainer");
     const toastMessage = $("#toastMessage");
@@ -22,11 +26,11 @@ $(document).ready(function () {
     toast.show();
   }
 
-  // Open modal on "Add to Cart" button click
+  // Event handler for opening the trade-in modal when "Add to Cart" is clicked
   $('[data-bs-target="#tradeInModal"]').on("click", function () {
     const button = $(this);
 
-    // Attach product and seller info to the confirm button
+    // Store product and seller information in the confirm button's data attributes
     $("#confirmTradeInButton").data({
       productId: button.data("product-id"),
       sellerId: button.data("seller-id"),
@@ -35,7 +39,7 @@ $(document).ready(function () {
       price: button.data("price"),
     });
 
-    // Reset modal state
+    // Reset all form fields and hide conditional elements
     $("#modalTradeInToggle").prop("checked", false);
     $(
       "#modalDeviceTypeDropdown, #modalDeviceConditionDropdown, #usageDurationField, #purchasePriceField"
@@ -48,12 +52,13 @@ $(document).ready(function () {
     tradeInModal.show();
   });
 
-  // Trade-In Toggle Event
+  // Handle trade-in toggle checkbox changes
   $("#modalTradeInToggle").on("change", function () {
     if ($(this).is(":checked")) {
       $("#modalDeviceTypeDropdown").show();
       $("#confirmTradeInButton").prop("disabled", true);
     } else {
+      // Reset and hide all trade-in related fields
       $(
         "#modalDeviceTypeDropdown, #modalDeviceConditionDropdown, #usageDurationField, #purchasePriceField"
       ).hide();
@@ -64,11 +69,12 @@ $(document).ready(function () {
     }
   });
 
-  // Show condition dropdown after selecting device type
+  // Show device condition dropdown when device type is selected
   $("#modalDeviceType").on("change", function () {
     if ($(this).val()) {
       $("#modalDeviceConditionDropdown").show();
     } else {
+      // Reset and hide dependent fields
       $(
         "#modalDeviceConditionDropdown, #usageDurationField, #purchasePriceField"
       ).hide();
@@ -79,23 +85,27 @@ $(document).ready(function () {
     checkFormCompletion();
   });
 
-  // Show additional fields after selecting condition
+  // Show additional fields when device condition is selected
   $("#modalDeviceCondition").on("change", function () {
     if ($(this).val()) {
       $("#usageDurationField, #purchasePriceField").show();
     } else {
+      // Reset and hide dependent fields
       $("#usageDurationField, #purchasePriceField").hide();
       $("#modalUsageDuration, #modalPurchasePrice").val("");
     }
     checkFormCompletion();
   });
 
-  // Enable confirm button when all fields are filled
+  // Validate form on input changes for usage duration and purchase price
   $("#modalUsageDuration, #modalPurchasePrice").on("input change", function () {
     checkFormCompletion();
   });
 
-  // Check form completion to enable or disable confirm button
+  /**
+   * Validates the trade-in form and enables/disables the confirm button
+   * Calculates trade-in value and ensures it's valid relative to product price
+   */
   function checkFormCompletion() {
     if ($("#modalTradeInToggle").is(":checked")) {
       const deviceType = $("#modalDeviceType").val();
@@ -104,20 +114,21 @@ $(document).ready(function () {
       const purchasePrice = parseFloat($("#modalPurchasePrice").val());
       const productPrice = parseFloat($("#confirmTradeInButton").data("price"));
 
-      // Calculate trade-in value
+      // Calculate potential trade-in value
       const tradeInValue = calculateTradeInValue(
         deviceCondition,
         usageDuration,
         purchasePrice
       );
 
+      // Validate all conditions are met
       const isComplete =
         deviceType &&
         deviceCondition &&
         usageDuration &&
         purchasePrice > 0 &&
-        tradeInValue <= productPrice && // Ensure trade-in value does not exceed product price
-        productPrice - tradeInValue > 0; // Ensure final price is positive
+        tradeInValue <= productPrice && // Trade-in value must not exceed product price
+        productPrice - tradeInValue > 0; // Final price must be positive
 
       $("#confirmTradeInButton").prop("disabled", !isComplete);
     } else {
@@ -125,8 +136,13 @@ $(document).ready(function () {
     }
   }
 
-  // Function to calculate trade-in value
-  // Function to calculate trade-in value
+  /**
+   * Calculates the trade-in value based on device condition, usage duration, and original purchase price
+   * @param {string} condition - The condition of the device (Excellent, Good, Fair, Poor)
+   * @param {string} duration - The usage duration category
+   * @param {number} price - The original purchase price
+   * @returns {number} The calculated trade-in value
+   */
   function calculateTradeInValue(condition, duration, price) {
     const conditionMultiplier = {
       Excellent: 0.8,
@@ -148,7 +164,7 @@ $(document).ready(function () {
     return price * conditionValue * usageValue;
   }
 
-  // Handle Confirm button click for Add to Cart
+  // Handle form submission when confirm button is clicked
   $("#confirmTradeInButton").on("click", function () {
     const button = $(this);
     const data = {
@@ -164,6 +180,7 @@ $(document).ready(function () {
       purchase_price: $("#modalPurchasePrice").val(),
     };
 
+    // Send AJAX request to add item to cart
     $.ajax({
       url: "../actions/add_to_cart.php",
       method: "POST",
@@ -184,7 +201,7 @@ $(document).ready(function () {
     tradeInModal.hide();
   });
 
-  // Horizontal scrolling for seller row
+  // Horizontal scrolling functionality for seller listings
   function scrollSellersRight() {
     $(".other-sellers-row").animate({ scrollLeft: "+=300" }, 300);
   }
@@ -193,10 +210,14 @@ $(document).ready(function () {
     $(".other-sellers-row").animate({ scrollLeft: "-=300" }, 300);
   }
 
+  // Attach scroll handlers to navigation buttons
   $(".prev-btn").on("click", scrollSellersLeft);
   $(".next-btn").on("click", scrollSellersRight);
 
-  // Show or hide scroll buttons based on scroll position
+  /**
+   * Updates the visibility of scroll buttons based on scroll position
+   * Hides/shows buttons when reaching start/end of scrollable content
+   */
   function updateSellersScrollButtons() {
     const container = $(".other-sellers-row");
     const maxScrollLeft = container[0].scrollWidth - container[0].clientWidth;
@@ -205,13 +226,14 @@ $(document).ready(function () {
     $(".next-btn").toggle(container.scrollLeft() < maxScrollLeft);
   }
 
+  // Update scroll buttons on scroll and window resize
   $(".other-sellers-row").on("scroll", updateSellersScrollButtons);
   $(window).on("resize", updateSellersScrollButtons);
 
-  // Initial check for scroll buttons
+  // Initial scroll buttons visibility check
   updateSellersScrollButtons();
 
-  // Add this to your existing product_page.js
+  // Wishlist functionality
   $(".wishlist-btn").on("click", function (e) {
     e.preventDefault();
     const button = $(this);
@@ -219,6 +241,7 @@ $(document).ready(function () {
     const icon = button.find("i");
     const action = icon.hasClass("bi-heart-fill") ? "remove" : "add";
 
+    // Send AJAX request to update wishlist
     $.ajax({
       url: "../actions/update_wishlist.php",
       method: "POST",
@@ -243,24 +266,25 @@ $(document).ready(function () {
     });
   });
 
-  // Read More functionality
+  // Read More/Less functionality for product description
   const content = $(".description-content");
   const readMoreLink = $(".read-more-link");
 
-  // Only show link if content is taller than max-height
+  // Only show read more link if content exceeds max height
   if (content[0].scrollHeight <= content[0].clientHeight) {
     readMoreLink.addClass("hidden");
   }
 
+  // Handle read more/less toggle
   readMoreLink.on("click", function (e) {
-    e.preventDefault(); // Prevent default link behavior
+    e.preventDefault();
     content.toggleClass("collapsed expanded");
 
     if (content.hasClass("expanded")) {
       readMoreLink.text("Read less");
     } else {
       readMoreLink.text("Read more");
-      // Smooth scroll back to description top if needed
+      // Smooth scroll back to description top when collapsing
       const descriptionTop = content.offset().top - 100;
       if ($(window).scrollTop() > descriptionTop) {
         $("html, body").animate(

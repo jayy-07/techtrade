@@ -1,7 +1,20 @@
 <?php
 require_once '../settings/db_class.php';
 
+/**
+ * Wishlist class for managing user wishlists
+ * Handles CRUD operations for wishlists and wishlist items
+ * Extends database connection class
+ */
 class Wishlist extends db_connection {
+    
+    /**
+     * Adds a product to the user's wishlist
+     * If product already exists, only updates timestamp
+     * @param int $userId ID of the user
+     * @param int $productId ID of the product to add
+     * @return bool True on success, false on failure
+     */
     public function addToWishlist($userId, $productId) {
         try {
             $this->db_connect();
@@ -20,6 +33,12 @@ class Wishlist extends db_connection {
         }
     }
 
+    /**
+     * Removes a product from the user's wishlist
+     * @param int $userId ID of the user
+     * @param int $productId ID of the product to remove
+     * @return bool True on success, false on failure
+     */
     public function removeFromWishlist($userId, $productId) {
         try {
             $this->db_connect();
@@ -35,6 +54,12 @@ class Wishlist extends db_connection {
         }
     }
 
+    /**
+     * Retrieves all items in the user's wishlist
+     * Gets product details including name, image, minimum price and maximum discount
+     * @param int $userId ID of the user
+     * @return array Array of wishlist items sorted by creation date
+     */
     public function getWishlistItems($userId) {
         try {
             $this->db_connect();
@@ -62,6 +87,12 @@ class Wishlist extends db_connection {
         }
     }
 
+    /**
+     * Checks if a product is in the user's wishlist
+     * @param int $userId ID of the user
+     * @param int $productId ID of the product to check
+     * @return bool True if product is in wishlist, false if not
+     */
     public function isInWishlist($userId, $productId) {
         try {
             $this->db_connect();
@@ -77,4 +108,4 @@ class Wishlist extends db_connection {
             return false;
         }
     }
-} 
+}

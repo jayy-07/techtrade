@@ -2,29 +2,51 @@
 
 require_once '../settings/db_class.php';
 
+/**
+ * Class for managing category operations
+ * Extends database connection class
+ */
 class Category extends db_connection
 {
-
+    /**
+     * Adds a new category to the database
+     * @param string $category_name Name of the category to add
+     * @return bool Success/failure of operation
+     */
     public function add_category($category_name)
     {
-        // Add a new category to the database
         $sql = "INSERT INTO categories (`name`) 
                 VALUES ('$category_name')";
         return $this->db_query($sql);
     }
 
+    /**
+     * Retrieves all categories from database ordered by name ascending
+     * @return array Array of all categories
+     */
     public function get_all_categories()
     {
-        // Retrieve all categories from the database
         $sql = "SELECT * FROM categories ORDER BY `name` ASC";
         return $this->db_fetch_all($sql);
     }
 
+    /**
+     * Alternative method to get all categories ordered by name
+     * @return array Array of all categories
+     */
     public function getAllCategories() {
         $sql = "SELECT * FROM categories ORDER BY name";
         return $this->db_fetch_all($sql);
     }
 
+    /**
+     * Gets products filtered by category and optional parameters
+     * @param int $categoryId ID of the category to filter by
+     * @param int|null $brandId Optional brand ID filter
+     * @param string|null $priceRange Optional price range filter (format: "min-max" or "min-+")
+     * @param string|null $sortBy Optional sort parameter (price-asc, price-desc, discount)
+     * @return array Array of filtered products with details
+     */
     public function getProductsByCategory($categoryId, $brandId = null, $priceRange = null, $sortBy = null) {
         $sql = "SELECT 
                 p.product_id,
@@ -57,7 +79,7 @@ class Category extends db_connection
             }
         }
 
-        // Add sorting
+        // Add sorting based on the specified criteria
         switch ($sortBy) {
             case 'price-asc':
                 $sql .= " ORDER BY min_price ASC";

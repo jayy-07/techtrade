@@ -2,15 +2,27 @@
 
 require_once '../classes/Brand.php';
 
+/**
+ * Controller class for managing brand operations
+ */
 class BrandController
 {
+    /** @var Brand Instance of Brand class */
     private $brand;
 
+    /**
+     * Constructor initializes Brand instance
+     */
     public function __construct()
     {
         $this->brand = new Brand();
     }
 
+    /**
+     * Handles brand creation from form submission
+     * Processes POST data and adds new brand to database
+     * @return string Success/failure message
+     */
     public function create()
     {
         // Handle brand creation form submission
@@ -29,11 +41,19 @@ class BrandController
         }
     }
 
+    /**
+     * Gets the Brand instance
+     * @return Brand The brand instance
+     */
     public function getBrand()
     {
         return $this->brand;
     }
 
+    /**
+     * Retrieves all brands from database
+     * @return array Array of all brands
+     */
     public function index()
     {
         // Handle fetching and displaying all brands

@@ -2,8 +2,18 @@
 
 require_once '../settings/db_class.php';
 
+/**
+ * Product class for managing products in the e-commerce system
+ * Handles CRUD operations for products, product images, and seller products
+ * Extends database connection class
+ */
 class Product extends db_connection
 {
+    /**
+     * Adds a new product to the database
+     * @param array $data Product details including category_id, brand_id, product_name, description
+     * @return bool True on success, false on failure
+     */
     public function add_product($data)
     {
         $sql = "INSERT INTO products (`category_id`, `brand_id`, `name`, `description`) 
@@ -11,12 +21,21 @@ class Product extends db_connection
         return $this->db_query($sql);
     }
 
+    /**
+     * Retrieves all products from the database
+     * @return array Array of all products sorted by name
+     */
     public function get_all_products()
     {
         $sql = "SELECT * FROM products ORDER BY `name` ASC";
         return $this->db_fetch_all($sql);
     }
 
+    /**
+     * Retrieves a specific product by its ID
+     * @param int $product_id Product ID to retrieve
+     * @return array|bool Product details including category and brand info, or false if not found
+     */
     public function get_product_by_id($product_id)
     {
         $sql = "SELECT p.product_id, p.name, p.description, c.name AS category_name, b.name AS brand_name, c.category_id AS category_id, b.brand_id AS brand_id
@@ -24,10 +43,14 @@ class Product extends db_connection
                 JOIN categories c ON p.category_id = c.category_id
                 JOIN brands b ON p.brand_id = b.brand_id 
                 WHERE p.product_id = '$product_id'";
-        return
-            $this->db_fetch_one($sql);
+        return $this->db_fetch_one($sql);
     }
 
+    /**
+     * Updates an existing product's details
+     * @param array $data Updated product details
+     * @return bool True on success, false on failure
+     */
     public function update_product($data)
     {
         $sql = "UPDATE products 
@@ -39,12 +62,22 @@ class Product extends db_connection
         return $this->db_query($sql);
     }
 
+    /**
+     * Deletes a product from the database
+     * @param int $product_id ID of product to delete
+     * @return bool True on success, false on failure
+     */
     public function delete_product($product_id)
     {
         $sql = "DELETE FROM products WHERE `product_id` = '$product_id'";
         return $this->db_query($sql);
     }
 
+    /**
+     * Retrieves all images for a product
+     * @param int $product_id Product ID to get images for
+     * @return array Array of image paths ordered by primary status
+     */
     public function get_product_images($product_id)
     {
         try {
@@ -66,6 +99,13 @@ class Product extends db_connection
         }
     }
 
+    /**
+     * Adds a new image for a product
+     * @param int $product_id Product ID to add image for
+     * @param string $image_path Path to the image file
+     * @param bool $is_primary Whether this is the primary product image
+     * @return bool True on success, false on failure
+     */
     public function add_product_image($product_id, $image_path, $is_primary = false)
     {
         $sql = "INSERT INTO product_images (`product_id`, `image_path`, `is_primary`) 
@@ -73,13 +113,22 @@ class Product extends db_connection
         return $this->db_query($sql);
     }
 
+    /**
+     * Deletes all images associated with a product
+     * @param int $product_id Product ID to delete images for
+     * @return bool True on success, false on failure
+     */
     public function delete_product_images($product_id)
     {
         $sql = "DELETE FROM product_images WHERE `product_id` = '$product_id'";
         return $this->db_query($sql);
     }
 
-
+    /**
+     * Gets all products for a specific seller
+     * @param int $seller_id Seller ID to get products for
+     * @return array Array of seller's products with details
+     */
     public function get_seller_products($seller_id)
     {
         $sql = "SELECT p.product_id, p.name AS product_name, c.name AS category_name, b.name AS brand_name, sp.price, sp.stock_quantity, p.description, sp.discount 
@@ -92,9 +141,13 @@ class Product extends db_connection
         return $this->db_fetch_all($sql);
     }
 
+    /**
+     * Adds a product to a seller's inventory
+     * @param array $data Product details including product_id, price, stock_quantity
+     * @return string Success or failure message
+     */
     public function add_seller_product($data)
     {
-        // Add product to the sellers_products table
         $seller_id = $_SESSION['user']['user_id'];
         $product_id = $data['product_id'];
         $price = $data['price'];
@@ -106,9 +159,13 @@ class Product extends db_connection
         return $this->db_query($sql) ? "Product added to inventory successfully!" : "Failed to add product to inventory.";
     }
 
+    /**
+     * Updates a product in seller's inventory
+     * @param array $data Updated product details
+     * @return string Success or failure message
+     */
     public function update_seller_product($data)
     {
-        // Update product in the sellers_products table
         $seller_id = $_SESSION['user']['user_id'];
         $product_id = $data['product_id'];
         $price = $data['price'];
@@ -121,18 +178,28 @@ class Product extends db_connection
         return $this->db_query($sql) ? "Product updated successfully!" : "Failed to update product.";
     }
 
+    /**
+     * Deletes a product from seller's inventory
+     * @param int $seller_id Seller ID
+     * @param int $product_id Product ID to delete
+     * @return string Success or failure message
+     */
     public function delete_seller_product($seller_id, $product_id)
     {
-        // Delete product from the sellers_products table
         $sql = "DELETE FROM sellers_products 
             WHERE `seller_id` = '$seller_id' AND `product_id` = '$product_id'";
 
         return $this->db_query($sql) ? "Product deleted from inventory successfully!" : "Failed to delete product from inventory.";
     }
 
+    /**
+     * Gets a specific product from seller's inventory
+     * @param int $seller_id Seller ID
+     * @param int $product_id Product ID to retrieve
+     * @return array|bool Product details or false if not found
+     */
     public function get_seller_product_by_id($seller_id, $product_id)
     {
-        // Get a specific product from the seller's inventory
         $sql = "SELECT p.name AS product_name, c.name AS category_name, b.name AS brand_name, sp.price, sp.stock_quantity
             FROM sellers_products sp
             JOIN products p ON sp.product_id = p.product_id
@@ -143,6 +210,12 @@ class Product extends db_connection
         return $this->db_fetch_one($sql);
     }
 
+    /**
+     * Gets other sellers offering the same product
+     * @param int $product_id Product ID
+     * @param int $cheapest_seller_id ID of cheapest seller to exclude
+     * @return array Array of other sellers and their offers
+     */
     public function get_other_sellers($product_id, $cheapest_seller_id)
     {
         $sql = "SELECT sp.seller_id, sp.price, sp.discount, sp.product_id, 
@@ -154,6 +227,11 @@ class Product extends db_connection
         return $this->db_fetch_all($sql);
     }
 
+    /**
+     * Gets the cheapest offer for a product
+     * @param int $product_id Product ID to check
+     * @return array|bool Cheapest seller's details or false if none found
+     */
     public function get_cheapest_offer($product_id)
     {
         $sql = "SELECT sp.seller_id, sp.price, sp.discount, CONCAT(u.first_name, ' ', u.last_name) AS seller_name 
@@ -165,6 +243,15 @@ class Product extends db_connection
         return $this->db_fetch_one($sql);
     }
 
+    /**
+     * Searches for products based on various criteria
+     * @param string $query Search query
+     * @param int|null $categoryId Optional category filter
+     * @param int|null $brandId Optional brand filter
+     * @param string|null $priceRange Optional price range filter (format: "min-max" or "min-+")
+     * @param string|null $sortBy Optional sort criteria (price-asc, price-desc, discount)
+     * @return array Array of matching products
+     */
     public function searchProducts($query, $categoryId = null, $brandId = null, $priceRange = null, $sortBy = null) {
         $query = trim($query);
         

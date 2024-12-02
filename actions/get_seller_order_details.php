@@ -1,28 +1,35 @@
 <?php
+// Include required files and check seller authentication
 require_once '../settings/core.php';
 require_once '../controllers/OrderController.php';
 check_seller();
 
+// Validate order ID is provided
 if (!isset($_GET['order_id'])) {
     echo "Order ID not provided";
     exit;
 }
 
+// Get order details for the seller
 $orderController = new OrderController();
 $orderDetails = $orderController->getSellerOrderDetails($_GET['order_id'], $_SESSION['user_id']);
 
+// Check if order exists and seller has permission
 if (!$orderDetails) {
     echo "Order not found or you don't have permission to view it";
     exit;
 }
 
+// Calculate total amount for seller's items
 $totalAmount = 0;
 foreach ($orderDetails['items'] as $item) {
     $totalAmount += $item['price'] * $item['quantity'];
 }
 ?>
 
+<!-- Order details container -->
 <div class="order-details">
+    <!-- Customer information section -->
     <div class="customer-info mb-4">
         <h6>Customer Information</h6>
         <p class="mb-1"><strong>Name:</strong> <?= htmlspecialchars($orderDetails['customer_name']) ?></p>
@@ -31,6 +38,7 @@ foreach ($orderDetails['items'] as $item) {
         <p class="mb-1"><strong>Shipping Address:</strong> <?= htmlspecialchars($orderDetails['shipping_address']) ?></p>
     </div>
 
+    <!-- Payment information section -->
     <div class="payment-info mb-4">
         <h6>Payment Information</h6>
         <p class="mb-1"><strong>Status:</strong> 
@@ -40,6 +48,7 @@ foreach ($orderDetails['items'] as $item) {
         </p>
     </div>
 
+    <!-- Order items section -->
     <div class="order-items">
         <h6>Your Items in This Order</h6>
         <div class="table-responsive">
@@ -56,6 +65,7 @@ foreach ($orderDetails['items'] as $item) {
                     <?php foreach ($orderDetails['items'] as $item): ?>
                         <tr>
                             <td>
+                                <!-- Product image and name -->
                                 <div class="d-flex align-items-center">
                                     <?php if ($item['image_path']): ?>
                                         <img src="<?= htmlspecialchars($item['image_path']) ?>" 
@@ -74,6 +84,7 @@ foreach ($orderDetails['items'] as $item) {
                             <td><?= htmlspecialchars($item['quantity']) ?></td>
                             <td>$<?= number_format($item['price'], 2) ?></td>
                             <td>
+                                <!-- Trade-in details if available -->
                                 <?php if (!empty($item['trade_in_details'])): 
                                     $tradeIn = json_decode($item['trade_in_details'], true);
                                 ?>
@@ -91,6 +102,7 @@ foreach ($orderDetails['items'] as $item) {
         </div>
     </div>
 
+    <!-- Order summary section -->
     <div class="order-summary mt-3">
         <div class="d-flex justify-content-between">
             <strong>Total Amount for Your Items:</strong>

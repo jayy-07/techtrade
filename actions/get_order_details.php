@@ -2,24 +2,29 @@
 require_once '../settings/core.php';
 require_once '../controllers/OrderController.php';
 
-// Ensure admin access
+// Ensure only admin users can access this page
 check_admin();
 
+// Validate order ID is provided in URL parameters
 if (!isset($_GET['order_id'])) {
     echo "Order ID not provided";
     exit;
 }
 
+// Initialize controller and fetch order details
 $orderController = new OrderController();
 $orderDetails = $orderController->getOrderDetails($_GET['order_id']);
 
+// Check if order exists
 if (!$orderDetails) {
     echo "Order not found";
     exit;
 }
 ?>
 
+<!-- Order Details Container -->
 <div class="order-details">
+    <!-- Customer Information Section -->
     <div class="customer-info mb-4">
         <h6>Customer Information</h6>
         <p class="mb-1"><strong>Name:</strong> <?= htmlspecialchars($orderDetails['customer_name']) ?></p>
@@ -28,15 +33,17 @@ if (!$orderDetails) {
         <p class="mb-1"><strong>Shipping Address:</strong> <?= htmlspecialchars($orderDetails['shipping_address']) ?></p>
     </div>
 
+    <!-- Payment Status Section -->
     <div class="payment-info mb-4">
         <h6>Payment Information</h6>
-        <p class="mb-1"><strong>Status:</strong> 
+        <p class="mb-1"><strong>Status:</strong>
             <span class="badge bg-<?= $orderDetails['payment_status'] === 'Completed' ? 'success' : 'warning' ?>">
                 <?= htmlspecialchars($orderDetails['payment_status']) ?>
             </span>
         </p>
     </div>
 
+    <!-- Order Items Table Section -->
     <div class="order-items">
         <h6>Order Items</h6>
         <div class="table-responsive">
@@ -53,29 +60,33 @@ if (!$orderDetails) {
                 <tbody>
                     <?php foreach ($orderDetails['items'] as $item): ?>
                         <tr>
+                            <!-- Product Column with Image and Name -->
                             <td>
                                 <div class="d-flex align-items-center">
                                     <?php if ($item['image_path']): ?>
-                                        <img src="<?= htmlspecialchars($item['image_path']) ?>" 
-                                             alt="Product" 
-                                             style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
+                                        <img src="<?= htmlspecialchars($item['image_path']) ?>"
+                                            alt="Product"
+                                            style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
                                     <?php endif; ?>
-                                    <div class="text-truncate" 
-                                         style="max-width: 200px;" 
-                                         data-bs-toggle="tooltip" 
-                                         data-bs-placement="top" 
-                                         title="<?= htmlspecialchars($item['product_name']) ?>">
+                                    <div class="text-truncate"
+                                        style="max-width: 200px;"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="<?= htmlspecialchars($item['product_name']) ?>">
                                         <?= htmlspecialchars($item['product_name']) ?>
                                     </div>
                                 </div>
                             </td>
+                            <!-- Seller Name -->
                             <td class="text-truncate" style="max-width: 150px;">
                                 <?= htmlspecialchars($item['seller_name']) ?>
                             </td>
+                            <!-- Quantity and Price -->
                             <td><?= htmlspecialchars($item['quantity']) ?></td>
                             <td>$<?= number_format($item['price'], 2) ?></td>
+                            <!-- Trade-in Details if Available -->
                             <td>
-                                <?php if (!empty($item['trade_in_details'])): 
+                                <?php if (!empty($item['trade_in_details'])):
                                     $tradeIn = json_decode($item['trade_in_details'], true);
                                 ?>
                                     <small class="text-info">
@@ -92,6 +103,7 @@ if (!$orderDetails) {
         </div>
     </div>
 
+    <!-- Order Total Summary -->
     <div class="order-summary mt-3">
         <div class="d-flex justify-content-between">
             <strong>Total Amount:</strong>
@@ -101,9 +113,9 @@ if (!$orderDetails) {
 </div>
 
 <script>
-// Initialize tooltips
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-})
-</script> 
+    // Initialize Bootstrap tooltips for truncated product names
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>

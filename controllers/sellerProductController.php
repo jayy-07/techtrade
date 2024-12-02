@@ -2,15 +2,18 @@
 
 require_once '../classes/SellerProduct.php';
 
+// SellerProductController handles operations related to seller products
 class SellerProductController
 {
     private $sellerProduct;
 
+    // Constructor initializes the SellerProduct object
     public function __construct()
     {
         $this->sellerProduct = new SellerProduct();
     }
 
+    // Adds a product to the seller's inventory
     public function add_product($data)
     {
         $seller_id = $_SESSION['user_id'];
@@ -34,6 +37,7 @@ class SellerProductController
         }
     }
 
+    // Updates a product in the seller's inventory
     public function update_product($data)
     {
         $seller_id = $_SESSION['user_id'];
@@ -42,7 +46,7 @@ class SellerProductController
         $stock_quantity = $data['stock_quantity'];
         $discount = isset($data['discount']) ? $data['discount'] : 0.00;
 
-        // Validate price and stock quantity
+        // Validate price, stock quantity, and discount
         if (!is_numeric($price) || $price <= 0) {
             return "Price must be a positive number.";
         }
@@ -60,12 +64,13 @@ class SellerProductController
         }
     }
 
+    // Deletes a product from the seller's inventory
     public function delete_product($seller_id, $product_id)
     {
         if ($this->sellerProduct->delete_product($seller_id, $product_id)) {
-            return "Product deleted from inventory successfully!";
+            return "Product deleted successfully!";
         } else {
-            return "Failed to delete product from inventory.";
+            return "Failed to delete product.";
         }
     }
 

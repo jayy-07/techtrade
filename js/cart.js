@@ -1,5 +1,8 @@
 $(document).ready(function() {
-    // Handle quantity changes
+    /**
+     * Handle quantity changes via buttons
+     * Increases or decreases quantity within stock limits
+     */
     $('.quantity-btn').on('click', function() {
         const input = $(this).closest('.input-group').find('.quantity-input');
         const currentValue = parseInt(input.val());
@@ -14,10 +17,19 @@ $(document).ready(function() {
         updateCartItem(input);
     });
 
+    /**
+     * Handle direct quantity input changes
+     */
     $('.quantity-input').on('change', function() {
         updateCartItem($(this));
     });
 
+    /**
+     * Update cart item quantity via AJAX
+     * Validates quantity is within stock limits
+     * Reloads page on success to update totals
+     * @param {jQuery} input - The quantity input element
+     */
     function updateCartItem(input) {
         const cartItemId = input.closest('.cart-item').data('cart-item-id');
         const quantity = parseInt(input.val());
@@ -48,7 +60,10 @@ $(document).ready(function() {
         });
     }
 
-    // Handle item removal
+    /**
+     * Handle cart item removal button click
+     * Shows confirmation modal with item details
+     */
     $('.remove-item').on('click', function() {
         const cartItem = $(this).closest('.cart-item');
         const cartItemId = cartItem.data('cart-item-id');
@@ -64,7 +79,10 @@ $(document).ready(function() {
         $('#deleteCartItemModal').modal('show');
     });
 
-    // Handle delete confirmation
+    /**
+     * Handle delete confirmation in modal
+     * Removes item via AJAX and reloads on success
+     */
     $('#confirmDeleteItem').on('click', function() {
         const cartItemId = $(this).data('cart-item-id');
         
@@ -88,7 +106,11 @@ $(document).ready(function() {
         $('#deleteCartItemModal').modal('hide');
     });
 
-    // Toast notification function
+    /**
+     * Display toast notification
+     * @param {string} message - Message to display
+     * @param {string} type - Bootstrap contextual class (primary/success/danger)
+     */
     function showToast(message, type = 'primary') {
         const toastContainer = $('#toastContainer');
         const toastMessage = $('#toastMessage');
@@ -101,9 +123,11 @@ $(document).ready(function() {
         toast.show();
     }
 
-    // Add checkout button handler
+    /**
+     * Handle checkout button click
+     * Checks login status and redirects appropriately
+     */
     $('#checkoutBtn').on('click', function() {
-        // Check if user is logged in (we'll handle this in PHP)
         $.ajax({
             url: '../actions/check_login.php',
             method: 'GET',
@@ -122,6 +146,13 @@ $(document).ready(function() {
         });
     });
 
+    /**
+     * Calculate trade-in value based on condition and usage duration
+     * @param {string} condition - Device condition (Excellent/Good/Fair/Poor)
+     * @param {string} duration - Usage duration category
+     * @param {number} price - Original price
+     * @returns {number} Calculated trade-in value
+     */
     function calculateTradeInValue(condition, duration, price) {
         const conditionMultiplier = {
             Excellent: 0.8,

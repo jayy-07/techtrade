@@ -2,16 +2,28 @@
 
 require_once '../settings/db_class.php';
 
+/**
+ * Class for managing shopping cart functionality
+ * Extends database connection class
+ */
 class Cart extends db_connection
 {
-
+    /**
+     * Adds a product to the user's cart with optional trade-in
+     * @param int $userId ID of the user adding to cart
+     * @param int $productId ID of the product being added
+     * @param int $sellerId ID of the seller offering the product
+     * @param float $price Price of the product
+     * @param array|null $tradeInDetails Optional trade-in details
+     * @return array Success status and any error messages
+     */
     public function addToCart($userId, $productId, $sellerId, $price, $tradeInDetails = null)
     {
         try {
             $this->db_connect();
             $this->db->begin_transaction();
 
-            // First verify the seller exists and is valid
+            // Verify the seller exists and is valid
             $sellerSql = "SELECT user_id FROM users WHERE user_id = ? AND role = 'Seller'";
             $sellerStmt = $this->db->prepare($sellerSql);
             $sellerStmt->bind_param("i", $sellerId);
@@ -20,7 +32,7 @@ class Cart extends db_connection
                 throw new Exception("Invalid seller");
             }
 
-            // Check if cart exists for the user
+            // Check if a cart exists for the user
             $sql = "SELECT cart_id FROM carts WHERE user_id = ?";
             $stmt = $this->db->prepare($sql);
             $stmt->bind_param("i", $userId);
@@ -28,6 +40,7 @@ class Cart extends db_connection
             $result = $stmt->get_result();
             $cart = $result->fetch_assoc();
 
+            // If no cart exists, create one
             if (!$cart) {
                 $sql = "INSERT INTO carts (user_id) VALUES (?)";
                 $stmt = $this->db->prepare($sql);
@@ -38,7 +51,7 @@ class Cart extends db_connection
                 $cartId = $cart['cart_id'];
             }
 
-            // Get original price and discount from the specific seller's product
+            // Get original price and discount from the seller's product
             $sql = "SELECT sp.price, sp.discount 
                     FROM sellers_products sp 
                     JOIN users u ON sp.seller_id = u.user_id 
@@ -57,9 +70,9 @@ class Cart extends db_connection
             $discount = $productData['discount'];
             $discountedPrice = $originalPrice * (1 - ($discount / 100));
 
-            // Handle trade-in
+            // Handle trade-in details if provided
             $tradeInId = null;
-            $finalPrice = $discountedPrice; // Set default final price
+            $finalPrice = $discountedPrice; // Default final price
 
             if ($tradeInDetails) {
                 $tradeInValue = $this->calculateTradeInValue($tradeInDetails, $originalPrice);
@@ -73,7 +86,7 @@ class Cart extends db_connection
                 $tradeInId = $this->addTradeIn($tradeInDetails, $tradeInValue);
             }
 
-            // Check if item exists in cart with same seller
+            // Check if the item already exists in the cart with the same seller
             $sql = "SELECT cart_item_id, quantity FROM cart_items 
                     WHERE cart_id = ? AND product_id = ? AND seller_id = ? AND COALESCE(trade_in_id, 0) = COALESCE(?, 0)";
             $stmt = $this->db->prepare($sql);
@@ -81,6 +94,7 @@ class Cart extends db_connection
             $stmt->execute();
             $existingItem = $stmt->get_result()->fetch_assoc();
 
+            // Update quantity if item exists, otherwise insert new item
             if ($existingItem) {
                 $sql = "UPDATE cart_items SET quantity = quantity + 1 WHERE cart_item_id = ?";
                 $stmt = $this->db->prepare($sql);
@@ -102,6 +116,13 @@ class Cart extends db_connection
         }
     }
 
+    /**
+     * Adds trade-in details to the database
+     * @param array $tradeInDetails Details of the trade-in device
+     * @param float $tradeInValue Calculated value of the trade-in
+     * @return int ID of the inserted trade-in record
+     * @throws Exception If insert fails
+     */
     private function addTradeIn($tradeInDetails, $tradeInValue)
     {
         try {
@@ -134,6 +155,12 @@ class Cart extends db_connection
         }
     }
 
+    /**
+     * Calculates trade-in value based on device details and original price
+     * @param array $tradeInDetails Details of the trade-in device
+     * @param float $originalPrice Original price of the product
+     * @return float Calculated trade-in value
+     */
     public function calculateTradeInValue($tradeInDetails, $originalPrice)
     {
         $baseValue = $tradeInDetails['purchase_price'];
@@ -164,6 +191,11 @@ class Cart extends db_connection
         return min($tradeInValue, $maxTradeIn);
     }
 
+    /**
+     * Retrieves all items in the user's cart with detailed information
+     * @param int $userId ID of the user
+     * @return array Array of cart items with details
+     */
     public function getCartItems($userId)
     {
         try {
@@ -216,6 +248,11 @@ class Cart extends db_connection
         }
     }
 
+    /**
+     * Calculates total cost of items in cart including discounts and trade-ins
+     * @param int $userId ID of the user
+     * @return array Array containing subtotal, discounts, trade-ins and final total
+     */
     public function getCartTotal($userId)
     {
         try {
@@ -265,6 +302,12 @@ class Cart extends db_connection
         }
     }
 
+    /**
+     * Updates quantity of a specific cart item
+     * @param int $cartItemId ID of the cart item
+     * @param int $quantity New quantity value
+     * @return bool Success/failure of update operation
+     */
     public function updateCartItemQuantity($cartItemId, $quantity)
     {
         try {
@@ -281,6 +324,11 @@ class Cart extends db_connection
         }
     }
 
+    /**
+     * Removes a specific item from the cart
+     * @param int $cartItemId ID of the cart item to remove
+     * @return bool Success/failure of removal operation
+     */
     public function removeCartItem($cartItemId)
     {
         try {
@@ -297,6 +345,11 @@ class Cart extends db_connection
         }
     }
 
+    /**
+     * Clears all items from user's cart and removes cart
+     * @param int $userId ID of the user
+     * @return bool Success/failure of cart clearing operation
+     */
     public function clearCart($userId)
     {
         try {

@@ -1,8 +1,17 @@
 <?php
 require_once '../settings/db_class.php';
 
+/**
+ * Class for managing orders in the e-commerce system
+ * Extends database connection class
+ */
 class Order extends db_connection {
     
+    /**
+     * Creates a new order from cart items
+     * @param array $orderData Order details including user_id, total_amount, trade_in_credit, shipping_address, phone_number
+     * @return int|bool Order ID on success, false on failure
+     */
     public function createOrder($orderData) {
         try {
             error_log("Order Class - Starting order creation");
@@ -123,6 +132,11 @@ class Order extends db_connection {
         }
     }
 
+    /**
+     * Retrieves an order by its ID with basic information
+     * @param int $order_id ID of the order to retrieve
+     * @return array|bool Order details on success, false on failure
+     */
     public function getOrder($order_id) {
         try {
             $this->db_connect();
@@ -183,6 +197,11 @@ class Order extends db_connection {
         }
     }
 
+    /**
+     * Retrieves detailed order information including customer and payment details
+     * @param int $orderId ID of the order
+     * @return array|null Order details on success, null on failure
+     */
     public function getOrderDetails($orderId) {
         try {
             $this->db_connect();
@@ -242,6 +261,11 @@ class Order extends db_connection {
         }
     }
 
+    /**
+     * Helper function to retrieve items for a specific order
+     * @param int $orderId ID of the order
+     * @return array Array of order items
+     */
     private function getOrderItems($orderId) {
         $sql = "SELECT oi.*, p.name as product_name, p.image_path,
                 CONCAT(u.first_name, ' ', u.last_name) as seller_name
@@ -256,6 +280,12 @@ class Order extends db_connection {
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
+    /**
+     * Updates the payment status of an order
+     * @param int $order_id ID of the order
+     * @param string $status New payment status
+     * @return bool Success/failure of update operation
+     */
     public function updateOrderStatus($order_id, $status) {
         try {
             // Establish database connection
@@ -301,6 +331,11 @@ class Order extends db_connection {
         }
     }
 
+    /**
+     * Retrieves all orders for a specific user
+     * @param int $user_id ID of the user
+     * @return array Array of user's orders
+     */
     public function getUserOrders($user_id) {
         try {
             $this->db_connect();
@@ -357,6 +392,10 @@ class Order extends db_connection {
         }
     }
 
+    /**
+     * Retrieves all orders in the system
+     * @return array Array of all orders
+     */
     public function getAllOrders() {
         try {
             $this->db_connect();
@@ -393,6 +432,11 @@ class Order extends db_connection {
         }
     }
 
+    /**
+     * Retrieves orders for a specific seller
+     * @param int $sellerId ID of the seller
+     * @return array Array of seller's orders
+     */
     public function getSellerOrders($sellerId) {
         try {
             $this->db_connect();
@@ -429,6 +473,12 @@ class Order extends db_connection {
         }
     }
 
+    /**
+     * Retrieves detailed order information for a specific seller
+     * @param int $orderId ID of the order
+     * @param int $sellerId ID of the seller
+     * @return array|null Order details on success, null on failure
+     */
     public function getSellerOrderDetails($orderId, $sellerId) {
         try {
             $this->db_connect();
@@ -482,4 +532,4 @@ class Order extends db_connection {
             return null;
         }
     }
-} 
+}

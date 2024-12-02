@@ -1,6 +1,10 @@
 $(document).ready(function() {
 
-  // Function to display toast messages
+  /**
+   * Shows a toast notification with the specified message and type
+   * @param {string} message - The message to display in the toast
+   * @param {string} type - The type of toast (primary, success, or danger)
+   */
   function showToast(message, type = "primary") {
       const toastContainer = $("#toastContainer");
       const toastMessage = $("#toastMessage");
@@ -13,7 +17,10 @@ $(document).ready(function() {
       toast.show();
   }
 
-  // Function to update the product table after edit/delete
+  /**
+   * Updates the product table after edit/delete operations
+   * @param {string} response - JSON response from server containing updated product data
+   */
   function updateProductTable(response) {
       try {
           const res = JSON.parse(response);
@@ -21,7 +28,7 @@ $(document).ready(function() {
               showToast(res.message, "success");
 
               if (res.action === 'edit') {
-                  // Update the row in the table
+                  // Update the row in the table with new product data
                   const updatedRow = `
                       <td>${res.product_name}</td>
                       <td>${res.category_name}</td>
@@ -36,7 +43,7 @@ $(document).ready(function() {
                   `;
                   $(`tr[data-product-id="${res.product_id}"]`).html(updatedRow);
               } else if (res.action === 'delete') {
-                  // Remove the row from the table
+                  // Remove the deleted product row
                   $(`tr[data-product-id="${res.product_id}"]`).remove();
               }
           } else {
@@ -48,11 +55,14 @@ $(document).ready(function() {
       }
   }
 
-  // Add Product AJAX Request
+  /**
+   * Handle Add Product form submission
+   * Validates input and sends AJAX request to add new product
+   */
   $("#addProductForm").submit(function(e) {
       e.preventDefault();
 
-      // Basic front-end validation
+      // Validate form inputs
       let isValid = true;
       const price = parseFloat($("#price").val());
       const stock = parseInt($("#stock_quantity").val());
@@ -91,11 +101,14 @@ $(document).ready(function() {
       }
   });
 
-  // Update Product AJAX Request
+  /**
+   * Handle Edit Product form submission
+   * Validates input and sends AJAX request to update product
+   */
   $("#editProductForm").submit(function(e) {
       e.preventDefault();
 
-      // Basic front-end validation
+      // Validate form inputs
       let isValid = true;
       const price = parseFloat($("#edit_price").val());
       const stock = parseInt($("#edit_stock_quantity").val());
@@ -134,7 +147,10 @@ $(document).ready(function() {
       }
   });
 
-  // Delete Product AJAX Request
+  /**
+   * Handle Delete Product confirmation
+   * Sends AJAX request to delete product when confirmed
+   */
   $("#confirmDeleteProduct").click(function(e) {
       e.preventDefault();
       const productId = $(this).data("product-id");
@@ -153,7 +169,10 @@ $(document).ready(function() {
       });
   });
 
-  // Open Edit Modal (Prefill fields)
+  /**
+   * Handle Edit Product modal opening
+   * Populates form fields with current product data
+   */
   $(document).on("click", ".edit-product", function() {
       const productId = $(this).data("product-id");
       const productPrice = $(this).data("product-price");
@@ -166,7 +185,10 @@ $(document).ready(function() {
       $("#editProductForm #edit_discount").val(productDiscount);
   });
 
-  // Open Delete Modal
+  /**
+   * Handle Delete Product modal opening
+   * Sets product details in confirmation dialog
+   */
   $(document).on("click", ".delete-product", function() {
       const productId = $(this).data("product-id");
       const productName = $(this).data("product-name");

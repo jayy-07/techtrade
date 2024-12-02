@@ -1,15 +1,28 @@
 <?php
 require_once '../classes/User.php';
 
+/**
+ * Controller class for handling user login functionality
+ */
 class LoginController
 {
+    /** @var User Instance of User class */
     private $user;
 
+    /**
+     * Constructor initializes User instance
+     */
     public function __construct()
     {
         $this->user = new User();
     }
 
+    /**
+     * Handles user login process
+     * Validates credentials and sets session data on success
+     * @param array $data Login form data containing email and password
+     * @return array Response with status and redirect URL or errors
+     */
     public function login($data)
     {
         // Validate inputs
@@ -45,6 +58,11 @@ class LoginController
         }
     }
 
+    /**
+     * Validates login form data
+     * @param array $data Form data to validate
+     * @return array Array of validation error messages
+     */
     private function validate_data($data)
     {
         $errors = [];
