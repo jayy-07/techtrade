@@ -23,7 +23,10 @@ $orders = $orderController->getSellerOrders($_SESSION['user_id']);
 
 <body>
     <div class="container mt-4">
-        <ul class="nav nav-pills mt-4 mb-4 justify-content-center">
+    <ul class="nav nav-pills mt-4 mb-4 justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link" href="dashboard.php">Dashboard</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="seller_inventory.php">Inventory</a>
             </li>

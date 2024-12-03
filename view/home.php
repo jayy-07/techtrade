@@ -30,21 +30,21 @@ $sectionsWithProducts = $sectionController->getAllSectionsWithProducts();
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="https://www.freewebheaders.com/wp-content/gallery/abstract-size-800x200/multicolor-vertical-shiny-lines-abstract-header-800x200.jpg" class="d-block w-100" alt="First Slide">
+                <img src="../images/pexels-fauxels-3184451.jpg" class="d-block w-100" alt="First Slide">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Welcome to TechTrade</h5>
                     <p>Your one stop shop for all your tech needs</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="https://www.freewebheaders.com/wp-content/gallery/abstract-size-800x200/mixed-red-orange-color-abstract-header-800x200.jpg" class="d-block w-100" alt="Second Slide">
+                <img src="../images/confidence.jpeg" class="d-block w-100" alt="Second Slide">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Shop with confidence</h5>
                     <p>We offer a wide range of products from top brands</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="https://www.freewebheaders.com/wp-content/gallery/abstract-size-800x200/cache/lines-abstract-art-multicolor-header-800x200.jpg-nggid0511679-ngg0dyn-800x200x100-00f0w010c010r110f110r010t010.jpg" class="d-block w-100" alt="Third Slide">
+                <img src="../images/pexels-shvetsa-4482896.jpg" class="d-block w-100" alt="Third Slide">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Secure</h5>
                     <p>We use the latest security measures to ensure your data is safe</p>
@@ -82,10 +82,10 @@ $sectionsWithProducts = $sectionController->getAllSectionsWithProducts();
                             </div>
                             <div class="card-body">
                                 <h6 class="card-title"><?= htmlspecialchars($product['name']) ?></h6>
-                                <p class="card-text text-success">$<?= number_format($product['min_price'], 2) ?></p>
+                                <p class="card-text text-success"><span class="currency-symbol">₵</span><?= number_format($product['min_price'], 2) ?></p>
                                 <?php if ($product['max_discount'] > 0): ?>
                                     <p class="card-text text-muted">
-                                        <del>$<?= number_format($product['min_price'] / (1 - ($product['max_discount'] / 100)), 2) ?></del>
+                                        <del>₵<?= number_format($product['min_price'] / (1 - ($product['max_discount'] / 100)), 2) ?></del>
                                     </p>
                                     <p class="card-text">
                                         <span class="badge bg-success"><?= round($product['max_discount']) ?>% Off</span>

@@ -27,6 +27,9 @@ $users = $controller->getAllUsers();
         <!-- Navigation Pills -->
         <ul class="nav nav-pills mt-4 mb-4 justify-content-center">
             <li class="nav-item">
+                <a class="nav-link" href="dashboard.php">Dashboard</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link active" href="users.php">Users</a>
             </li>
             <li class="nav-item">

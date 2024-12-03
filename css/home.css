@@ -934,3 +934,39 @@ body {
 .table {
     min-width: 100%; /* Ensure table takes full width */
 }
+
+@font-face {
+    font-family: 'CustomCurrency';
+    src: url('https://fonts.cdnfonts.com/css/dejavu-sans-mono') format('woff2');
+    unicode-range: U+20B5; /* Unicode range for Cedi symbol */
+}
+
+.currency-symbol {
+    font-family: 'CustomCurrency', 'Arial', sans-serif;
+}
+
+#homeCarousel {
+    height: 400px;
+    overflow: hidden;
+}
+
+#homeCarousel .carousel-inner {
+    height: 100%;
+}
+
+#homeCarousel .carousel-item {
+    height: 100%;
+}
+
+#homeCarousel .carousel-item img {
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Improve caption visibility */
+#homeCarousel .carousel-caption {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 8px;
+}

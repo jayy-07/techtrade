@@ -82,7 +82,7 @@ foreach ($orderDetails['items'] as $item) {
                                 </div>
                             </td>
                             <td><?= htmlspecialchars($item['quantity']) ?></td>
-                            <td>$<?= number_format($item['price'], 2) ?></td>
+                            <td><span class="currency-symbol">₵</span><?= number_format($item['price'], 2) ?></td>
                             <td>
                                 <!-- Trade-in details if available -->
                                 <?php if (!empty($item['trade_in_details'])): 
@@ -91,7 +91,7 @@ foreach ($orderDetails['items'] as $item) {
                                     <small class="text-info">
                                         <i class="bi bi-arrow-left-right"></i>
                                         Device: <?= htmlspecialchars($tradeIn['device_type']) ?><br>
-                                        Value: $<?= number_format($tradeIn['trade_in_value'], 2) ?>
+                                        Value: <span class="currency-symbol">₵</span><?= number_format($tradeIn['trade_in_value'], 2) ?>
                                     </small>
                                 <?php endif; ?>
                             </td>
@@ -106,7 +106,7 @@ foreach ($orderDetails['items'] as $item) {
     <div class="order-summary mt-3">
         <div class="d-flex justify-content-between">
             <strong>Total Amount for Your Items:</strong>
-            <strong>$<?= number_format($totalAmount, 2) ?></strong>
+            <strong><span class="currency-symbol">₵</span> number_format($totalAmount, 2) ?></strong>
         </div>
     </div>
 </div> 

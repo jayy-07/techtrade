@@ -12,7 +12,7 @@ $orders = $orderController->getUserOrders($_SESSION['user_id']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orders - TechTrade</title>
+    <title>My Orders</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -72,7 +72,7 @@ $orders = $orderController->getUserOrders($_SESSION['user_id']);
                             <?php endif; ?>
                             <div>
                                 <p class="mb-1"><?= $order['total_items'] ?> item(s)</p>
-                                <h6 class="mb-0">$<?= number_format($order['total_amount'], 2) ?></h6>
+                                <h6 class="mb-0"><span class="currency-symbol">₵</span><?= number_format($order['total_amount'], 2) ?></h6>
                             </div>
                         </div>
 

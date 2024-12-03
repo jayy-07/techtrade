@@ -17,7 +17,7 @@ $items = $wishlistController->getWishlistItems($_SESSION['user_id']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Wishlist - TechTrade</title>
+    <title>My Wishlist</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -69,7 +69,7 @@ $items = $wishlistController->getWishlistItems($_SESSION['user_id']);
                                 <div class="mt-auto">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <div>
-                                            <h5 class="mb-0 product-price">$<?= number_format($item['min_price'], 2) ?></h5>
+                                            <h5 class="mb-0 product-price"><span class="currency-symbol">₵</span><?= number_format($item['min_price'], 2) ?></h5>
                                             <?php if ($item['max_discount'] > 0): ?>
                                                 <small class="text-success">
                                                     <?= round($item['max_discount']) ?>% OFF

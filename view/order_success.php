@@ -37,7 +37,7 @@ error_log("Order verification passed - proceeding to display order");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Confirmation - TechTrade</title>
+    <title>Order Confirmation</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -112,15 +112,15 @@ error_log("Order verification passed - proceeding to display order");
                                     <?php if (!empty($item['trade_in_value'])): ?>
                                         <small class="text-info">
                                             <i class="bi bi-arrow-left-right"></i>
-                                            Trade-in Applied: $<?= number_format($item['trade_in_value'], 2) ?>
+                                            Trade-in Applied: <span class="currency-symbol">₵</span><?= number_format($item['trade_in_value'], 2) ?>
                                         </small>
                                     <?php endif; ?>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <p class="mb-0">$<?= number_format($item['price'], 2) ?></p>
+                                    <p class="mb-0"><span class="currency-symbol">₵</span><?= number_format($item['price'], 2) ?></p>
                                     <?php if (!empty($item['discount'])): ?>
                                         <small class="text-muted">
-                                            <del>$<?= number_format($item['price'] / (1 - $item['discount']/100), 2) ?></del>
+                                            <del>₵<?= number_format($item['price'] / (1 - $item['discount']/100), 2) ?></del>
                                             (<?= number_format($item['discount'], 0) ?>% off)
                                         </small>
                                     <?php endif; ?>
@@ -133,23 +133,23 @@ error_log("Order verification passed - proceeding to display order");
                     <div class="price-summary mt-4">
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal</span>
-                            <span>$<?= number_format($orderDetails['subtotal'], 2) ?></span>
+                            <span><span class="currency-symbol">₵</span><?= number_format($orderDetails['subtotal'], 2) ?></span>
                         </div>
                         <?php if (!empty($orderDetails['total_discount'])): ?>
                         <div class="d-flex justify-content-between mb-2 text-success">
                             <span>Discount</span>
-                            <span>-$<?= number_format($orderDetails['total_discount'], 2) ?></span>
+                            <span>-<span class="currency-symbol">₵</span><?= number_format($orderDetails['total_discount'], 2) ?></span>
                         </div>
                         <?php endif; ?>
                         <?php if ($orderDetails['trade_in_credit'] != 0): ?>
                         <div class="d-flex justify-content-between mb-2 text-info">
                             <span>Trade-in Credit</span>
-                            <span>-$<?= number_format($orderDetails['trade_in_credit'], 2) ?></span>
+                            <span>-<span class="currency-symbol">₵</span><?= number_format($orderDetails['trade_in_credit'], 2) ?></span>
                         </div>
                         <?php endif; ?>
                         <div class="d-flex justify-content-between mt-2 pt-2 border-top">
                             <strong>Total</strong>
-                            <strong>$<?= number_format($orderDetails['final_total'], 2) ?></strong>
+                            <strong><span class="currency-symbol">₵</span><?= number_format($orderDetails['final_total'], 2) ?></strong>
                         </div>
                     </div>
                 </div>

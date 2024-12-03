@@ -83,7 +83,7 @@ if (!$orderDetails) {
                             </td>
                             <!-- Quantity and Price -->
                             <td><?= htmlspecialchars($item['quantity']) ?></td>
-                            <td>$<?= number_format($item['price'], 2) ?></td>
+                            <td><span class="currency-symbol">₵</span><?= number_format($item['price'], 2) ?></td>
                             <!-- Trade-in Details if Available -->
                             <td>
                                 <?php if (!empty($item['trade_in_details'])):
@@ -92,7 +92,7 @@ if (!$orderDetails) {
                                     <small class="text-info">
                                         <i class="bi bi-arrow-left-right"></i>
                                         Device: <?= htmlspecialchars($tradeIn['device_type']) ?><br>
-                                        Value: $<?= number_format($tradeIn['trade_in_value'], 2) ?>
+                                        Value: <span class="currency-symbol">₵</span><?= number_format($tradeIn['trade_in_value'], 2) ?>
                                     </small>
                                 <?php endif; ?>
                             </td>

@@ -80,10 +80,10 @@ if ($searchQuery) {
                 <label for="priceFilter" class="form-label">Price Range</label>
                 <select class="form-select mb-3" id="priceFilter">
                     <option value="">All Prices</option>
-                    <option value="0-100">$0 - $100</option>
-                    <option value="100-500">$100 - $500</option>
-                    <option value="500-1000">$500 - $1000</option>
-                    <option value="1000-+">$1000+</option>
+                    <option value="0-100"><span class="currency-symbol">₵</span>0 - <span class="currency-symbol">₵</span>100</option>
+                    <option value="100-500"><span class="currency-symbol">₵</span>100 - <span class="currency-symbol">₵</span>500</option>
+                    <option value="500-1000"><span class="currency-symbol">₵</span>500 - <span class="currency-symbol">₵</span>1000</option>
+                    <option value="1000-+"><span class="currency-symbol">₵</span>1000+</option>
                 </select>
 
                 <!-- Sort Options -->
@@ -112,10 +112,10 @@ if ($searchQuery) {
                                     <div class="card-body">
                                         <h6 class="card-title"><?= htmlspecialchars($product['name']) ?></h6>
                                         <p class="text-muted small"><?= htmlspecialchars($product['brand_name']) ?></p>
-                                        <p class="card-text text-success">$<?= number_format($product['min_price'], 2) ?></p>
+                                        <p class="card-text text-success"><span class="currency-symbol">₵</span><?= number_format($product['min_price'], 2) ?></p>
                                         <?php if ($product['max_discount'] > 0): ?>
                                             <p class="card-text text-muted">
-                                                <del>$<?= number_format($product['min_price'] / (1 - ($product['max_discount'] / 100)), 2) ?></del>
+                                                <del>₵<?= number_format($product['min_price'] / (1 - ($product['max_discount'] / 100)), 2) ?></del>
                                             </p>
                                             <p class="card-text">
                                                 <span class="badge bg-success"><?= round($product['max_discount']) ?>% Off</span>

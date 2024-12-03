@@ -65,11 +65,11 @@ foreach ($products as $product): ?>
             <div class="card-body">
                 <h6 class="card-title"><?= htmlspecialchars($product['name']) ?></h6>
                 <p class="text-muted small"><?= htmlspecialchars($product['brand_name']) ?></p>
-                <p class="card-text text-success">$<?= number_format($product['min_price'], 2) ?></p>
+                <p class="card-text text-success"><span class="currency-symbol">₵</span><?= number_format($product['min_price'], 2) ?></p>
                 <?php if ($product['max_discount'] > 0): ?>
                     <!-- Show original price and discount if available -->
                     <p class="card-text text-muted">
-                        <del>$<?= number_format($product['min_price'] / (1 - ($product['max_discount'] / 100)), 2) ?></del>
+                        <del>₵<?= number_format($product['min_price'] / (1 - ($product['max_discount'] / 100)), 2) ?></del>
                     </p>
                     <p class="card-text">
                         <span class="badge bg-success"><?= round($product['max_discount']) ?>% Off</span>

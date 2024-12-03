@@ -131,9 +131,9 @@ $isInWishlist = isset($_SESSION['user_id']) ?
                 </div>
 
                 <div class="mb-3">
-                    <h4 class="product-price">$<?= $cheapestSeller['price'] ?? 'N/A' ?></h4>
+                    <h4 class="product-price"><span class="currency-symbol">₵</span><?= $cheapestSeller['price'] ?? 'N/A' ?></h4>
                     <?php if (isset($cheapestSeller['discount']) && $cheapestSeller['discount'] > 0) : ?>
-                        <p class="text-muted"><del>$<?= number_format($cheapestSeller['price'] / (1 - ($cheapestSeller['discount'] / 100)), 2) ?></del> | <?= round($cheapestSeller['discount'])  ?>% OFF</p>
+                        <p class="text-muted"><del>₵<?= number_format($cheapestSeller['price'] / (1 - ($cheapestSeller['discount'] / 100)), 2) ?></del> | <?= round($cheapestSeller['discount'])  ?>% OFF</p>
                     <?php endif; ?>
                 </div>
 
@@ -175,10 +175,10 @@ $isInWishlist = isset($_SESSION['user_id']) ?
             <div class="other-sellers-row">
                 <?php foreach ($otherSellers as $seller) : ?>
                     <div class="seller-card">
-                        <p class="card-text text-success">$<?= $seller['price'] ?></p>
+                        <p class="card-text text-success"><span class="currency-symbol">₵</span><?= $seller['price'] ?></p>
                         <?php if (isset($seller['discount']) && $seller['discount'] > 0) : ?>
                             <p class="card-text text-muted">
-                                <del>$<?= number_format($seller['price'] / (1 - ($seller['discount'] / 100)), 2) ?></del>
+                                <del>₵<?= number_format($seller['price'] / (1 - ($seller['discount'] / 100)), 2) ?></del>
                             </p>
                             <p class="card-text">
                                 <span class="badge bg-success"><?= round($seller['discount']) ?>% Off</span>

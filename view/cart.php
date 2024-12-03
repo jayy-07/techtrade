@@ -16,7 +16,7 @@ $cartTotal = $cartController->getCartTotal($_SESSION['user_id']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Cart - TechTrade</title>
+    <title>Your Cart</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -77,7 +77,7 @@ $cartTotal = $cartController->getCartTotal($_SESSION['user_id']);
                                                 <ul class="mb-0 mt-1">
                                                     <li>Device: <?= htmlspecialchars($item['device_type']) ?></li>
                                                     <li>Condition: <?= htmlspecialchars($item['device_condition']) ?></li>
-                                                    <li>Trade-in Value: $<?= number_format($item['trade_in_value'], 2) ?></li>
+                                                    <li>Trade-in Value: <span class="currency-symbol">₵</span><?= number_format($item['trade_in_value'], 2) ?></li>
                                                 </ul>
                                             </div>
                                         <?php endif; ?>
@@ -97,10 +97,10 @@ $cartTotal = $cartController->getCartTotal($_SESSION['user_id']);
                                                     $originalPrice = $item['original_unit_price'] / (1 - ($item['discount'] / 100));
                                                     $discountedPrice = $item['original_unit_price'];
                                                 ?>
-                                                <p class="h5 mb-0">$<?= number_format($discountedPrice, 2) ?></p>
+                                                <p class="h5 mb-0"><span class="currency-symbol">₵</span><?= number_format($discountedPrice, 2) ?></p>
                                                 <?php if ($item['discount'] > 0): ?>
                                                     <small class="text-muted">
-                                                        <del>$<?= number_format($originalPrice, 2) ?></del>
+                                                        <del>₵<?= number_format($originalPrice, 2) ?></del>
                                                         (<?= number_format($item['discount'], 0) ?>% off)
                                                     </small>
                                                 <?php endif; ?>
@@ -119,7 +119,7 @@ $cartTotal = $cartController->getCartTotal($_SESSION['user_id']);
                         <div class="price-breakdown">
                             <div class="d-flex justify-content-between mb-2">
                                 <span>Subtotal</span>
-                                <span>$<?= number_format($cartTotal['subtotal'], 2) ?></span>
+                                <span><span class="currency-symbol">₵</span><?= number_format($cartTotal['subtotal'], 2) ?></span>
                             </div>
                             <?php if ($cartTotal['total_discount'] > 0): ?>
                                 <div class="d-flex justify-content-between mb-2 text-success">
@@ -130,13 +130,13 @@ $cartTotal = $cartController->getCartTotal($_SESSION['user_id']);
                             <?php if ($cartTotal['total_trade_in'] > 0): ?>
                                 <div class="d-flex justify-content-between mb-2 text-info">
                                     <span>Trade-in Credit</span>
-                                    <span>-$<?= number_format($cartTotal['total_trade_in'], 2) ?></span>
+                                    <span>-<span class="currency-symbol">₵</span><?= number_format($cartTotal['total_trade_in'], 2) ?></span>
                                 </div>
                             <?php endif; ?>
                         </div>
                         <div class="d-flex justify-content-between mb-4">
                             <span class="h5">Total</span>
-                            <span class="h5">$<?= number_format($cartTotal['final_total'], 2) ?></span>
+                            <span class="h5"><span class="currency-symbol">₵</span><?= number_format($cartTotal['final_total'], 2) ?></span>
                         </div>
                         <button type="button" id="checkoutBtn" class="btn btn-techtrade-primary w-100">
                             <i class="bi bi-credit-card me-2"></i>Proceed to Checkout

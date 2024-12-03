@@ -22,11 +22,11 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="userDropdown">
                             <?php if ($_SESSION['role'] === 'Administrator'): ?>
-                                <a class="dropdown-item" href="../admin/users.php">
+                                <a class="dropdown-item" href="../admin/dashboard.php">
                                     <i class="bi bi-speedometer2 me-2"></i> Admin Dashboard
                                 </a>
                             <?php elseif ($_SESSION['role'] === 'Seller'): ?>
-                                <a class="dropdown-item" href="../seller/seller_inventory.php">
+                                <a class="dropdown-item" href="../seller/dashboard.php">
                                     <i class="bi bi-shop me-2"></i> Seller Dashboard
                                 </a>
                             <?php endif; ?>

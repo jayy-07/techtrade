@@ -38,6 +38,9 @@ $categories = $categoryController->index();
     <div class="container mt-4">
         <ul class="nav nav-pills mt-4 mb-4 justify-content-center">
             <li class="nav-item">
+                <a class="nav-link" href="dashboard.php">Dashboard</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link active" href="seller_inventory.php">Inventory</a>
             </li>
             <li class="nav-item">
@@ -75,10 +78,10 @@ $categories = $categoryController->index();
                         ?>
                             <tr data-product-id="<?= $product['product_id'] ?>">
                                 <td class="product-name-cell">
-                                    <div class="text-truncate" 
-                                         data-bs-toggle="tooltip" 
-                                         data-bs-placement="top" 
-                                         title="<?= htmlspecialchars($product['product_name']) ?>">
+                                    <div class="text-truncate"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="<?= htmlspecialchars($product['product_name']) ?>">
                                         <?= htmlspecialchars($product['product_name']) ?>
                                     </div>
                                 </td>
