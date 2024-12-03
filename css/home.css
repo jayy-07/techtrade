@@ -8,7 +8,9 @@
 }
 
 a[href="register.php"],
-a[href="login.php"] {
+a[href="login.php"],
+a[href="../view/terms.php"],
+a[href="../view/privacy.php"] {
   color: #ae1758; /* Change the color to your desired color */
 }
 

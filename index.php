@@ -79,8 +79,8 @@
                     <p>&copy; 2024 TechTrade. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <a href="#" class="footer-link">Terms of Service</a>
-                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="view/terms.php" class="footer-link">Terms of Service</a>
+                    <a href="view/terms.php" class="footer-link">Privacy Policy</a>
                 </div>
             </div>
         </div>

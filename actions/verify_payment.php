@@ -1,5 +1,10 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 'On');
+
+
+
 require_once '../classes/Payment.php';
 require_once '../classes/Cart.php';
 require_once '../controllers/OrderController.php';
@@ -34,12 +39,20 @@ try {
         $orderController = new OrderController();
         $success = $orderController->updateOrderStatus($order_id, 'Completed');
         
-        // Throw exception if order status update fails
         if (!$success) {
-            throw new Exception("Failed to update order status");
+            // Log the issue but don't throw an exception
+            error_log("Warning: Initial attempt to update order status failed for order ID: " . $order_id);
+            
+            // Retry the update (optional)
+            $retrySuccess = $orderController->updateOrderStatus($order_id, 'Completed');
+            
+            if (!$retrySuccess) {
+                error_log("Error: Failed to update order status after retry for order ID: " . $order_id);
+                // Continue with the process instead of throwing exception
+            }
         }
         
-        // Store payment transaction details in database
+        // Continue with storing transaction and clearing cart
         $payment->storeTransaction([
             'order_id' => $order_id,
             'reference' => $reference,

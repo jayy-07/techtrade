@@ -2,6 +2,8 @@
 require_once '../settings/core.php';
 require_once '../controllers/WishlistController.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', 'On');
 // Check if user is logged in
 check_login();
 
@@ -27,6 +29,7 @@ $items = $wishlistController->getWishlistItems($_SESSION['user_id']);
 
     <div class="container my-5">
         <h2 class="mb-4">My Wishlist</h2>
+        
 
         <?php if (empty($items)): ?>
             <div class="text-center py-5">

@@ -8,9 +8,9 @@ $config = [
         'paystack_public_key' => 'pk_test_ed5890a96470b5ae8e82f8a6531f88d2f9c8c4b3'
     ],
     'production' => [
-        'base_url' => 'https://youractualwebsite.com',
-        'paystack_secret_key' => 'your_live_secret_key',
-        'paystack_public_key' => 'your_live_public_key'
+        'base_url' => 'http://169.239.251.102:4442/~joel.kodji',
+        'paystack_secret_key' => 'sk_test_105e7a4c7c4684f6c903be9310f5b5df56375e7d',
+        'paystack_public_key' => 'pk_test_ed5890a96470b5ae8e82f8a6531f88d2f9c8c4b3'
     ]
 ];
 

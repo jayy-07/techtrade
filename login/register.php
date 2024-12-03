@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 'On');
 require_once '../functions/getRegions.php';
 $regions = fetch_regions();
 ?>
@@ -10,7 +12,7 @@ $regions = fetch_regions();
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register</title>
   <link rel="icon" type="image/x-icon" href="../images/favicon.png" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
   <link href="../css/home.css" rel="stylesheet" />
 </head>
@@ -90,10 +92,16 @@ $regions = fetch_regions();
               <p class="text-danger" id="error-message"></p>
               <button type="submit" id="signin-btn" class="btn w-100">Sign up</button>
             </form>
-
             <!-- Sign In Link -->
             <div class="text-center mt-3">
               <p>Already have an account? <a href="login.php">Sign in</a></p>
+            </div>
+            <div class="text-center mt-3">
+              <p class="text-muted small">
+                By signing up, you agree to our
+                <a href="../view/terms.php">Terms of Service</a> and
+                <a href="../view/privacy.php">Privacy Policy</a>
+              </p>
             </div>
           </div>
         </div>

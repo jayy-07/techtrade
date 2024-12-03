@@ -1,6 +1,6 @@
 <?php
 require_once '../settings/core.php';
-require_once '../controllers/orderController.php';
+require_once '../controllers/OrderController.php';
 check_admin();
 
 $orderController = new OrderController();
