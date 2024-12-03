@@ -170,9 +170,9 @@ if (empty($cartItems)) {
             </div>
         </div>
     </div>
-
+    <?php include 'footer.php'; ?>
     <script>
-        const PAYSTACK_PUBLIC_KEY = '<?php echo 'pk_test_57eea14bbe9565b4e145426b118d39f67b2527ec'; ?>';
+        const PAYSTACK_PUBLIC_KEY = '<?php echo 'pk_test_ed5890a96470b5ae8e82f8a6531f88d2f9c8c4b3'; ?>';
     </script>
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>

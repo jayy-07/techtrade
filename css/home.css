@@ -970,3 +970,23 @@ body {
     padding: 20px;
     border-radius: 8px;
 }
+
+/* Footer Styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}
+
+footer .logo-text {
+    font-family: "Gluck";
+    font-size: 20px;
+}
+
+footer a:hover {
+    opacity: 0.8;
+}

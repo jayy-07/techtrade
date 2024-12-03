@@ -101,6 +101,7 @@ $sectionsWithProducts = $sectionController->getAllSectionsWithProducts();
             </div>
         </div>
     <?php endforeach; ?>
+    <?php include 'footer.php'; ?>
 
 </body>
 

@@ -100,6 +100,7 @@ $items = $wishlistController->getWishlistItems($_SESSION['user_id']);
         </div>
     </div>
 
+    <?php include 'footer.php'; ?>
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/wishlist.js"></script>

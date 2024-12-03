@@ -165,7 +165,7 @@ error_log("Order verification passed - proceeding to display order");
             </div>
         </div>
     </div>
-
+    <?php include 'footer.php'; ?>
     <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 </html> 

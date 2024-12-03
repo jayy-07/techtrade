@@ -32,7 +32,7 @@ if ($currentCategoryId) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Listing</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
-    <link href="../css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="../css/home.css" rel="stylesheet" />
 </head>
@@ -50,8 +50,8 @@ if ($currentCategoryId) {
                 <select class="form-select mb-3" id="categoryFilter">
                     <option value="">All Categories</option>
                     <?php foreach ($categories as $category): ?>
-                        <option value="<?= $category['category_id'] ?>" 
-                                <?= $currentCategoryId == $category['category_id'] ? 'selected' : '' ?>>
+                        <option value="<?= $category['category_id'] ?>"
+                            <?= $currentCategoryId == $category['category_id'] ? 'selected' : '' ?>>
                             <?= htmlspecialchars($category['name']) ?>
                         </option>
                     <?php endforeach; ?>
@@ -63,7 +63,7 @@ if ($currentCategoryId) {
                     <option value="">All Brands</option>
                     <?php foreach ($brands as $brand): ?>
                         <option value="<?= $brand['brand_id'] ?>"
-                                <?= $currentBrandId == $brand['brand_id'] ? 'selected' : '' ?>>
+                            <?= $currentBrandId == $brand['brand_id'] ? 'selected' : '' ?>>
                             <?= htmlspecialchars($brand['name']) ?>
                         </option>
                     <?php endforeach; ?>
@@ -95,12 +95,12 @@ if ($currentCategoryId) {
                     <?php if (!empty($products)): ?>
                         <?php foreach ($products as $product): ?>
                             <div class="col-lg-4 col-md-6 mb-4">
-                                <a href="product.php?product_id=<?= $product['product_id'] ?>" 
-                                   class="card product-card text-center shadow-sm">
+                                <a href="product.php?product_id=<?= $product['product_id'] ?>"
+                                    class="card product-card text-center shadow-sm">
                                     <div class="product-card-img-wrapper">
-                                        <img src="<?= htmlspecialchars($product['image_path']) ?>" 
-                                             class="card-img-top" 
-                                             alt="<?= htmlspecialchars($product['name']) ?>">
+                                        <img src="<?= htmlspecialchars($product['image_path']) ?>"
+                                            class="card-img-top"
+                                            alt="<?= htmlspecialchars($product['name']) ?>">
                                     </div>
                                     <div class="card-body">
                                         <h6 class="card-title"><?= htmlspecialchars($product['name']) ?></h6>
@@ -149,6 +149,8 @@ if ($currentCategoryId) {
             </div>
         </div>
     </div>
+    <?php include 'footer.php'; ?>
+
 
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/jquery.min.js"></script>

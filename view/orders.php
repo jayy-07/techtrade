@@ -87,7 +87,7 @@ $orders = $orderController->getUserOrders($_SESSION['user_id']);
         </div>
         <?php endif; ?>
     </div>
-
+    <?php include 'footer.php'; ?>
     <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 </html> 
