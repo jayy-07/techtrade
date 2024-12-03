@@ -51,9 +51,9 @@ function check_customer() {
     check_login();
     if ($_SESSION['role'] !== 'Customer') {
         if ($_SESSION['role'] === 'Administrator') {
-            header("Location: ../admin/users.php");
+            header("Location: ../admin/dashboard.php");
         } else {
-            header("Location: ../seller/seller_inventory.php");
+            header("Location: ../seller/dashboard.php");
         }
         exit;
     }

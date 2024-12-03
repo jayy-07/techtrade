@@ -47,7 +47,9 @@ class LoginController
 
             // Define redirection URL based on user role
             if ($user['role'] == 'Administrator') {
-                $redirect_url = '../admin/users.php'; // Redirect to admin dashboard
+                $redirect_url = '../admin/dashboard.php'; // Redirect to admin dashboard
+            } elseif ($user['role'] == 'Seller') {
+                $redirect_url = '../seller/dashboard.php'; // Redirect to seller dashboard
             } else {
                 $redirect_url = '../view/home.php'; // Redirect to customer dashboard
             }

@@ -87,7 +87,7 @@ $categories = $categoryController->index();
                                 </td>
                                 <td><?= htmlspecialchars($product['category_name']) ?></td>
                                 <td><?= htmlspecialchars($product['brand_name']) ?></td>
-                                <td>$<?= number_format($product['price'], 2) ?></td>
+                                <td><span class="currency-symbol">₵</span><?= number_format($product['price'], 2) ?></td>
                                 <td><?= $product['discount'] ?>%</td>
                                 <td><?= htmlspecialchars($product['stock_quantity']) ?></td>
                                 <td>
@@ -131,7 +131,7 @@ $categories = $categoryController->index();
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="price" class="form-label">Price</label>
+                            <label for="price" class="form-label">Price (<span class="currency-symbol">₵</span>)</label>
                             <input type="number" class="form-control" id="price" name="price" step="0.01" required>
                         </div>
                         <div class="mb-3">
@@ -161,7 +161,7 @@ $categories = $categoryController->index();
                     <form id="editProductForm">
                         <input type="hidden" id="edit_product_id" name="product_id">
                         <div class="mb-3">
-                            <label for="edit_price" class="form-label">Price</label>
+                            <label for="edit_price" class="form-label">Price (<span class="currency-symbol">₵</span>)</label>
                             <input type="number" class="form-control" id="edit_price" name="price" step="0.01" required>
                         </div>
                         <div class="mb-3">

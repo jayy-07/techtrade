@@ -24,8 +24,8 @@ if (!$product) {
 }
 
 $wishlistController = new WishlistController();
-$isInWishlist = isset($_SESSION['user_id']) ? 
-    $wishlistController->isInWishlist($_SESSION['user_id'], $product['product_id']) : 
+$isInWishlist = isset($_SESSION['user_id']) ?
+    $wishlistController->isInWishlist($_SESSION['user_id'], $product['product_id']) :
     false;
 
 ?>
@@ -46,240 +46,248 @@ $isInWishlist = isset($_SESSION['user_id']) ?
 <body>
 
     <?php include 'header.php'; ?>
+    <main>
 
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-6">
-                <div id="productCarousel" class="carousel slide mb-3">
-                    <div class="carousel-inner">
-                        <?php if (!empty($productImages)): ?>
-                            <?php foreach ($productImages as $index => $image): ?>
-                                <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                                    <img src="<?= htmlspecialchars($image['image_path']) ?>" 
-                                         class="d-block w-100" 
-                                         alt="Product Image <?= $index + 1 ?>">
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="productCarousel" class="carousel slide mb-3">
+                        <div class="carousel-inner">
+                            <?php if (!empty($productImages)): ?>
+                                <?php foreach ($productImages as $index => $image): ?>
+                                    <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                                        <img src="<?= htmlspecialchars($image['image_path']) ?>"
+                                            class="d-block w-100"
+                                            alt="Product Image <?= $index + 1 ?>">
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="carousel-item active">
+                                    <img src="../images/placeholder.png" class="d-block w-100" alt="No Image Available">
                                 </div>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <div class="carousel-item active">
-                                <img src="../images/placeholder.png" class="d-block w-100" alt="No Image Available">
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                    <div class="carousel-indicators">
-                        <?php if (!empty($productImages)): ?>
-                            <?php foreach ($productImages as $index => $image): ?>
-                                <button type="button" 
-                                        data-bs-target="#productCarousel" 
-                                        data-bs-slide-to="<?= $index ?>" 
+                            <?php endif; ?>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                        <div class="carousel-indicators">
+                            <?php if (!empty($productImages)): ?>
+                                <?php foreach ($productImages as $index => $image): ?>
+                                    <button type="button"
+                                        data-bs-target="#productCarousel"
+                                        data-bs-slide-to="<?= $index ?>"
                                         class="<?= $index === 0 ? 'active' : '' ?>"
-                                        aria-current="<?= $index === 0 ? 'true' : 'false' ?>" 
+                                        aria-current="<?= $index === 0 ? 'true' : 'false' ?>"
                                         aria-label="Slide <?= $index + 1 ?>">
-                                    <img src="<?= htmlspecialchars($image['image_path']) ?>" 
-                                         alt="Thumbnail <?= $index + 1 ?>">
-                                </button>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <button type="button" 
-                                    data-bs-target="#productCarousel" 
-                                    data-bs-slide-to="0" 
+                                        <img src="<?= htmlspecialchars($image['image_path']) ?>"
+                                            alt="Thumbnail <?= $index + 1 ?>">
+                                    </button>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <button type="button"
+                                    data-bs-target="#productCarousel"
+                                    data-bs-slide-to="0"
                                     class="active"
-                                    aria-current="true" 
+                                    aria-current="true"
                                     aria-label="Slide 1">
-                                <img src="../images/placeholder.png" alt="No Image Available">
-                            </button>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-5">
-                <nav aria-label="breadcrumb" class="mb-3">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="listing.php?category=<?= $product['category_id'] ?>">
-                                <?= $product['category_name'] ?>
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="listing.php?brand=<?= $product['brand_id'] ?>">
-                                <?= $product['brand_name'] ?>
-                            </a>
-                        </li>
-                    </ol>
-                </nav>
-                <h3 class="product-title"><?= $product['name'] ?></h3>
-                <p class="text-muted">Sold by: <strong><?= $cheapestSeller['seller_name'] ?? 'N/A' ?></strong></p>
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <h5 class="mb-3"><strong>About this item</strong></h5>
-                        <div class="product-description">
-                            <div class="description-content collapsed">
-                                <?= $product['description'] ?>
-                            </div>
-                            <a class="read-more-link">Read more</a>
+                                    <img src="../images/placeholder.png" alt="No Image Available">
+                                </button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <h4 class="product-price"><span class="currency-symbol">₵</span><?= $cheapestSeller['price'] ?? 'N/A' ?></h4>
-                    <?php if (isset($cheapestSeller['discount']) && $cheapestSeller['discount'] > 0) : ?>
-                        <p class="text-muted"><del>₵<?= number_format($cheapestSeller['price'] / (1 - ($cheapestSeller['discount'] / 100)), 2) ?></del> | <?= round($cheapestSeller['discount'])  ?>% OFF</p>
-                    <?php endif; ?>
-                </div>
+                <div class="col-md-5">
+                    <nav aria-label="breadcrumb" class="mb-3">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="listing.php?category=<?= $product['category_id'] ?>">
+                                    <?= $product['category_name'] ?>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="listing.php?brand=<?= $product['brand_id'] ?>">
+                                    <?= $product['brand_name'] ?>
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+                    <h3 class="product-title"><?= $product['name'] ?></h3>
+                    <p class="text-muted">Sold by: <strong><?= $cheapestSeller['seller_name'] ?? 'N/A' ?></strong></p>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h5 class="mb-3"><strong>About this item</strong></h5>
+                            <div class="product-description">
+                                <div class="description-content collapsed">
+                                    <?= $product['description'] ?>
+                                </div>
+                                <a class="read-more-link">Read more</a>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="d-flex gap-2 mt-3">
-                    <button
-                        type="button"
-                        class="btn add-to-cart-btn btn-techtrade-primary flex-grow-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#tradeInModal"
-                        data-product-id="<?= $product['product_id'] ?>"
-                        data-seller-id="<?= $cheapestSeller['seller_id'] ?? '' ?>"
-                        data-product-name="<?= $product['name'] ?>"
-                        data-seller-name="<?= $cheapestSeller['seller_name'] ?? '' ?>"
-                        data-price="<?= $cheapestSeller['price'] ?? '' ?>">
-                        <i class="bi bi-cart-plus"></i> Add to Cart
-                    </button>
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <button 
-                            class="btn btn-link wishlist-btn p-0"
-                            style="margin-left: 1rem;"
-                            data-product-id="<?= $product['product_id'] ?>"
-                            title="<?= $isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist' ?>">
-                            <i class="bi bi-heart<?= $isInWishlist ? '-fill text-danger' : '' ?> fs-4"></i>
-                        </button>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container my-5">
-        <?php if (!empty($otherSellers)): ?>
-            <h4>Other Sellers on TechTrade</h4>
-        <?php endif; ?>
-        <div class="other-sellers-container">
-            <button class="scroll-btn prev-btn" style="display: none;" onclick="scrollSellersLeft()">
-                <span>&#10094;</span>
-            </button>
-            <div class="other-sellers-row">
-                <?php foreach ($otherSellers as $seller) : ?>
-                    <div class="seller-card">
-                        <p class="card-text text-success"><span class="currency-symbol">₵</span><?= $seller['price'] ?></p>
-                        <?php if (isset($seller['discount']) && $seller['discount'] > 0) : ?>
-                            <p class="card-text text-muted">
-                                <del>₵<?= number_format($seller['price'] / (1 - ($seller['discount'] / 100)), 2) ?></del>
-                            </p>
-                            <p class="card-text">
-                                <span class="badge bg-success"><?= round($seller['discount']) ?>% Off</span>
-                            </p>
+                    <div class="mb-3">
+                        <h4 class="product-price"><span class="currency-symbol">₵</span><?= $cheapestSeller['price'] ?? 'N/A' ?></h4>
+                        <?php if (isset($cheapestSeller['discount']) && $cheapestSeller['discount'] > 0) : ?>
+                            <p class="text-muted"><del>₵<?= number_format($cheapestSeller['price'] / (1 - ($cheapestSeller['discount'] / 100)), 2) ?></del> | <?= round($cheapestSeller['discount'])  ?>% OFF</p>
                         <?php endif; ?>
-                        <p><strong>Seller:</strong> <?= $seller['seller_name'] ?></p>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-3">
                         <button
                             type="button"
                             class="btn add-to-cart-btn btn-techtrade-primary flex-grow-1"
                             data-bs-toggle="modal"
                             data-bs-target="#tradeInModal"
-                            data-product-id="<?= $seller['product_id'] ?>"
-                            data-seller-id="<?= $seller['seller_id'] ?? '' ?>"
+                            data-product-id="<?= $product['product_id'] ?>"
+                            data-seller-id="<?= $cheapestSeller['seller_id'] ?? '' ?>"
                             data-product-name="<?= $product['name'] ?>"
-                            data-seller-name="<?= $seller['seller_name'] ?? '' ?>"
-                            data-price="<?= $seller['price'] ?? '' ?>">
+                            data-seller-name="<?= $cheapestSeller['seller_name'] ?? '' ?>"
+                            data-price="<?= $cheapestSeller['price'] ?? '' ?>">
                             <i class="bi bi-cart-plus"></i> Add to Cart
                         </button>
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                            <button
+                                class="btn btn-link wishlist-btn p-0"
+                                style="margin-left: 1rem;"
+                                data-product-id="<?= $product['product_id'] ?>"
+                                title="<?= $isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist' ?>">
+                                <i class="bi bi-heart<?= $isInWishlist ? '-fill text-danger' : '' ?> fs-4"></i>
+                            </button>
+                        <?php endif; ?>
                     </div>
-                <?php endforeach; ?>
-            </div>
-            <button class="scroll-btn next-btn" onclick="scrollSellersRight()">
-                <span>&#10095;</span>
-            </button>
-        </div>
-    </div>
-
-    <div class="modal fade" id="tradeInModal" tabindex="-1" aria-labelledby="tradeInModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tradeInModalLabel">Add to Cart - Trade-In Options</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="modalTradeInToggle">
-                        <label class="form-check-label" for="modalTradeInToggle">
-                            <i class="bi bi-arrow-left-right"></i> Trade-in your device
-                        </label>
-                    </div>
-
-                    <div id="modalDeviceTypeDropdown" class="mt-3" style="display: none;">
-                        <label for="modalDeviceType" class="form-label">Select your device type:</label>
-                        <select id="modalDeviceType" class="form-select">
-                            <option selected disabled>Select your device</option>
-                            <option value="Phone">Phone</option>
-                            <option value="Laptop">Laptop</option>
-                            <option value="Monitor">Monitor</option>
-                            <option value="Gaming Console">Gaming Console</option>
-                            <option value="Printer">Printer</option>
-                            <option value="Tablet">Tablet</option>
-                            <option value="TV">TV</option>
-                        </select>
-                    </div>
-
-                    <div id="modalDeviceConditionDropdown" class="mt-3" style="display: none;">
-                        <label for="modalDeviceCondition" class="form-label">Device Condition:</label>
-                        <select id="modalDeviceCondition" class="form-select">
-                            <option selected disabled>Select condition</option>
-                            <option value="Excellent">Excellent</option>
-                            <option value="Good">Good</option>
-                            <option value="Fair">Fair</option>
-                            <option value="Poor">Poor</option>
-                        </select>
-                    </div>
-
-                    <div class="mt-3" id="usageDurationField" style="display: none;">
-                        <label for="modalUsageDuration" class="form-label">Usage Duration:</label>
-                        <select id="modalUsageDuration" class="form-select">
-                            <option selected disabled>Select duration</option>
-                            <option value="Less than 6 months">Less than 6 months</option>
-                            <option value="6-12 months">6-12 months</option>
-                            <option value="1-2 years">1-2 years</option>
-                            <option value="2-3 years">2-3 years</option>
-                            <option value="More than 3 years">More than 3 years</option>
-                        </select>
-                    </div>
-                    <div class="mt-3" id="purchasePriceField" style="display: none;">
-                        <label for="modalPurchasePrice" class="form-label">Purchase Price:</label>
-                        <input type="number" class="form-control" id="modalPurchasePrice">
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" id="confirmTradeInButton" class="btn btn-add-to-cart"><i class="bi bi-cart me-2"></i>Add to Cart</button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
-        <div id="toastContainer" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body" id="toastMessage">
+        <div class="container my-5">
+            <?php if (!empty($otherSellers)): ?>
+                <h4>Other Sellers on TechTrade</h4>
+                <div class="other-sellers-container position-relative">
+                    <?php 
+                    // Only show buttons if there are more than 4 sellers (or whatever number fits your container)
+                    if (count($otherSellers) > 4): 
+                    ?>
+                        <button class="scroll-btn prev-btn" onclick="scrollSellersLeft()">
+                            <span>&#10094;</span>
+                        </button>
+                        <button class="scroll-btn next-btn" onclick="scrollSellersRight()">
+                            <span>&#10095;</span>
+                        </button>
+                    <?php endif; ?>
+                    
+                    <div class="other-sellers-row">
+                        <?php foreach ($otherSellers as $seller): ?>
+                            <div class="seller-card">
+                                <p class="card-text text-success"><span class="currency-symbol">₵</span><?= $seller['price'] ?></p>
+                                <?php if (isset($seller['discount']) && $seller['discount'] > 0) : ?>
+                                    <p class="card-text text-muted">
+                                        <del>₵<?= number_format($seller['price'] / (1 - ($seller['discount'] / 100)), 2) ?></del>
+                                    </p>
+                                    <p class="card-text">
+                                        <span class="badge bg-success"><?= round($seller['discount']) ?>% Off</span>
+                                    </p>
+                                <?php endif; ?>
+                                <p><strong>Seller:</strong> <?= $seller['seller_name'] ?></p>
+                                <button
+                                    type="button"
+                                    class="btn add-to-cart-btn btn-techtrade-primary flex-grow-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#tradeInModal"
+                                    data-product-id="<?= $seller['product_id'] ?>"
+                                    data-seller-id="<?= $seller['seller_id'] ?? '' ?>"
+                                    data-product-name="<?= $product['name'] ?>"
+                                    data-seller-name="<?= $seller['seller_name'] ?? '' ?>"
+                                    data-price="<?= $seller['price'] ?? '' ?>">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart
+                                </button>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <?php endif; ?>
+        </div>
+
+        <div class="modal fade" id="tradeInModal" tabindex="-1" aria-labelledby="tradeInModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tradeInModalLabel">Add to Cart - Trade-In Options</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="modalTradeInToggle">
+                            <label class="form-check-label" for="modalTradeInToggle">
+                                <i class="bi bi-arrow-left-right"></i> Trade-in your device
+                            </label>
+                        </div>
+
+                        <div id="modalDeviceTypeDropdown" class="mt-3" style="display: none;">
+                            <label for="modalDeviceType" class="form-label">Select your device type:</label>
+                            <select id="modalDeviceType" class="form-select">
+                                <option selected disabled>Select your device</option>
+                                <option value="Phone">Phone</option>
+                                <option value="Laptop">Laptop</option>
+                                <option value="Monitor">Monitor</option>
+                                <option value="Gaming Console">Gaming Console</option>
+                                <option value="Printer">Printer</option>
+                                <option value="Tablet">Tablet</option>
+                                <option value="TV">TV</option>
+                            </select>
+                        </div>
+
+                        <div id="modalDeviceConditionDropdown" class="mt-3" style="display: none;">
+                            <label for="modalDeviceCondition" class="form-label">Device Condition:</label>
+                            <select id="modalDeviceCondition" class="form-select">
+                                <option selected disabled>Select condition</option>
+                                <option value="Excellent">Excellent</option>
+                                <option value="Good">Good</option>
+                                <option value="Fair">Fair</option>
+                                <option value="Poor">Poor</option>
+                            </select>
+                        </div>
+
+                        <div class="mt-3" id="usageDurationField" style="display: none;">
+                            <label for="modalUsageDuration" class="form-label">Usage Duration:</label>
+                            <select id="modalUsageDuration" class="form-select">
+                                <option selected disabled>Select duration</option>
+                                <option value="Less than 6 months">Less than 6 months</option>
+                                <option value="6-12 months">6-12 months</option>
+                                <option value="1-2 years">1-2 years</option>
+                                <option value="2-3 years">2-3 years</option>
+                                <option value="More than 3 years">More than 3 years</option>
+                            </select>
+                        </div>
+                        <div class="mt-3" id="purchasePriceField" style="display: none;">
+                            <label for="modalPurchasePrice" class="form-label">Purchase Price:</label>
+                            <input type="number" class="form-control" id="modalPurchasePrice">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" id="confirmTradeInButton" class="btn btn-add-to-cart"><i class="bi bi-cart me-2"></i>Add to Cart</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
+            <div id="toastContainer" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="toastMessage">
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <?php include 'footer.php'; ?>
     <script src="../js/jquery.min.js"></script>

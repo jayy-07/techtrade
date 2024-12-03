@@ -2,7 +2,7 @@
 //Database credentials
 
 define("SERVER","localhost");
-define("USERNAME","root");
+define("USERNAME","zz");
 define("PASSWD","");
 define("DATABASE","techtrade");
 

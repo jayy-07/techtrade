@@ -1,5 +1,5 @@
 <?php
-define('ENVIRONMENT', 'local');
+define('ENVIRONMENT', 'production');
 
 $config = [
     'local' => [

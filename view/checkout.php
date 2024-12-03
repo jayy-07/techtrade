@@ -31,6 +31,7 @@ if (empty($cartItems)) {
 
 <body>
     <?php include_once 'header.php'; ?>
+    <main>
 
     <div class="container my-5">
         <h2 class="mb-4">Checkout</h2>
@@ -81,7 +82,7 @@ if (empty($cartItems)) {
                                             <br>
                                             <small class="text-info">
                                                 <i class="bi bi-arrow-left-right"></i>
-                                                Trade-in Applied: $<?= number_format($item['trade_in_value'], 2) ?>
+                                                Trade-in Applied: <span class="currency-symbol">₵</span><?= number_format($item['trade_in_value'], 2) ?>
                                             </small>
                                         <?php endif; ?>
                                     </div>
@@ -91,7 +92,7 @@ if (empty($cartItems)) {
                                             $originalPrice = $item['original_unit_price'] / (1 - ($item['discount'] / 100));
                                             $discountedPrice = $item['original_unit_price'];
                                         ?>
-                                        <div class="h6 mb-0">$<?= number_format($discountedPrice, 2) ?></div>
+                                        <div class="h6 mb-0"><span class="currency-symbol">₵</span><?= number_format($discountedPrice, 2) ?></div>
                                         <?php if ($item['discount'] > 0): ?>
                                             <small class="text-muted">
                                                 <del>₵<?= number_format($originalPrice, 2) ?></del>
@@ -170,6 +171,7 @@ if (empty($cartItems)) {
             </div>
         </div>
     </div>
+    </main>
     <?php include 'footer.php'; ?>
     <script>
         const PAYSTACK_PUBLIC_KEY = '<?php echo 'pk_test_ed5890a96470b5ae8e82f8a6531f88d2f9c8c4b3'; ?>';

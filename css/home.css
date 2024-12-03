@@ -102,56 +102,24 @@ body {
 
 /* CSS for scroll bar */
 .scrollable-product-list {
-  position: relative;
-  margin-bottom: 50px;
-}
-
-.product-row {
-  /* Hide scrollbars by default */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
-  overflow-y: hidden;
   overflow-x: auto;
-  transition: scrollbar-color 0.3s ease; /* Transition for scrollbar color */
-}
-
-.product-row::-webkit-scrollbar {
-  width: 0; /* Remove scrollbar space */
-  height: 0; /* Remove scrollbar space */
-}
-
-/* Hover effect for product-row container */
-.product-row:hover {
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #999 #f1f1f1; /* Color for Firefox */
-}
-
-/* Style WebKit scrollbars (Chrome, Safari) */
-.product-row:hover::-webkit-scrollbar {
-  width: 8px; /* Show scrollbar width */
-  height: 8px;
-}
-
-.product-row:hover::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0.1); /* Lighter track color */
-}
-
-.product-row:hover::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3); /* Darker thumb color on hover */
-  border-radius: 4px;
-  transition: background-color 0.3s ease; /* Smooth color transition */
-}
-
-.product-row:hover::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Handle color on hover */
+  position: relative;
 }
 
 .product-row {
   display: flex;
-  flex-wrap: nowrap; /* Prevent cards from wrapping to the next line */
-  overflow-x: auto; /* Enable horizontal scrolling */
-  padding: 1rem 0;
+  overflow-x: auto;
   scroll-behavior: smooth;
+  padding: 10px 0;
+  white-space: normal;
+}
+
+.product-card {
+  flex: 0 0 auto;
+  width: 250px;
+  margin: 0 10px;
+  display: inline-block;
+  white-space: normal;
 }
 
 .scroll-btn {
@@ -159,20 +127,19 @@ body {
   top: 50%;
   transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.5);
-  color: white;
   border: none;
-  padding: 10px;
+  color: white;
+  font-size: 24px;
   cursor: pointer;
-  z-index: 10;
-  display: none; /* Initially hidden, shown conditionally */
+  z-index: 1;
 }
 
 .prev-btn {
-  left: -10px;
+  left: 0;
 }
 
 .next-btn {
-  right: -10px;
+  right: 0;
 }
 
 #addToCartButton {
@@ -185,15 +152,15 @@ body {
 /* Additional styles for other sellers row */
 .other-sellers-container {
   position: relative;
-  margin-top: 30px;
-  padding: 10px 0;
+  overflow: hidden;
 }
 
 .other-sellers-row {
   display: flex;
   overflow-x: auto;
-  padding: 10px;
   scroll-behavior: smooth;
+  padding: 10px 0;
+  gap: 15px;
 }
 
 #addToCartButton-seller {
@@ -202,14 +169,53 @@ body {
 }
 
 .seller-card {
-  min-width: 250px;
   flex: 0 0 auto;
-  margin: 0 10px;
-  padding: 15px;
-  border: 1px solid #ddd;
+  width: 250px;
+  padding: 1.25rem;
+  border: 1px solid #dee2e6;
   border-radius: 8px;
-  background-color: #f8f9fa;
-  text-align: center;
+  background: white;
+  margin-right: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.seller-card .card-text.text-success {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.seller-card .card-text.text-muted del {
+  font-size: 0.875rem;
+}
+
+.seller-card .badge {
+  font-size: 0.875rem;
+  padding: 0.4em 0.6em;
+}
+
+.seller-card p {
+  margin-bottom: 0.75rem;
+}
+
+.seller-card .add-to-cart-btn {
+  margin-top: auto;
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+
+
+/* Add hover effect */
+.seller-card:hover {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transform: translateY(-2px);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Button hover state */
+.seller-card .add-to-cart-btn:hover {
+  opacity: 0.9;
 }
 
 .product-card {
@@ -971,22 +977,56 @@ body {
     border-radius: 8px;
 }
 
-/* Footer Styles */
-body {
-    min-height: 100vh;
+html, body {
+    height: 100%;
+    margin: 0;
     display: flex;
     flex-direction: column;
 }
 
-footer {
-    margin-top: auto;
+main {
+    flex: 1;
+    margin-bottom: 15rem; /* Add spacing above footer */
 }
 
-footer .logo-text {
-    font-family: "Gluck";
-    font-size: 20px;
+/* Scrollbar styling for product rows and other sellers */
+.product-row,
+.other-sellers-row {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    padding-bottom: 5px; /* Space for the scrollbar to appear */
 }
 
-footer a:hover {
-    opacity: 0.8;
+.product-row::-webkit-scrollbar,
+.other-sellers-row::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.scrollable-product-list:hover .product-row,
+.other-sellers-container:hover .other-sellers-row {
+    scrollbar-width: thin;
+    -ms-overflow-style: auto;
+}
+
+.scrollable-product-list:hover .product-row::-webkit-scrollbar,
+.other-sellers-container:hover .other-sellers-row::-webkit-scrollbar {
+    display: block;
+    height: 8px;
+}
+
+.scrollable-product-list:hover .product-row::-webkit-scrollbar-track,
+.other-sellers-container:hover .other-sellers-row::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+.scrollable-product-list:hover .product-row::-webkit-scrollbar-thumb,
+.other-sellers-container:hover .other-sellers-row::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.scrollable-product-list:hover .product-row::-webkit-scrollbar-thumb:hover,
+.other-sellers-container:hover .other-sellers-row::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
 }

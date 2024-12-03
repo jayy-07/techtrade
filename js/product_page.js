@@ -203,35 +203,57 @@ $(document).ready(function () {
 
   // Horizontal scrolling functionality for seller listings
   function scrollSellersRight() {
-    $(".other-sellers-row").animate({ scrollLeft: "+=300" }, 300);
+    const container = document.querySelector('.other-sellers-row');
+    container.scrollBy({ left: 300, behavior: 'smooth' });
+    updateSellerScrollButtons();
   }
 
   function scrollSellersLeft() {
-    $(".other-sellers-row").animate({ scrollLeft: "-=300" }, 300);
+    const container = document.querySelector('.other-sellers-row');
+    container.scrollBy({ left: -300, behavior: 'smooth' });
+    updateSellerScrollButtons();
   }
 
-  // Attach scroll handlers to navigation buttons
-  $(".prev-btn").on("click", scrollSellersLeft);
-  $(".next-btn").on("click", scrollSellersRight);
-
-  /**
-   * Updates the visibility of scroll buttons based on scroll position
-   * Hides/shows buttons when reaching start/end of scrollable content
-   */
-  function updateSellersScrollButtons() {
-    const container = $(".other-sellers-row");
-    const maxScrollLeft = container[0].scrollWidth - container[0].clientWidth;
-
-    $(".prev-btn").toggle(container.scrollLeft() > 0);
-    $(".next-btn").toggle(container.scrollLeft() < maxScrollLeft);
+  function updateSellerScrollButtons() {
+    const container = document.querySelector('.other-sellers-row');
+    // If there's no container (no other sellers), return early
+    if (!container) return;
+    
+    const prevBtn = document.querySelector('.other-sellers-container .prev-btn');
+    const nextBtn = document.querySelector('.other-sellers-container .next-btn');
+    
+    // Only proceed if both buttons exist
+    if (!prevBtn || !nextBtn) return;
+    
+    // Check if there's enough content to scroll
+    const hasScrollableContent = container.scrollWidth > container.clientWidth;
+    
+    if (container.scrollLeft > 0) {
+        prevBtn.style.display = 'block';
+    } else {
+        prevBtn.style.display = 'none';
+    }
+    
+    if (container.scrollLeft < (container.scrollWidth - container.clientWidth) && hasScrollableContent) {
+        nextBtn.style.display = 'block';
+    } else {
+        nextBtn.style.display = 'none';
+    }
   }
 
-  // Update scroll buttons on scroll and window resize
-  $(".other-sellers-row").on("scroll", updateSellersScrollButtons);
-  $(window).on("resize", updateSellersScrollButtons);
+  // Add event listeners when document loads
+  document.addEventListener('DOMContentLoaded', function() {
+    const container = document.querySelector('.other-sellers-row');
+    if (container) {
+        container.addEventListener('scroll', updateSellerScrollButtons);
+        updateSellerScrollButtons();
+    }
+  });
 
-  // Initial scroll buttons visibility check
-  updateSellersScrollButtons();
+  // Update buttons on window resize
+  window.addEventListener('resize', function() {
+    updateSellerScrollButtons();
+  });
 
   // Wishlist functionality
   $(".wishlist-btn").on("click", function (e) {
@@ -294,6 +316,27 @@ $(document).ready(function () {
           300
         );
       }
+    }
+  });
+
+  // Initialize other sellers scroll buttons when document loads
+  document.addEventListener('DOMContentLoaded', function() {
+    const container = document.querySelector('.other-sellers-row');
+    const prevBtn = document.querySelector('.other-sellers-container .prev-btn');
+    const nextBtn = document.querySelector('.other-sellers-container .next-btn');
+    
+    if (container && prevBtn && nextBtn) {
+        // Hide both buttons initially
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        
+        // Only show next button if there's content to scroll
+        if (container.scrollWidth > container.clientWidth) {
+            nextBtn.style.display = 'block';
+        }
+        
+        // Add scroll event listener
+        container.addEventListener('scroll', () => updateSellerScrollButtons());
     }
   });
 });

@@ -107,7 +107,7 @@ if (!$orderDetails) {
     <div class="order-summary mt-3">
         <div class="d-flex justify-content-between">
             <strong>Total Amount:</strong>
-            <strong>$<?= number_format($orderDetails['total_amount'], 2) ?></strong>
+            <strong><span class="currency-symbol">₵</span><?= number_format($orderDetails['total_amount'], 2) ?></strong>
         </div>
     </div>
 </div>

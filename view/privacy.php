@@ -24,52 +24,67 @@
             </div>
         </div>
     </nav>
+    <main>
+        <div class="container my-5">
+            <h1 class="mb-4">Privacy Policy</h1>
 
-    <div class="container my-5">
-        <h1 class="mb-4">Privacy Policy</h1>
+            <div class="card">
+                <div class="card-body">
+                    <h5>1. Information We Collect</h5>
+                    <p>We collect personal information including name, email, phone number, and address for account creation and order processing. Payment information is processed securely by our payment partners.</p>
 
-        <div class="card">
-            <div class="card-body">
-                <h5>1. Information We Collect</h5>
-                <p>We collect personal information including name, email, phone number, and address for account creation and order processing. Payment information is processed securely by our payment partners.</p>
+                    <h5>2. How We Use Your Information</h5>
+                    <ul>
+                        <li>Process your transactions and orders</li>
+                        <li>Communicate about your account and orders</li>
+                        <li>Provide customer support</li>
+                        <li>Improve our services</li>
+                        <li>Send relevant marketing communications (with consent)</li>
+                    </ul>
 
-                <h5>2. How We Use Your Information</h5>
-                <ul>
-                    <li>Process your transactions and orders</li>
-                    <li>Communicate about your account and orders</li>
-                    <li>Provide customer support</li>
-                    <li>Improve our services</li>
-                    <li>Send relevant marketing communications (with consent)</li>
-                </ul>
+                    <h5>3. Information Sharing</h5>
+                    <p>We share information only with:</p>
+                    <ul>
+                        <li>Sellers to fulfill orders</li>
+                        <li>Payment processors for transactions</li>
+                        <li>Service providers who assist our operations</li>
+                    </ul>
 
-                <h5>3. Information Sharing</h5>
-                <p>We share information only with:</p>
-                <ul>
-                    <li>Sellers to fulfill orders</li>
-                    <li>Payment processors for transactions</li>
-                    <li>Service providers who assist our operations</li>
-                </ul>
+                    <h5>4. Data Security</h5>
+                    <p>We implement appropriate security measures to protect your personal information from unauthorized access or disclosure.</p>
 
-                <h5>4. Data Security</h5>
-                <p>We implement appropriate security measures to protect your personal information from unauthorized access or disclosure.</p>
+                    <h5>5. Your Rights</h5>
+                    <p>You have the right to:</p>
+                    <ul>
+                        <li>Access your personal information</li>
+                        <li>Correct inaccurate data</li>
+                        <li>Request deletion of your data</li>
+                        <li>Opt-out of marketing communications</li>
+                    </ul>
 
-                <h5>5. Your Rights</h5>
-                <p>You have the right to:</p>
-                <ul>
-                    <li>Access your personal information</li>
-                    <li>Correct inaccurate data</li>
-                    <li>Request deletion of your data</li>
-                    <li>Opt-out of marketing communications</li>
-                </ul>
+                    <h5>6. Cookies</h5>
+                    <p>We use cookies to improve user experience and analyze website traffic. You can control cookie preferences through your browser settings.</p>
 
-                <h5>6. Cookies</h5>
-                <p>We use cookies to improve user experience and analyze website traffic. You can control cookie preferences through your browser settings.</p>
-
-                <h5>7. Contact Us</h5>
-                <p>For privacy-related inquiries, please contact our support team.</p>
+                    <h5>7. Contact Us</h5>
+                    <p>For privacy-related inquiries, please contact our support team.</p>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2024 TechTrade. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="terms.php" class="footer-link">Terms of Service</a>
+                    <a href="privacy.php" class="footer-link">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/jquery.min.js"></script>
