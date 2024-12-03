@@ -13,32 +13,16 @@ class Order extends db_connection {
      * @return int|bool Order ID on success, false on failure
      */
     public function createOrder($orderData) {
+        $this->db_connect();
+        $this->db->begin_transaction();
+
         try {
-            error_log("Order Class - Starting order creation");
+            // Insert main order (existing code)
+            $sql = "INSERT INTO orders (user_id, total_amount, trade_in_credit, shipping_address, phone_number) 
+                   VALUES (?, ?, ?, ?, ?)";
             
-            $this->db_connect();
-            error_log("Order Class - Database connected");
-
-            $this->db->begin_transaction();
-            error_log("Order Class - Transaction started");
-
-            // Insert into orders table
-            $sql = "INSERT INTO orders (
-                user_id, 
-                total_amount, 
-                trade_in_credit, 
-                shipping_address, 
-                phone_number, 
-                payment_status,
-                created_at
-            ) VALUES (?, ?, ?, ?, ?, 'Pending', NOW())";
-
-            error_log("Order Class - SQL Query: " . $sql);
-            error_log("Order Class - Order Data: " . print_r($orderData, true));
-
             $stmt = $this->db->prepare($sql);
-            $stmt->bind_param(
-                "iddss",
+            $stmt->bind_param("iddss", 
                 $orderData['user_id'],
                 $orderData['total_amount'],
                 $orderData['trade_in_credit'],
@@ -51,83 +35,39 @@ class Order extends db_connection {
             }
 
             $order_id = $this->db->insert_id;
-            error_log("Order Class - Order created with ID: " . $order_id);
 
             // Get cart items with seller information
             $cart = new Cart();
             $cartItems = $cart->getCartItems($orderData['user_id']);
-            error_log("Order Class - Cart items retrieved: " . count($cartItems));
 
-            // Debug cart items
-            error_log("Order Class - Cart Items Data: " . print_r($cartItems, true));
-
-            // Get seller information for each product
-            $sellerSql = "SELECT sp.seller_id 
-                         FROM sellers_products sp 
-                         WHERE sp.product_id = ?";
-            $sellerStmt = $this->db->prepare($sellerSql);
-
-            // Insert order items
-            $itemSql = "INSERT INTO order_items (
-                order_id, 
-                product_id, 
-                seller_id, 
-                quantity, 
-                price, 
-                trade_in_details
-            ) VALUES (?, ?, ?, ?, ?, ?)";
-
-            $itemStmt = $this->db->prepare($itemSql);
-
+            // Insert order items with seller information directly from cart
             foreach ($cartItems as $item) {
-                // Get seller_id for the product
-                $sellerStmt->bind_param("i", $item['product_id']);
-                $sellerStmt->execute();
-                $sellerResult = $sellerStmt->get_result();
-                $sellerData = $sellerResult->fetch_assoc();
-
-                if (!$sellerData || !$sellerData['seller_id']) {
-                    throw new Exception("No seller found for product ID: " . $item['product_id']);
-                }
-
-                error_log("Order Class - Found seller_id: " . $sellerData['seller_id'] . " for product: " . $item['product_id']);
-
-                $tradeInDetails = null;
-                if (!empty($item['trade_in_id'])) {
-                    $tradeInDetails = json_encode([
-                        'trade_in_id' => $item['trade_in_id'],
-                        'device_type' => $item['device_type'],
-                        'device_condition' => $item['device_condition'],
-                        'trade_in_value' => $item['trade_in_value']
-                    ]);
-                }
-
-                $itemStmt->bind_param(
-                    "iiiids",
+                $itemSql = "INSERT INTO order_items (order_id, product_id, seller_id, quantity, price, trade_in_details) 
+                           VALUES (?, ?, ?, ?, ?, ?)";
+                
+                $itemStmt = $this->db->prepare($itemSql);
+                $tradeInJson = !empty($item['trade_in_id']) ? json_encode(['trade_in_id' => $item['trade_in_id']]) : null;
+                
+                $itemStmt->bind_param("iiiids", 
                     $order_id,
                     $item['product_id'],
-                    $sellerData['seller_id'],
+                    $item['seller_id'],  // This is the key change - using seller_id directly from cart items
                     $item['quantity'],
-                    $item['discounted_price'],
-                    $tradeInDetails
+                    $item['final_price'],
+                    $tradeInJson
                 );
-
+                
                 if (!$itemStmt->execute()) {
-                    throw new Exception("Failed to insert order item: " . $itemStmt->error);
+                    throw new Exception("Failed to create order item: " . $itemStmt->error);
                 }
-                error_log("Order Class - Order item inserted for product: " . $item['product_id']);
             }
 
             $this->db->commit();
-            error_log("Order Class - Transaction committed successfully");
             return $order_id;
 
         } catch (Exception $e) {
-            error_log("Order Class - Error: " . $e->getMessage());
-            if ($this->db && $this->db->ping()) {
-                $this->db->rollback();
-                error_log("Order Class - Transaction rolled back");
-            }
+            $this->db->rollback();
+            error_log("Order creation error: " . $e->getMessage());
             return false;
         }
     }

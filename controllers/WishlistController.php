@@ -8,27 +8,21 @@ class WishlistController {
         $this->wishlist = new Wishlist();
     }
 
-    // Adds a product to the user's wishlist
     public function addToWishlist($userId, $productId) {
         try {
             // Validate input parameters
             if (!$userId || !$productId) {
                 return ['success' => false, 'error' => 'Invalid request parameters'];
             }
-
-            // error_log("WishlistController - Adding to wishlist: User ID = $userId, Product ID = $productId");
             
             $result = $this->wishlist->addToWishlist($userId, $productId);
             
             if ($result) {
-                // error_log("WishlistController - Successfully added to wishlist");
                 return ['success' => true];
             } else {
-                // error_log("WishlistController - Failed to add to wishlist");
                 return ['success' => false, 'error' => 'Failed to add to wishlist'];
             }
         } catch (Exception $e) {
-            // Log exception
             error_log("WishlistController - Error: " . $e->getMessage());
             return ['success' => false, 'error' => 'An error occurred'];
         }
@@ -63,11 +57,6 @@ class WishlistController {
     // Retrieves all wishlist items for a user
     public function getWishlistItems($userId) {
         try {
-            // Validate input parameter
-            if (!$userId) {
-                return [];
-            }
-
             // error_log("WishlistController - Getting wishlist items for user: $userId");
             
             $items = $this->wishlist->getWishlistItems($userId);

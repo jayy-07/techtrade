@@ -1,9 +1,7 @@
 <?php
-require_once '../settings/core.php';
 require_once '../controllers/WishlistController.php';
+require_once '../settings/core.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', 'On');
 // Check if user is logged in
 check_login();
 

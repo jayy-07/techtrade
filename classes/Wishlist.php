@@ -1,6 +1,7 @@
 <?php
 require_once '../settings/db_class.php';
 
+
 /**
  * Wishlist class for managing user wishlists
  * Handles CRUD operations for wishlists and wishlist items
@@ -64,8 +65,12 @@ class Wishlist extends db_connection {
         try {
             $this->db_connect();
             
-            $sql = "SELECT w.*, p.name as product_name, 
-                    pi.image_path,
+            $sql = "SELECT 
+                    w.product_id,
+                    MAX(w.wishlist_id) as wishlist_id,
+                    MAX(w.created_at) as created_at,
+                    p.name as product_name,
+                    MAX(pi.image_path) as image_path,
                     MIN(sp.price) as min_price,
                     MAX(sp.discount) as max_discount
                     FROM wishlists w
@@ -74,7 +79,7 @@ class Wishlist extends db_connection {
                     LEFT JOIN sellers_products sp ON p.product_id = sp.product_id
                     WHERE w.user_id = ?
                     GROUP BY w.product_id
-                    ORDER BY w.created_at DESC";
+                    ORDER BY MAX(w.created_at) DESC";
             
             $stmt = $this->db->prepare($sql);
             $stmt->bind_param("i", $userId);

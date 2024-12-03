@@ -3,14 +3,11 @@
 header('Content-Type: application/json');
 
 // Include required files
-require_once '../settings/core.php';
 require_once '../controllers/WishlistController.php';
+require_once '../settings/core.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'error' => 'Please login first']);
-    exit;
-}
+check_login();
 
 // Initialize wishlist controller
 $wishlistController = new WishlistController();

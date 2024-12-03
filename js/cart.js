@@ -51,7 +51,7 @@ $(document).ready(function() {
                 if (response.success) {
                     location.reload(); // Refresh to update totals
                 } else {
-                    showToast(response.message || 'Error updating quantity', 'danger');
+                    showToast(response.message || 'This seller does not have enough stock', 'danger');
                 }
             },
             error: function() {
