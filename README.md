@@ -2,6 +2,13 @@
 
 TechTrade is an online marketplace designed for buying, selling, and trading tech gadgets. The platform provides a seamless experience for users to engage in tech transactions, offering features such as user registration, product listings, order management, and secure payment processing through Paystack.
 
+![image](https://github.com/user-attachments/assets/509e983b-37db-4092-a4b4-972d2891cc89)
+![Screenshot 2025-03-13 220047](https://github.com/user-attachments/assets/7fd7481b-5606-4d90-ba02-ac871d82e52c)
+![Screenshot 2025-03-13 220155](https://github.com/user-attachments/assets/0202d883-fb66-461d-b657-d959a9af280b)
+
+
+
+
 ## Table of Contents
 
 - [Features](#features)
